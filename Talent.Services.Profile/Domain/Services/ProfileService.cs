@@ -52,7 +52,62 @@ namespace Talent.Services.Profile.Domain.Services
         public async Task<TalentProfileViewModel> GetTalentProfile(string Id)
         {
             //Your code here;
-            throw new NotImplementedException();
+            try
+            {
+                User profile = null;
+                profile = (await _userRepository.GetByIdAsync(Id));
+
+                var videoUrl = "";
+
+                if (profile != null)
+                {
+                    videoUrl = string.IsNullOrWhiteSpace(profile.VideoName)
+                              ? ""
+                              : await _fileService.GetFileURL(profile.VideoName, FileType.UserVideo);
+
+                    var skills = profile.Skills.Select(x => ViewModelFromSkill(x)).ToList();
+                    var certifications = profile.Certifications.Select(x => ViewModelFromCertification(x)).ToList();
+
+                    var result = new TalentProfileViewModel
+                    {
+                        Id = profile.Id,
+                        Address = profile.Address,
+                        Certifications = certifications,
+                        CvName = profile.CvName,
+                        Description = profile.Description,
+                        //Education = profile.Education,
+                        Email = profile.Email,
+                        //Experience = profile.Experience;
+                        Gender = profile.Gender,
+                        FirstName = profile.FirstName,
+                        MiddleName = profile.MiddleName,
+                        LastName = profile.LastName,
+                        //Languages = profile.Languages,
+                        IsMobilePhoneVerified = profile.IsMobilePhoneVerified,
+                        JobSeekingStatus = profile.JobSeekingStatus,
+                        LinkedAccounts = profile.LinkedAccounts,
+                        MobilePhone = profile.MobilePhone,
+                        Nationality = profile.Nationality,
+                        Phone = profile.Phone,
+                        Summary = profile.Summary,
+                        VisaExpiryDate = profile.VisaExpiryDate,
+                        VisaStatus = profile.VisaStatus,
+                        Skills = skills,
+                        ProfilePhoto = profile.ProfilePhoto,
+                        ProfilePhotoUrl = profile.ProfilePhotoUrl,
+                        VideoName = profile.VideoName,
+                        VideoUrl = videoUrl,
+                    };
+                    return result;
+                }
+
+                return null;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public async Task<bool> UpdateTalentProfile(TalentProfileViewModel model, string updaterId)
@@ -330,6 +385,16 @@ namespace Talent.Services.Profile.Domain.Services
                 Id = skill.Id,
                 Level = skill.ExperienceLevel,
                 Name = skill.Skill
+            };
+        }
+        protected AddCertificationViewModel ViewModelFromCertification(UserCertification certification)
+        {
+            return new AddCertificationViewModel
+            {
+                Id = certification.Id,
+                CertificationName = certification.CertificationName,
+                CertificationFrom = certification.CertificationFrom,
+                CertificationYear = certification.CertificationYear,
             };
         }
 
