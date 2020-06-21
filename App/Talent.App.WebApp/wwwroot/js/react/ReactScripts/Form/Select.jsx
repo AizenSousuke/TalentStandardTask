@@ -5,7 +5,8 @@ export const Select = (props) => (
     <select
         name={props.name}
         value={props.selectedOption}
-        onChange={props.controlFunc}>
+        onChange={props.controlFunc}
+        disabled={props.disabled}>
         <option value="">{props.placeholder}</option>
         {props.options.map(opt => {
             return (

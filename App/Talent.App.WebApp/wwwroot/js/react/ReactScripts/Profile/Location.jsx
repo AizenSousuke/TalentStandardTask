@@ -17,12 +17,15 @@ export class Address extends React.Component {
 					suburb: "",
 					postcode: 0,
 					city: "",
-					country: "",
+                    country: "",
 			  };
 
 		this.state = {
 			showEditSection: false,
-			newAddress: addressData,
+            newAddress: addressData,
+            // For address dropdown
+            cities: [],
+            countries: [],
 		};
 
 		this.openEdit = this.openEdit.bind(this);
@@ -30,30 +33,21 @@ export class Address extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.saveAddress = this.saveAddress.bind(this);
 		this.renderEdit = this.renderEdit.bind(this);
-		this.renderDisplay = this.renderDisplay.bind(this);
-
-		// Countries Array
-		this.countries = [];
+        this.renderDisplay = this.renderDisplay.bind(this);
+        this.setCitiesArray = this.setCitiesArray.bind(this);
+    }
+    
+    componentDidMount() {
+        // Countries Array
+        var countriesArray = [];
 		Object.keys(Countries).map((key, i) => {
-			this.countries.push({ title: key, value: i });
-		});
-		console.log(this.countries);
-
-		// // Cities Array
-		this.cities = [];
-		Object.values(Countries).map((citiesArray, i) => {
-		    this.cities.push({ title: citiesArray, value: i })
-		});
-        console.log(this.cities);
-
-		// this.cities = [];
-		// Object.keys(Countries).map((countries) => {
-		//     console.log(countries.length);
-		//     Object.keys(countries).map((cities) => {
-		//         // console.log(cities);
-		//     });
-		// })
-	}
+			countriesArray.push({ title: key, value: key });
+        });
+        
+		this.setState({ countries: countriesArray }, () => {
+            console.log(this.state.countries);
+        });
+    }
 
 	openEdit() {
 		const address = Object.assign({}, this.props.addressData);
@@ -70,7 +64,8 @@ export class Address extends React.Component {
 	}
 
 	handleChange(event) {
-		const data = Object.assign({}, this.state.newAddress);
+        const data = Object.assign({}, this.state.newAddress);
+        console.log("Data ", data);
 		data[event.target.name] = event.target.value;
 		this.setState({
 			newAddress: data,
@@ -83,6 +78,20 @@ export class Address extends React.Component {
 		const data = Object.assign({}, this.state.newAddress);
 		this.props.saveProfileData(data);
 		this.closeEdit();
+	}
+
+	setCitiesArray(country) {
+		var newCitiesArray = [];
+		// console.log(this.countries.findIndex(e => e.value == "Singapore"));
+		// console.log(this.cities[this.countries.findIndex(e => e.value == "Singapore")])
+		Object.entries(Countries)
+			.find((c) => c[0] == country)[1]
+			.map((c) => {
+				newCitiesArray.push({ title: c, value: c });
+			});
+        this.setState({ cities: newCitiesArray }, () => {
+            console.log("This cities: ", this.state.cities);
+        });
 	}
 
 	render() {
@@ -137,18 +146,32 @@ export class Address extends React.Component {
 				Country:
 				<Select
 					name="country"
-					controlFunc={this.handleChange}
-					placeholder="Select a country"
-					options={this.countries}
+					controlFunc={(e) => {
+						this.setCitiesArray(e.target.value);
+						this.handleChange(e);
+					}}
+                    placeholder="Select a country"
+                    selectedOption={this.state.newAddress.country}
+					options={this.state.countries}
 				/>
-				{/* City:
-                <Select 
-                    name="city"
-                    controlFunc={this.handleChange}
-                    placeholder="Select a city"
-                    options={Countries.countries}
-                /> */}
-
+				City:
+				{this.state.cities.length > 0 ? (
+					<Select
+						name="city"
+						controlFunc={this.handleChange}
+						placeholder="Select a city"
+                        selectedOption={this.state.newAddress.city}
+						options={this.state.cities}
+					/>
+				) : (
+					<Select
+						name="city"
+						controlFunc={this.handleChange}
+						placeholder="Select a country first"
+                        options={[]}
+                        disabled={true}
+					/>
+				)}
 				<button
 					type="button"
 					className="ui teal button"
