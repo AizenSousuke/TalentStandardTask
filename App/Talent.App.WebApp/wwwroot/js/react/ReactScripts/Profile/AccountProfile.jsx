@@ -165,7 +165,7 @@ export default class AccountProfile extends React.Component {
                                                 componentId='contactDetails'
                                             />
                                         </FormItemWrapper>
-                                        {/* <FormItemWrapper
+                                        <FormItemWrapper
                                             title='Address'
                                             tooltip='Enter your current address'>
                                             <Address
@@ -174,7 +174,7 @@ export default class AccountProfile extends React.Component {
                                                 saveProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                        {/* <FormItemWrapper
                                             title='Nationality'
                                             tooltip='Select your nationality'
                                         >
