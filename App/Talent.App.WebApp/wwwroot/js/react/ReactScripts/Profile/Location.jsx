@@ -107,7 +107,7 @@ export class Address extends React.Component {
 					inputType="number"
 					label="Number"
 					name="number"
-					value={this.state.newAddress.number}
+					value={this.state.newAddress.number ? this.state.newAddress.number : ""}
 					controlFunc={this.handleChange}
 					maxLength={3}
 					placeholder="Enter your address number"
@@ -117,7 +117,7 @@ export class Address extends React.Component {
 					inputType="text"
 					label="Street"
 					name="street"
-					value={this.state.newAddress.street}
+					value={this.state.newAddress.street ? this.state.newAddress.street : ""}
 					controlFunc={this.handleChange}
 					maxLength={80}
 					placeholder="Enter your street"
@@ -127,7 +127,7 @@ export class Address extends React.Component {
 					inputType="text"
 					label="Suburb"
 					name="suburb"
-					value={this.state.newAddress.suburb}
+					value={this.state.newAddress.suburb ? this.state.newAddress.suburb : ""}
 					controlFunc={this.handleChange}
 					maxLength={80}
 					placeholder="Enter your suburb"
@@ -137,7 +137,7 @@ export class Address extends React.Component {
 					inputType="number"
 					label="Post Code"
 					name="postcode"
-					value={this.state.newAddress.postcode}
+					value={this.state.newAddress.postcode ? this.state.newAddress.postcode : ""}
 					controlFunc={this.handleChange}
 					maxLength={12}
 					placeholder="Enter your postcode"

@@ -113,6 +113,8 @@ namespace Talent.Services.Profile.Domain.Services
         public async Task<bool> UpdateTalentProfile(TalentProfileViewModel model, string updaterId)
         {
             //Your code here;
+            // TODO: Update method
+
             throw new NotImplementedException();
         }
 
