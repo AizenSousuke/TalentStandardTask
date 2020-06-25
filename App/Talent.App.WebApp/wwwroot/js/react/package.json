@@ -4,6 +4,7 @@
   "description": "Talent Project",
   "main": "app.js",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "draft-js": "^0.10.5",
     "moment": "^2.22.2",
     "react": "^16.3.2",

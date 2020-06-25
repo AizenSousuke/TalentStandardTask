@@ -46,6 +46,7 @@ export class ChildSingleInput extends React.Component {
                     placeholder={this.props.placeholder}
                     maxLength={this.props.maxLength}
                     onChange={this.props.controlFunc}
+                    pattern={this.props.pattern}
                 />
                 {this.props.isError ? <div className="ui basic red pointing prompt label transition visible">{this.props.errorMessage}</div> : null}
             </div>

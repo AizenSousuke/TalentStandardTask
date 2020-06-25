@@ -114,8 +114,24 @@ namespace Talent.Services.Profile.Domain.Services
         {
             //Your code here;
             // TODO: Update method
+            try
+            {
+                User existingUser = await _userRepository.GetByIdAsync(updaterId);
+                existingUser.FirstName = model.FirstName;
+                existingUser.LastName = model.LastName;
+                existingUser.Email = model.Email;
+                existingUser.Phone = model.Phone;
 
-            throw new NotImplementedException();
+                // Update
+                await _userRepository.Update(existingUser);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+            //throw new NotImplementedException();
         }
 
         public async Task<EmployerProfileViewModel> GetEmployerProfile(string Id, string role)
