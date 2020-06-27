@@ -5,6 +5,7 @@ import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import { Select } from "../Form/Select.jsx";
 import { countries } from "../Employer/common";
 import Joi from "@hapi/joi";
+import { Dropdown } from "semantic-ui-react";
 
 export class Address extends React.Component {
 	constructor(props) {
@@ -126,7 +127,7 @@ export class Address extends React.Component {
 		if (this.checkStateForValidation(this.state.newAddress)) {
 			console.log(this.props.componentId);
 			console.log(this.state.newAddress);
-			const data = Object.assign({}, {address: this.state.newAddress});
+			const data = Object.assign({}, { address: this.state.newAddress });
 			this.props.saveProfileData(data);
 			this.closeEdit();
 		} else {
@@ -234,7 +235,8 @@ export class Address extends React.Component {
 					options={this.state.countries}
 				/>
 				City:
-				{this.state.cities.length > 0 || this.state.newAddress.city.length > 0 ? (
+				{this.state.cities.length > 0 ||
+				this.state.newAddress.city.length > 0 ? (
 					<Select
 						name="city"
 						controlFunc={(e) => this.handleChange(e)}
@@ -274,7 +276,9 @@ export class Address extends React.Component {
 			? `${this.props.addressData.number} ${this.props.addressData.street} ${this.props.addressData.suburb} ${this.props.addressData.postCode}`
 			: "";
 		let city = this.props.addressData ? this.props.addressData.city : "";
-		let country = this.props.addressData ? this.props.addressData.country : "";
+		let country = this.props.addressData
+			? this.props.addressData.country
+			: "";
 
 		return (
 			<div className="row">
@@ -300,7 +304,47 @@ export class Address extends React.Component {
 export class Nationality extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			nationality: [],
+		};
 	}
 
-	render() {}
+	componentDidMount() {
+		// Nationality Array
+		var nationalityArray = [];
+		Object.keys(Countries).map((key, i) => {
+			nationalityArray.push({ key: i, text: key, value: key });
+		});
+
+		this.setState({ nationality: nationalityArray }, () => {
+			console.log(this.state.nationality);
+		});
+	}
+
+	render() {
+		return (
+			<div className="row">
+				<div className="ui sixteen wide column">
+					<Dropdown
+						placeholder="Select your nationality"
+						defaultValue={this.props.nationalityData == null ? "Singapore" : this.props.nationalityData}
+						options={this.state.nationality}
+						scrolling
+						onChange={(e, { value }) => {
+							const data = Object.assign({}, { nationality: value });
+							this.props.saveProfileData(data);
+							console.log(data);
+						}}
+					/>
+					<button
+						type="button"
+						className="ui right floated teal button"
+						onClick={this.openEdit}
+					>
+						Edit
+					</button>
+				</div>
+			</div>
+		);
+	}
 }
