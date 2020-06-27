@@ -70,6 +70,8 @@ export class Address extends React.Component {
 			showEditSection: true,
 			newAddress: address,
 		});
+		// Set cities array in case a country is already defined from props
+		this.setCitiesArray(this.props.addressData.country);
 	}
 
 	closeEdit() {
@@ -232,7 +234,7 @@ export class Address extends React.Component {
 					options={this.state.countries}
 				/>
 				City:
-				{this.state.cities.length > 0 ? (
+				{this.state.cities.length > 0 || this.state.newAddress.city.length > 0 ? (
 					<Select
 						name="city"
 						controlFunc={(e) => this.handleChange(e)}
