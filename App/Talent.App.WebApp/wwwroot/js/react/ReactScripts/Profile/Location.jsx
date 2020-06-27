@@ -4,6 +4,7 @@ import { default as Countries } from "../../../../util/jsonFiles/countries.json"
 import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import { Select } from "../Form/Select.jsx";
 import { countries } from "../Employer/common";
+import Joi from "@hapi/joi";
 
 export class Address extends React.Component {
 	constructor(props) {
@@ -17,37 +18,51 @@ export class Address extends React.Component {
 					suburb: "",
 					postcode: 0,
 					city: "",
-                    country: "",
+					country: "",
 			  };
 
 		this.state = {
 			showEditSection: false,
-            newAddress: addressData,
-            // For address dropdown
-            cities: [],
-            countries: [],
+			newAddress: addressData,
+			// For validation
+			schema: {},
+			// For address dropdown
+			cities: [],
+			countries: [],
 		};
+
+		// For validation
+		const schema = Joi.object({
+			number: Joi.number().max(999999999999),
+			street: Joi.string(),
+			suburb: Joi.string(),
+			postcode: Joi.number().max(999999999999),
+			country: Joi.string(),
+			city: Joi.string(),
+		});
+
+		this.schema = schema;
 
 		this.openEdit = this.openEdit.bind(this);
 		this.closeEdit = this.closeEdit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.saveAddress = this.saveAddress.bind(this);
 		this.renderEdit = this.renderEdit.bind(this);
-        this.renderDisplay = this.renderDisplay.bind(this);
-        this.setCitiesArray = this.setCitiesArray.bind(this);
-    }
-    
-    componentDidMount() {
-        // Countries Array
-        var countriesArray = [];
+		this.renderDisplay = this.renderDisplay.bind(this);
+		this.setCitiesArray = this.setCitiesArray.bind(this);
+	}
+
+	componentDidMount() {
+		// Countries Array
+		var countriesArray = [];
 		Object.keys(Countries).map((key, i) => {
 			countriesArray.push({ title: key, value: key });
-        });
-        
+		});
+
 		this.setState({ countries: countriesArray }, () => {
-            console.log(this.state.countries);
-        });
-    }
+			console.log(this.state.countries);
+		});
+	}
 
 	openEdit() {
 		const address = Object.assign({}, this.props.addressData);
@@ -64,20 +79,62 @@ export class Address extends React.Component {
 	}
 
 	handleChange(event) {
-        const data = Object.assign({}, this.state.newAddress);
-        console.log("Data ", data);
+		this.handleValidation(event);
+		const data = Object.assign({}, this.state.newAddress);
+		console.log("Data ", data);
 		data[event.target.name] = event.target.value;
 		this.setState({
 			newAddress: data,
 		});
 	}
 
+	handleValidation(event) {
+		// Validation
+		const { error, value } = this.schema.validate({
+			[event.target.name]: event.target.value,
+		});
+		console.log("Validation Check for Field: ", error, value);
+		// ==========
+		if (error != undefined) {
+			const data = Object.assign({}, this.state.schema);
+			data[event.target.name] = true;
+			this.setState({
+				schema: data,
+			});
+		} else {
+			const data = Object.assign({}, this.state.schema);
+			data[event.target.name] = false;
+			this.setState({
+				schema: data,
+			});
+		}
+	}
+
+	checkStateForValidation(state) {
+		const { value, error } = this.schema.validate(state);
+		console.log("Validation State Check: ", value, error);
+		if (error == undefined) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	saveAddress() {
-		console.log(this.props.componentId);
-		console.log(this.state.newAddress);
-		const data = Object.assign({}, this.state.newAddress);
-		this.props.saveProfileData(data);
-		this.closeEdit();
+		if (this.checkStateForValidation(this.state.newAddress)) {
+			console.log(this.props.componentId);
+			console.log(this.state.newAddress);
+			const data = Object.assign({}, this.state.newAddress);
+			this.props.saveProfileData(data);
+			this.closeEdit();
+		} else {
+			TalentUtil.notification.show(
+				"Please check and resolve the errors. Remember to select a country and city.",
+				"error",
+				null,
+				null
+			);
+		}
 	}
 
 	setCitiesArray(country) {
@@ -89,9 +146,9 @@ export class Address extends React.Component {
 			.map((c) => {
 				newCitiesArray.push({ title: c, value: c });
 			});
-        this.setState({ cities: newCitiesArray }, () => {
-            console.log("This cities: ", this.state.cities);
-        });
+		this.setState({ cities: newCitiesArray }, () => {
+			// console.log("This cities: ", this.state.cities);
+		});
 	}
 
 	render() {
@@ -107,9 +164,14 @@ export class Address extends React.Component {
 					inputType="number"
 					label="Number"
 					name="number"
-					value={this.state.newAddress.number ? this.state.newAddress.number : ""}
+					value={
+						this.state.newAddress.number
+							? this.state.newAddress.number
+							: ""
+					}
 					controlFunc={this.handleChange}
 					maxLength={3}
+					isError={this.state.schema.number}
 					placeholder="Enter your address number"
 					errorMessage="Please enter a valid number"
 				/>
@@ -117,9 +179,14 @@ export class Address extends React.Component {
 					inputType="text"
 					label="Street"
 					name="street"
-					value={this.state.newAddress.street ? this.state.newAddress.street : ""}
+					value={
+						this.state.newAddress.street
+							? this.state.newAddress.street
+							: ""
+					}
 					controlFunc={this.handleChange}
 					maxLength={80}
+					isError={this.state.schema.street}
 					placeholder="Enter your street"
 					errorMessage="Please enter a valid street"
 				/>
@@ -127,9 +194,14 @@ export class Address extends React.Component {
 					inputType="text"
 					label="Suburb"
 					name="suburb"
-					value={this.state.newAddress.suburb ? this.state.newAddress.suburb : ""}
+					value={
+						this.state.newAddress.suburb
+							? this.state.newAddress.suburb
+							: ""
+					}
 					controlFunc={this.handleChange}
 					maxLength={80}
+					isError={this.state.schema.suburb}
 					placeholder="Enter your suburb"
 					errorMessage="Please enter a valid suburb"
 				/>
@@ -137,9 +209,14 @@ export class Address extends React.Component {
 					inputType="number"
 					label="Post Code"
 					name="postcode"
-					value={this.state.newAddress.postcode ? this.state.newAddress.postcode : ""}
+					value={
+						this.state.newAddress.postcode
+							? this.state.newAddress.postcode
+							: ""
+					}
 					controlFunc={this.handleChange}
 					maxLength={12}
+					isError={this.state.schema.postcode}
 					placeholder="Enter your postcode"
 					errorMessage="Please enter a valid postcode"
 				/>
@@ -150,8 +227,8 @@ export class Address extends React.Component {
 						this.setCitiesArray(e.target.value);
 						this.handleChange(e);
 					}}
-                    placeholder="Select a country"
-                    selectedOption={this.state.newAddress.country}
+					placeholder="Select a country"
+					selectedOption={this.state.newAddress.country}
 					options={this.state.countries}
 				/>
 				City:
@@ -160,7 +237,7 @@ export class Address extends React.Component {
 						name="city"
 						controlFunc={this.handleChange}
 						placeholder="Select a city"
-                        selectedOption={this.state.newAddress.city}
+						selectedOption={this.state.newAddress.city}
 						options={this.state.cities}
 					/>
 				) : (
@@ -168,8 +245,8 @@ export class Address extends React.Component {
 						name="city"
 						controlFunc={this.handleChange}
 						placeholder="Select a country first"
-                        options={[]}
-                        disabled={true}
+						options={[]}
+						disabled={true}
 					/>
 				)}
 				<button

@@ -17,6 +17,14 @@ export class IndividualDetailSection extends Component {
 					phone: "",
 			  };
 
+		this.state = {
+			showEditSection: false,
+			newContact: details,
+			// For validation
+			schema: {},
+		};
+
+		// For validation
 		const schema = Joi.object({
 			firstName: Joi.string(),
 			lastName: Joi.string(),
@@ -24,15 +32,7 @@ export class IndividualDetailSection extends Component {
 			phone: Joi.number().max(999999999999),
 		});
 
-		this.state = {
-			showEditSection: false,
-            newContact: details,
-            // For validation
-            schema: {},
-        };
-        
-        // For validation
-        this.schema = schema;
+		this.schema = schema;
 
 		this.openEdit = this.openEdit.bind(this);
 		this.closeEdit = this.closeEdit.bind(this);
@@ -47,7 +47,7 @@ export class IndividualDetailSection extends Component {
 		const details = Object.assign({}, this.props.details);
 		this.setState({
 			showEditSection: true,
-            newContact: details,
+			newContact: details,
 		});
 	}
 
@@ -71,29 +71,48 @@ export class IndividualDetailSection extends Component {
 		const { error, value } = this.schema.validate({
 			[event.target.name]: event.target.value,
 		});
-        // console.log("Validation: ", error, value);
-        // ==========
-        if (error != undefined) {
-            const data = Object.assign({}, this.state.schema);
-            data[event.target.name] = true;
-            this.setState({
-                schema: data,
-            });
-        } else {
-            const data = Object.assign({}, this.state.schema);
-            data[event.target.name] = false;
-            this.setState({
-                schema: data,
-            });
-        }
+		console.log("Validation Check for Field: ", error, value);
+		// ==========
+		if (error != undefined) {
+			const data = Object.assign({}, this.state.schema);
+			data[event.target.name] = true;
+			this.setState({
+				schema: data,
+			});
+		} else {
+			const data = Object.assign({}, this.state.schema);
+			data[event.target.name] = false;
+			this.setState({
+				schema: data,
+			});
+		}
+	}
+
+	checkStateForValidation(state) {
+		const { value, error } = this.schema.validate(state);
+		console.log("Validation State Check: ", value, error);
+		if (error == undefined) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	saveContact() {
-		console.log(this.props.componentId);
-		console.log(this.state.newContact);
-		const data = Object.assign({}, this.state.newContact);
-		this.props.controlFunc(this.props.componentId, data);
-		this.closeEdit();
+		if (this.checkStateForValidation(this.state.newContact)) {
+			console.log(this.props.componentId);
+			console.log(this.state.newContact);
+			const data = Object.assign({}, this.state.newContact);
+			this.props.controlFunc(this.props.componentId, data);
+			this.closeEdit();
+		} else {
+			TalentUtil.notification.show(
+				"Please check and resolve the errors",
+				"error",
+				null,
+				null
+			);
+		}	
 	}
 
 	render() {
@@ -116,7 +135,7 @@ export class IndividualDetailSection extends Component {
 					}
 					controlFunc={this.handleChange}
 					maxLength={80}
-                    isError={this.state.schema.firstName}
+					isError={this.state.schema.firstName}
 					placeholder="Enter your first name"
 					errorMessage="Please enter a valid first name"
 				/>
@@ -131,7 +150,7 @@ export class IndividualDetailSection extends Component {
 					}
 					controlFunc={this.handleChange}
 					maxLength={80}
-                    isError={this.state.schema.lastName}
+					isError={this.state.schema.lastName}
 					placeholder="Enter your last name"
 					errorMessage="Please enter a valid last name"
 				/>
@@ -149,7 +168,7 @@ export class IndividualDetailSection extends Component {
 					pattern={
 						"([a-zA-Z_.]+)@([a-zA-Z]+)\\.([a-zA-Z]+)(.[a-zA-Z]+)?"
 					}
-                    isError={this.state.schema.email}
+					isError={this.state.schema.email}
 					placeholder="Enter an email"
 					errorMessage="Please enter a valid email"
 				/>
@@ -165,8 +184,8 @@ export class IndividualDetailSection extends Component {
 					}
 					controlFunc={this.handleChange}
 					maxLength={12}
-                    pattern={"[0-9]{0,12}"}
-                    isError={this.state.schema.phone}
+					pattern={"[0-9]{0,12}"}
+					isError={this.state.schema.phone}
 					placeholder="Enter a phone number"
 					errorMessage="Please enter a valid phone number"
 				/>
