@@ -121,6 +121,7 @@ namespace Talent.Services.Profile.Domain.Services
                 existingUser.LastName = model.LastName;
                 existingUser.Email = model.Email;
                 existingUser.Phone = model.Phone;
+                existingUser.Address = model.Address;
 
                 // Update
                 await _userRepository.Update(existingUser);

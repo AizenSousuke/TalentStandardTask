@@ -16,7 +16,7 @@ export class Address extends React.Component {
 					number: "",
 					street: "",
 					suburb: "",
-					postcode: 0,
+					postCode: "",
 					city: "",
 					country: "",
 			  };
@@ -36,7 +36,7 @@ export class Address extends React.Component {
 			number: Joi.number().max(999999999999),
 			street: Joi.string(),
 			suburb: Joi.string(),
-			postcode: Joi.number().max(999999999999),
+			postCode: Joi.number().max(999999999999),
 			country: Joi.string(),
 			city: Joi.string(),
 		});
@@ -124,7 +124,7 @@ export class Address extends React.Component {
 		if (this.checkStateForValidation(this.state.newAddress)) {
 			console.log(this.props.componentId);
 			console.log(this.state.newAddress);
-			const data = Object.assign({}, this.state.newAddress);
+			const data = Object.assign({}, {address: this.state.newAddress});
 			this.props.saveProfileData(data);
 			this.closeEdit();
 		} else {
@@ -208,15 +208,15 @@ export class Address extends React.Component {
 				<ChildSingleInput
 					inputType="number"
 					label="Post Code"
-					name="postcode"
+					name="postCode"
 					value={
-						this.state.newAddress.postcode
-							? this.state.newAddress.postcode
+						this.state.newAddress.postCode
+							? this.state.newAddress.postCode
 							: ""
 					}
 					controlFunc={this.handleChange}
 					maxLength={12}
-					isError={this.state.schema.postcode}
+					isError={this.state.schema.postCode}
 					placeholder="Enter your postcode"
 					errorMessage="Please enter a valid postcode"
 				/>
@@ -235,7 +235,7 @@ export class Address extends React.Component {
 				{this.state.cities.length > 0 ? (
 					<Select
 						name="city"
-						controlFunc={this.handleChange}
+						controlFunc={(e) => this.handleChange(e)}
 						placeholder="Select a city"
 						selectedOption={this.state.newAddress.city}
 						options={this.state.cities}
@@ -268,11 +268,11 @@ export class Address extends React.Component {
 	}
 
 	renderDisplay() {
-		let address = this.props.address
-			? `${this.props.address.number} ${this.props.address.street} ${this.props.address.suburb} ${this.props.address.postcode}`
+		let address = this.props.addressData
+			? `${this.props.addressData.number} ${this.props.addressData.street} ${this.props.addressData.suburb} ${this.props.addressData.postCode}`
 			: "";
-		let city = this.props.address ? this.props.address.city : "";
-		let country = this.props.address ? this.props.address.country : "";
+		let city = this.props.addressData ? this.props.addressData.city : "";
+		let country = this.props.addressData ? this.props.addressData.country : "";
 
 		return (
 			<div className="row">
