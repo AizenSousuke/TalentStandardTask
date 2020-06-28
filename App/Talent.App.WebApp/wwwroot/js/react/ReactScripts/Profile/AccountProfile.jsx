@@ -265,6 +265,7 @@ export default class AccountProfile extends React.Component {
 													this.state.profileData
 														.languages
 												}
+												userId={this.state.profileData.id}
 												addLanguage={this.addLanguage}
 												updateAndSaveData={this.updateAndSaveData}
 											/>

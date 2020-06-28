@@ -159,7 +159,8 @@ namespace Talent.Services.Profile.Controllers
         {
             //Your code here;
             // TODO: Update language
-            throw new NotImplementedException();
+            _profileService.UpdateLanguageAsync(language);
+            return Json(new { Success = true });
         }
 
         [HttpPost("deleteLanguage")]

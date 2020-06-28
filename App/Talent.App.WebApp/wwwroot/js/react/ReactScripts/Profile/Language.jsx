@@ -190,7 +190,7 @@ export default class Language extends React.Component {
 		}
 	}
 
-	editLanguage() {
+	editLanguage(id = null) {
 		console.log("Edit language");
 		// Validate first
 		if (
@@ -204,11 +204,13 @@ export default class Language extends React.Component {
 			const data = Object.assign(
 				{},
 				{
+                    currentUserId: this.props.userId,
+                    id: id,
 					name: this.state.language,
 					level: this.state.languageLevel,
 				}
 			);
-			this.props.updateLanguage(data);
+			this.updateLanguage(data);
 			this.openEdit();
 		} else {
 			// Set warning
@@ -220,6 +222,47 @@ export default class Language extends React.Component {
 				null
 			);
 		}
+    }
+    
+	updateLanguage(language) {
+		var AddLanguageViewModel = Object.assign(
+			{},
+			language
+		);
+		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/updateLanguage",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(AddLanguageViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					TalentUtil.notification.show(
+						"Language updated sucessfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Language did not update successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
 	}
 
 	render() {
@@ -346,6 +389,13 @@ export default class Language extends React.Component {
 																.language
 														}
 													/>
+                                                    <Message
+                                                        negative
+                                                        hidden={!this.state.schema.language}
+                                                    >
+                                                        Please enter both language and language
+                                                        level. Max string length is 80 characters.
+                                                    </Message>
 												</TableCell>
 												<TableCell width={6}>
 													<Select
@@ -380,7 +430,7 @@ export default class Language extends React.Component {
 														primary
 														onClick={(e) => {
 															e.preventDefault();
-															this.editLanguage();
+															this.editLanguage(l.id);
 														}}
 													>
 														Update
@@ -426,87 +476,6 @@ export default class Language extends React.Component {
 									</React.Fragment>
 								);
 							})}
-							{this.state.openEdit ? (
-								<TableRow>
-									<TableCell width={6}>
-										<Input
-											name="language"
-											type="text"
-											fluid
-											onChange={(e) =>
-												this.handleChange(e)
-											}
-											placeholder="Edit language"
-											value={
-												this.state.language
-													? this.state.language
-													: ""
-											}
-											error={this.state.schema.language}
-										/>
-									</TableCell>
-									<TableCell width={6}>
-										<Select
-											name="languageLevel"
-											placeholder={"Edit Language Level"}
-											value={this.state.languageLevel}
-											options={this.state.options}
-											onChange={(e, { name, value }) => {
-												e.preventDefault();
-												this.handleChange(
-													e,
-													name,
-													value
-												);
-											}}
-											fluid
-										/>
-									</TableCell>
-									<TableCell textAlign={"right"}>
-										<Button
-											basic
-											primary
-											onClick={(e) => {
-												e.preventDefault();
-												this.editLanguage();
-											}}
-										>
-											Update
-										</Button>
-										<Button
-											basic
-											negative
-											onClick={(e) => {
-												e.preventDefault();
-												this.openEdit(e);
-											}}
-										>
-											Cancel
-										</Button>
-									</TableCell>
-								</TableRow>
-							) : (
-								<TableRow>
-									<TableCell width={6}>Body Cell</TableCell>
-									<TableCell width={6}>Body Cell</TableCell>
-									<TableCell textAlign={"right"}>
-										<Button
-											basic
-											icon="edit"
-											size="mini"
-											onClick={(e) => {
-												e.preventDefault();
-												this.openEdit(e);
-											}}
-										></Button>
-										<Button
-											basic
-											icon="close"
-											size="mini"
-										></Button>
-									</TableCell>
-								</TableRow>
-							)}
 						</TableBody>
 					</Table>
 				</Grid.Row>

@@ -61,6 +61,21 @@ namespace Talent.Services.Profile.Domain.Services
         }
 
         // Nik Custom Code
+        public async Task<bool> UpdateLanguageAsync(AddLanguageViewModel language)
+        {
+            //Your code here;
+            // TODO: Update language in service
+            try
+            {
+                await _userLanguageRepository.Update(LanguageFromViewModel(language));
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
         public async Task<List<AddLanguageViewModel>> GetAllLanguageAsync()
         {
             //Your code here;
