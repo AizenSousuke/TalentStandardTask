@@ -5,7 +5,7 @@ import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import { Select } from "../Form/Select.jsx";
 import { countries } from "../Employer/common";
 import Joi from "@hapi/joi";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Divider, Button } from "semantic-ui-react";
 
 export class Address extends React.Component {
 	constructor(props) {
@@ -313,7 +313,7 @@ export class Nationality extends React.Component {
 		// Nationality Array
 		var nationalityArray = [];
 		Object.keys(Countries).map((key, i) => {
-			nationalityArray.push({ key: i, text: key, value: key });
+			nationalityArray.push({ title: key, value: key });
 		});
 
 		this.setState({ nationality: nationalityArray }, () => {
@@ -325,24 +325,19 @@ export class Nationality extends React.Component {
 		return (
 			<div className="row">
 				<div className="ui sixteen wide column">
-					<Dropdown
-						value={this.props.nationalityData !== null ? this.props.nationalityData : ""}
+					<Select
+						name="nationality"
+						selectedOption={this.props.nationalityData !== null ? this.props.nationalityData : ""}
 						placeholder="Select your nationality"
 						options={this.state.nationality}
 						scrolling
-						onChange={(e, { value }) => {
-							const data = Object.assign({}, { nationality: value });
+						controlFunc={(e) => {
+							console.log(e.target.value);
+							const data = Object.assign({}, { nationality: e.target.value });
 							this.props.saveProfileData(data);
 							console.log(data);
 						}}
 					/>
-					<button
-						type="button"
-						className="ui right floated teal button"
-						onClick={this.openEdit}
-					>
-						Edit
-					</button>
 				</div>
 			</div>
 		);
