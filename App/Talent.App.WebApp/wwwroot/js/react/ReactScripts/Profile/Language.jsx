@@ -54,7 +54,9 @@ export default class Language extends React.Component {
 		this.state = {
 			languagesArray: [],
 			openAdd: false,
-			openEdit: false,
+            openEdit: false,
+            // Only open the one that is the same as this
+            openEditId: null,
 			language: "",
 			languageLevel: "",
 			options: options,
@@ -122,12 +124,12 @@ export default class Language extends React.Component {
 		});
 	}
 
-	openEdit(event = null) {
-		this.setState({ openEdit: !this.state.openEdit }, () => {
+	openEdit(event = null, id = null, name = null, level = null) {
+        // Set the values in the edit if used from the edit button
+		this.setState({ openEdit: !this.state.openEdit, openEditId: id, language: name, languageLevel: level }, () => {
 			// console.log("Open Edit: ", this.state.openEdit);
 		});
 
-		// Set the values in the edit if used from the edit button
 	}
 
 	getLanguage() {
@@ -140,14 +142,14 @@ export default class Language extends React.Component {
 			},
 			type: "GET",
 			success: function (res) {
-                console.log("getLanguage: ", res);
-                // Save languages[] to the profile state
-                if (res.success == true) {
-                    var data = Object.assign({}, { languages: res.data });
-                    // Updating will cause bugs where other values are null in profileData
-                    // this.props.updateAndSaveData(data);
-                    this.setState({ languagesArray: res.data });
-                }
+				console.log("getLanguage: ", res);
+				// Save languages[] to the profile state
+				if (res.success == true) {
+					var data = Object.assign({}, { languages: res.data });
+					// Updating will cause bugs where other values are null in profileData
+					// this.props.updateAndSaveData(data);
+					this.setState({ languagesArray: res.data });
+				}
 			}.bind(this),
 			error: function (res, a, b) {
 				console.log(res);
@@ -319,6 +321,111 @@ export default class Language extends React.Component {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
+							{this.state.languagesArray.map((l) => {
+								return (
+									<React.Fragment key={l.id}>
+										{this.state.openEdit && this.state.openEditId == l.id ? (
+											<TableRow>
+												<TableCell width={6}>
+													<Input
+														name="language"
+														type="text"
+														fluid
+														onChange={(e) =>
+															this.handleChange(e)
+														}
+														placeholder="Edit language"
+														value={
+															this.state.language
+																? this.state
+																		.language
+																: ""
+														}
+														error={
+															this.state.schema
+																.language
+														}
+													/>
+												</TableCell>
+												<TableCell width={6}>
+													<Select
+														name="languageLevel"
+														placeholder={
+															"Edit Language Level"
+														}
+														value={
+															this.state
+																.languageLevel
+														}
+														options={
+															this.state.options
+														}
+														onChange={(
+															e,
+															{ name, value }
+														) => {
+															e.preventDefault();
+															this.handleChange(
+																e,
+																name,
+																value
+															);
+														}}
+														fluid
+													/>
+												</TableCell>
+												<TableCell textAlign={"right"}>
+													<Button
+														basic
+														primary
+														onClick={(e) => {
+															e.preventDefault();
+															this.editLanguage();
+														}}
+													>
+														Update
+													</Button>
+													<Button
+														basic
+														negative
+														onClick={(e) => {
+															e.preventDefault();
+															this.openEdit(e);
+														}}
+													>
+														Cancel
+													</Button>
+												</TableCell>
+											</TableRow>
+										) : (
+											<TableRow>
+												<TableCell width={6}>
+													{l.name}
+												</TableCell>
+												<TableCell width={6}>
+													{l.level}
+												</TableCell>
+												<TableCell textAlign={"right"}>
+													<Button
+														basic
+														icon="edit"
+														size="mini"
+														onClick={(e) => {
+															e.preventDefault();
+															this.openEdit(e, l.id, l.name, l.level);
+														}}
+													></Button>
+													<Button
+														basic
+														icon="close"
+														size="mini"
+													></Button>
+												</TableCell>
+											</TableRow>
+										)}
+									</React.Fragment>
+								);
+							})}
 							{this.state.openEdit ? (
 								<TableRow>
 									<TableCell width={6}>
