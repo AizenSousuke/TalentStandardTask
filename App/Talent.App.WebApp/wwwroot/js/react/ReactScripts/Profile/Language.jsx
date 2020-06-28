@@ -142,9 +142,12 @@ export default class Language extends React.Component {
 			success: function (res) {
                 console.log("getLanguage: ", res);
                 // Save languages[] to the profile state
-                var data = Object.assign({}, { languages: res.data });
-                this.props.updateAndSaveData(data);
-				this.setState({ languagesArray: res.data });
+                if (res.success == true) {
+                    var data = Object.assign({}, { languages: res.data });
+                    // Updating will cause bugs where other values are null in profileData
+                    // this.props.updateAndSaveData(data);
+                    this.setState({ languagesArray: res.data });
+                }
 			}.bind(this),
 			error: function (res, a, b) {
 				console.log(res);
