@@ -108,6 +108,10 @@ export default class Language extends React.Component {
 	}
 
 	openAdd(event = null) {
+        if (this.openAdd) {
+			// Clear inputs
+			this.setState({ language: "", languageLevel: "" });
+        }
 		this.setState({ openAdd: !this.state.openAdd }, () => {
 			// console.log("Open Add: ", this.state.openAdd);
 		});
