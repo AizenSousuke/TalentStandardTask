@@ -1,7 +1,21 @@
 ﻿/* Language section */
 import React from "react";
 import Cookies from "js-cookie";
-import { Dropdown, Grid } from "semantic-ui-react";
+import {
+	Dropdown,
+	Grid,
+	Select,
+	Button,
+	Input,
+	Message,
+	Table,
+	TableHeader,
+	TableHeaderCell,
+	TableBody,
+	TableCell,
+	Icon,
+	TableRow,
+} from "semantic-ui-react";
 import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import Joi from "@hapi/joi";
 
@@ -32,6 +46,7 @@ export default class Language extends React.Component {
 		});
 
 		this.state = {
+			openEdit: false,
 			language: "",
 			options: options,
 			schema: this.schema,
@@ -45,48 +60,120 @@ export default class Language extends React.Component {
 		);
 	}
 
+	openEdit(event = null) {
+		this.setState({ openEdit: !this.state.openEdit }, () => {
+			console.log("Open Edit: ", this.state.openEdit);
+        });
+        
+        // Set the values in the edit if used from the edit button
+        
+	}
+
 	render() {
 		return (
 			// <div className="ui sixteen wide column">
 			<Grid container columns="equal">
+				{this.state.openEdit && (
+					<Grid.Row>
+						<Grid.Column>
+							<Input
+								type="text"
+								fluid
+								onChange={(e) => this.handleChange(e)}
+								placeholder="Add language"
+								value={
+									this.state.language
+										? this.state.language
+										: ""
+								}
+								error={this.state.schema.language}
+							/>
+							<Message
+								negative
+								hidden={!this.state.schema.language}
+							>
+								Language too long
+							</Message>
+						</Grid.Column>
+						<Grid.Column>
+							<Select
+								placeholder={"Language Level"}
+								options={this.state.options}
+								fluid
+							/>
+						</Grid.Column>
+						<Grid.Column>
+							<Button
+								color={"green"}
+								onClick={this.addLanguage}
+								fluid
+							>
+								Add
+							</Button>
+						</Grid.Column>
+						<Grid.Column>
+							<Button
+								color={"grey"}
+								onClick={this.cancelAddLanguage}
+								fluid
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.openEdit();
+                                }}
+							>
+								Cancel
+							</Button>
+						</Grid.Column>
+					</Grid.Row>
+				)}
+
 				<Grid.Row>
-					<Grid.Column>
-						<ChildSingleInput
-							inputType="text"
-							name="addlanguage"
-							value={
-								this.state.language ? this.state.language : ""
-							}
-							controlFunc={(e) => this.handleChange(e)}
-							maxLength={80}
-							isError={this.state.schema.language}
-							placeholder="Add language"
-							errorMessage="Please enter a valid language"
-						/>
-					</Grid.Column>
-					<Grid.Column>
-						<Dropdown
-							placeholder={"Language Level"}
-							options={this.state.options}
-							// fluid
-						/>
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row>
-					<button
-						type="button"
-						className="ui teal button"
-						onClick={this.saveContact}
-					>
-						Save
-					</button>
-					<button
-						type="button"
-						className="ui button"
-						onClick={this.closeEdit}
-					>
-						Cancel
-					</button>
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHeaderCell width={6}>
+									Language
+								</TableHeaderCell>
+								<TableHeaderCell width={6}>
+									Level
+								</TableHeaderCell>
+								<TableHeaderCell>
+									<Button
+										color={"black"}
+										fluid
+										onClick={(e) => {
+											e.preventDefault();
+											this.openEdit();
+										}}
+									>
+										Add New
+									</Button>
+								</TableHeaderCell>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							<TableRow>
+								<TableCell width={6}>Body Cell</TableCell>
+								<TableCell width={6}>Body Cell</TableCell>
+								<TableCell textAlign={"right"}>
+									<Button
+										basic
+										icon="edit"
+										size="mini"
+										onClick={(e) => {
+											e.preventDefault();
+											this.openEdit(e);
+										}}
+									></Button>
+									<Button
+										basic
+										icon="close"
+										size="mini"
+									></Button>
+								</TableCell>
+							</TableRow>
+						</TableBody>
+					</Table>
 				</Grid.Row>
 			</Grid>
 			// </div>
