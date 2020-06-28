@@ -139,8 +139,8 @@ namespace Talent.Services.Profile.Controllers
         {
             //Your code here;
             // TODO: Get language
-            //List<AddLanguageViewModel> languages = await _userLanguageRepository.Get(_profileService.language => language language.Id == _userAppContext.CurrentUserId);
-            throw new NotImplementedException();
+            List<AddLanguageViewModel> userLanguages = await _profileService.GetAllLanguageAsync();
+            return Json(new { Success = true, Data = userLanguages });
         }
 
         [HttpPost("addLanguage")]
@@ -150,7 +150,6 @@ namespace Talent.Services.Profile.Controllers
             //Your code here;
             // TODO: Add language
             _profileService.AddNewLanguage(language);
-            //return _userLanguageRepository.Get(language => language.UserId == _userAppContext.CurrentUserId);
             return Json(new { Success = true });
         }
 

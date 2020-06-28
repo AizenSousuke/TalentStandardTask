@@ -52,6 +52,7 @@ export default class Language extends React.Component {
 		});
 
 		this.state = {
+			languagesArray: [],
 			openAdd: false,
 			openEdit: false,
 			language: "",
@@ -60,6 +61,10 @@ export default class Language extends React.Component {
 			// For validation
 			schema: {},
 		};
+	}
+
+	componentWillMount() {
+		this.getLanguage();
 	}
 
 	handleChange(event, name = null, value = null) {
@@ -108,10 +113,10 @@ export default class Language extends React.Component {
 	}
 
 	openAdd(event = null) {
-        if (this.openAdd) {
+		if (this.openAdd) {
 			// Clear inputs
 			this.setState({ language: "", languageLevel: "" });
-        }
+		}
 		this.setState({ openAdd: !this.state.openAdd }, () => {
 			// console.log("Open Add: ", this.state.openAdd);
 		});
@@ -123,6 +128,30 @@ export default class Language extends React.Component {
 		});
 
 		// Set the values in the edit if used from the edit button
+	}
+
+	getLanguage() {
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/getLanguage",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "GET",
+			success: function (res) {
+                console.log("getLanguage: ", res);
+                // Save languages[] to the profile state
+                var data = Object.assign({}, { languages: res.data });
+                this.props.updateAndSaveData(data);
+				this.setState({ languagesArray: res.data });
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
 	}
 
 	addLanguage() {

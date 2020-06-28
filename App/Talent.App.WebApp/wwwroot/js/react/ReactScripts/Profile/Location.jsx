@@ -61,7 +61,7 @@ export class Address extends React.Component {
 		});
 
 		this.setState({ countries: countriesArray }, () => {
-			console.log(this.state.countries);
+			// console.log(this.state.countries);
 		});
 	}
 
@@ -84,7 +84,7 @@ export class Address extends React.Component {
 	handleChange(event) {
 		this.handleValidation(event);
 		const data = Object.assign({}, this.state.newAddress);
-		console.log("Data ", data);
+		// console.log("Data ", data);
 		data[event.target.name] = event.target.value;
 		this.setState({
 			newAddress: data,

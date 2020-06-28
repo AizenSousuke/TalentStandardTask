@@ -266,6 +266,7 @@ export default class AccountProfile extends React.Component {
 														.languages
 												}
 												addLanguage={this.addLanguage}
+												updateAndSaveData={this.updateAndSaveData}
 											/>
 										</FormItemWrapper>
 										{/* <FormItemWrapper
