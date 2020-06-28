@@ -31,13 +31,18 @@ export default class Language extends React.Component {
 			},
 			{
 				key: "1",
-				text: "Intermediate",
-				value: "Intermediate",
+				text: "Conversational",
+				value: "Conversational",
 			},
 			{
 				key: "2",
 				text: "Fluent",
 				value: "Fluent",
+			},
+			{
+				key: "3",
+				text: "Native/Bilingual",
+				value: "Native/Bilingual",
 			},
 		];
 
@@ -47,6 +52,7 @@ export default class Language extends React.Component {
 		});
 
 		this.state = {
+			openAdd: false,
 			openEdit: false,
 			language: "",
 			languageLevel: "",
@@ -101,6 +107,12 @@ export default class Language extends React.Component {
 		}
 	}
 
+	openAdd(event = null) {
+		this.setState({ openAdd: !this.state.openAdd }, () => {
+			console.log("Open Add: ", this.state.openAdd);
+		});
+	}
+
 	openEdit(event = null) {
 		this.setState({ openEdit: !this.state.openEdit }, () => {
 			console.log("Open Edit: ", this.state.openEdit);
@@ -118,8 +130,21 @@ export default class Language extends React.Component {
 			})
 		) {
 			console.log("Adding language");
+			// Should add on to languages
+			const data = Object.assign(
+				{},
+				{
+					newLanguage: {
+						language: this.state.language,
+						languageLevel: this.state.languageLevel,
+					},
+				}
+			);
+			this.props.updateProfileData(data);
+			this.openAdd();
 		} else {
-            this.setState({ schema: { language: true }});
+            // Set warning
+			this.setState({ schema: { language: true } });
 			TalentUtil.notification.show(
 				"Please check and resolve the errors",
 				"error",
@@ -127,13 +152,47 @@ export default class Language extends React.Component {
 				null
 			);
 		}
-	}
+    }
+    
+    editLanguage() {
+        console.log("Edit language");
+        // Validate first
+		if (
+			this.checkStateForValidation({
+				language: this.state.language,
+				languageLevel: this.state.languageLevel,
+			})
+		) {
+			console.log("Editing language");
+			// Should add on to languages
+			const data = Object.assign(
+				{},
+				{
+					editedLanguage: {
+						language: this.state.language,
+						languageLevel: this.state.languageLevel,
+					},
+				}
+			);
+			this.props.updateProfileData(data);
+			this.openEdit();
+		} else {
+            // Set warning
+			this.setState({ schema: { language: true } });
+			TalentUtil.notification.show(
+				"Please check and resolve the errors",
+				"error",
+				null,
+				null
+			);
+		}
+    }
 
 	render() {
 		return (
 			// <div className="ui sixteen wide column">
 			<Grid container columns="equal">
-				{this.state.openEdit && (
+				{this.state.openAdd && (
 					<React.Fragment>
 						<Grid.Row>
 							<Grid.Column>
@@ -182,7 +241,7 @@ export default class Language extends React.Component {
 									fluid
 									onClick={(e) => {
 										e.preventDefault();
-										this.openEdit();
+										this.openAdd();
 									}}
 								>
 									Cancel
@@ -219,7 +278,7 @@ export default class Language extends React.Component {
 										fluid
 										onClick={(e) => {
 											e.preventDefault();
-											this.openEdit();
+											this.openAdd();
 										}}
 									>
 										Add New
@@ -228,26 +287,87 @@ export default class Language extends React.Component {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							<TableRow>
-								<TableCell width={6}>Body Cell</TableCell>
-								<TableCell width={6}>Body Cell</TableCell>
-								<TableCell textAlign={"right"}>
-									<Button
-										basic
-										icon="edit"
-										size="mini"
-										onClick={(e) => {
-											e.preventDefault();
-											this.openEdit(e);
-										}}
-									></Button>
-									<Button
-										basic
-										icon="close"
-										size="mini"
-									></Button>
-								</TableCell>
-							</TableRow>
+							{this.state.openEdit ? (
+								<TableRow>
+									<TableCell width={6}>
+										<Input
+											name="language"
+											type="text"
+											fluid
+											onChange={(e) =>
+												this.handleChange(e)
+											}
+											placeholder="Edit language"
+											value={
+												this.state.language
+													? this.state.language
+													: ""
+											}
+											error={this.state.schema.language}
+										/>
+									</TableCell>
+									<TableCell width={6}>
+										<Select
+											name="languageLevel"
+											placeholder={"Edit Language Level"}
+											value={this.state.languageLevel}
+											options={this.state.options}
+											onChange={(e, { name, value }) => {
+												e.preventDefault();
+												this.handleChange(
+													e,
+													name,
+													value
+												);
+											}}
+											fluid
+										/>
+									</TableCell>
+									<TableCell textAlign={"right"}>
+										<Button
+											basic
+											primary
+											onClick={(e) => {
+												e.preventDefault();
+												this.editLanguage();
+											}}
+										>
+											Update
+										</Button>
+										<Button
+											basic
+											negative
+											onClick={(e) => {
+												e.preventDefault();
+												this.openEdit(e);
+											}}
+										>
+											Cancel
+										</Button>
+									</TableCell>
+								</TableRow>
+							) : (
+								<TableRow>
+									<TableCell width={6}>Body Cell</TableCell>
+									<TableCell width={6}>Body Cell</TableCell>
+									<TableCell textAlign={"right"}>
+										<Button
+											basic
+											icon="edit"
+											size="mini"
+											onClick={(e) => {
+												e.preventDefault();
+												this.openEdit(e);
+											}}
+										></Button>
+										<Button
+											basic
+											icon="close"
+											size="mini"
+										></Button>
+									</TableCell>
+								</TableRow>
+							)}
 						</TableBody>
 					</Table>
 				</Grid.Row>

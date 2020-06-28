@@ -138,6 +138,7 @@ namespace Talent.Services.Profile.Controllers
         public async Task<IActionResult> GetLanguages()
         {
             //Your code here;
+            // TODO: Add language
             throw new NotImplementedException();
         }
 

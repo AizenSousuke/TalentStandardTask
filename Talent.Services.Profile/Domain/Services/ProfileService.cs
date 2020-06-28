@@ -12,6 +12,7 @@ using Talent.Services.Profile.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Talent.Common.Security;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Talent.Services.Profile.Domain.Services
 {
@@ -67,6 +68,7 @@ namespace Talent.Services.Profile.Domain.Services
 
                     var skills = profile.Skills.Select(x => ViewModelFromSkill(x)).ToList();
                     var certifications = profile.Certifications.Select(x => ViewModelFromCertification(x)).ToList();
+                    var language = profile.Languages.Select(x => ViewModelFromLanguage(x)).ToList();
 
                     var result = new TalentProfileViewModel
                     {
@@ -82,7 +84,7 @@ namespace Talent.Services.Profile.Domain.Services
                         FirstName = profile.FirstName,
                         MiddleName = profile.MiddleName,
                         LastName = profile.LastName,
-                        //Languages = profile.Languages,
+                        Languages = language,
                         IsMobilePhoneVerified = profile.IsMobilePhoneVerified,
                         JobSeekingStatus = profile.JobSeekingStatus,
                         LinkedAccounts = profile.LinkedAccounts,
@@ -124,6 +126,19 @@ namespace Talent.Services.Profile.Domain.Services
                 existingUser.Address = model.Address;
                 existingUser.Nationality = model.Nationality;
 
+                //List<UserLanguage> userLanguagesList = new List<UserLanguage>();
+                //model.Languages.ForEach((language) =>
+                //{
+                //    userLanguagesList.Add(
+                //        new UserLanguage()
+                //        {
+                //            Language = language.Name,
+                //            LanguageLevel = language.Level,
+                //            UserId = existingUser.Id,
+                //            IsDeleted = false
+                //        }
+                //    );
+                //});
 
                 // Update
                 await _userRepository.Update(existingUser);
@@ -395,6 +410,12 @@ namespace Talent.Services.Profile.Domain.Services
             original.Skill = model.Name;
         }
 
+        protected void UpdateLanguageFromView(AddLanguageViewModel model, UserLanguage original)
+        {
+            original.LanguageLevel = model.Level;
+            original.Language = model.Name;
+        }
+
         #endregion
 
         #region Build Views from Model
@@ -406,6 +427,15 @@ namespace Talent.Services.Profile.Domain.Services
                 Id = skill.Id,
                 Level = skill.ExperienceLevel,
                 Name = skill.Skill
+            };
+        }
+        protected AddLanguageViewModel ViewModelFromLanguage(UserLanguage language)
+        {
+            return new AddLanguageViewModel
+            {
+                Id = language.Id,
+                Level = language.LanguageLevel,
+                Name = language.Language
             };
         }
         protected AddCertificationViewModel ViewModelFromCertification(UserCertification certification)
