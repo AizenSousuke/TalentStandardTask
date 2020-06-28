@@ -119,14 +119,14 @@ export default class Language extends React.Component {
 			// Clear inputs
 			this.setState({ language: "", languageLevel: "" });
 		}
-		this.setState({ openAdd: !this.state.openAdd }, () => {
+		this.setState({ openAdd: !this.state.openAdd, openEdit: false }, () => {
 			// console.log("Open Add: ", this.state.openAdd);
 		});
 	}
 
 	openEdit(event = null, id = null, name = null, level = null) {
         // Set the values in the edit if used from the edit button
-		this.setState({ openEdit: !this.state.openEdit, openEditId: id, language: name, languageLevel: level }, () => {
+		this.setState({ openEdit: !this.state.openEdit, openAdd: false, openEditId: id, language: name, languageLevel: level }, () => {
 			// console.log("Open Edit: ", this.state.openEdit);
 		});
 
@@ -142,12 +142,8 @@ export default class Language extends React.Component {
 			},
 			type: "GET",
 			success: function (res) {
-				console.log("getLanguage: ", res);
-				// Save languages[] to the profile state
+				// console.log("getLanguage: ", res);
 				if (res.success == true) {
-					var data = Object.assign({}, { languages: res.data });
-					// Updating will cause bugs where other values are null in profileData
-					// this.props.updateAndSaveData(data);
 					this.setState({ languagesArray: res.data });
 				}
 			}.bind(this),
@@ -177,6 +173,7 @@ export default class Language extends React.Component {
 				}
 			);
 			this.props.addLanguage(data);
+            this.getLanguage();
 			this.openAdd();
 		} else {
 			// Set warning
@@ -242,6 +239,7 @@ export default class Language extends React.Component {
 			success: function (res) {
 				console.log(res);
 				if (res.success == true) {
+                    this.getLanguage();
 					TalentUtil.notification.show(
 						"Language updated sucessfully",
 						"success",
