@@ -17,6 +17,7 @@ import Experience from "./Experience.jsx";
 import { BodyWrapper, loaderData } from "../Layout/BodyWrapper.jsx";
 import { LoggedInNavigation } from "../Layout/LoggedInNavigation.jsx";
 import TalentStatus from "./TalentStatus.jsx";
+import { lang } from "moment";
 
 export default class AccountProfile extends React.Component {
 	constructor(props) {
@@ -24,6 +25,7 @@ export default class AccountProfile extends React.Component {
 
 		this.state = {
 			profileData: {
+				id: "",
 				address: {},
 				nationality: "",
 				education: [],
@@ -52,6 +54,7 @@ export default class AccountProfile extends React.Component {
 		this.saveProfile = this.saveProfile.bind(this);
 		this.loadData = this.loadData.bind(this);
 		this.init = this.init.bind(this);
+		this.addLanguage = this.addLanguage.bind(this);
 	}
 
 	init() {
@@ -84,7 +87,7 @@ export default class AccountProfile extends React.Component {
 
 	//updates component's state without saving data
 	updateWithoutSave(newValues) {
-        console.log("Update without save data", newValues);
+		console.log("Update without save data", newValues);
 		let newProfile = Object.assign({}, this.state.profileData, newValues);
 		this.setState({
 			profileData: newProfile,
@@ -93,7 +96,7 @@ export default class AccountProfile extends React.Component {
 
 	//updates component's state and saves data
 	updateAndSaveData(newValues) {
-        console.log("Update and save data", newValues);
+		console.log("Update and save data", newValues);
 		let newProfile = Object.assign({}, this.state.profileData, newValues);
 		this.setState(
 			{
@@ -129,6 +132,48 @@ export default class AccountProfile extends React.Component {
 				} else {
 					TalentUtil.notification.show(
 						"Profile did not update successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
+	}
+
+	addLanguage(language) {
+		var AddLanguageViewModel = Object.assign(
+			{},
+			{ currentUserId: this.state.profileData.id },
+			language
+		);
+		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/addLanguage",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(AddLanguageViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					TalentUtil.notification.show(
+						"Language updated sucessfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Language did not update successfully",
 						"error",
 						null,
 						null
@@ -198,24 +243,32 @@ export default class AccountProfile extends React.Component {
 											/>
 										</FormItemWrapper>
 										<FormItemWrapper
-                                            title='Nationality'
-                                            tooltip='Select your nationality'
-                                        >
-                                            <Nationality
-                                                nationalityData={this.state.profileData.nationality}
-                                                saveProfileData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
-                                        <FormItemWrapper
-                                            title='Languages'
-                                            tooltip='Select languages that you speak'
-                                        >
-                                            <Language
-                                                languageData={this.state.profileData.languages}
-                                                updateProfileData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
-                                        {/* <FormItemWrapper
+											title="Nationality"
+											tooltip="Select your nationality"
+										>
+											<Nationality
+												nationalityData={
+													this.state.profileData
+														.nationality
+												}
+												saveProfileData={
+													this.updateAndSaveData
+												}
+											/>
+										</FormItemWrapper>
+										<FormItemWrapper
+											title="Languages"
+											tooltip="Select languages that you speak"
+										>
+											<Language
+												languageData={
+													this.state.profileData
+														.languages
+												}
+												addLanguage={this.addLanguage}
+											/>
+										</FormItemWrapper>
+										{/* <FormItemWrapper
                                             title='Skills'
                                             tooltip='List your skills'
                                         >

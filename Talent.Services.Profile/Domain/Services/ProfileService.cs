@@ -47,7 +47,17 @@ namespace Talent.Services.Profile.Domain.Services
         public bool AddNewLanguage(AddLanguageViewModel language)
         {
             //Your code here;
-            throw new NotImplementedException();
+            // TODO: Add new language in service
+            try
+            {
+                _userLanguageRepository.Add(LanguageFromViewModel(language));
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
         }
 
         public async Task<TalentProfileViewModel> GetTalentProfile(string Id)
@@ -438,6 +448,31 @@ namespace Talent.Services.Profile.Domain.Services
                 Name = language.Language
             };
         }
+
+        // Nik custom code
+        protected UserLanguage LanguageFromViewModel(AddLanguageViewModel model)
+        {
+            return new UserLanguage
+            {
+                Id = model.Id,
+                UserId = model.CurrentUserId,
+                Language = model.Name,
+                LanguageLevel = model.Level,
+                IsDeleted = false,
+            };
+        }
+
+        // Nik custom code
+        protected UserSkill SkillFromViewModel(AddSkillViewModel model)
+        {
+            return new UserSkill
+            {
+                Id = model.Id,
+                Skill = model.Name,
+                ExperienceLevel = model.Level,
+            };
+        }
+
         protected AddCertificationViewModel ViewModelFromCertification(UserCertification certification)
         {
             return new AddCertificationViewModel

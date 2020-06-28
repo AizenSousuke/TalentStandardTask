@@ -138,7 +138,8 @@ namespace Talent.Services.Profile.Controllers
         public async Task<IActionResult> GetLanguages()
         {
             //Your code here;
-            // TODO: Add language
+            // TODO: Get language
+            //List<AddLanguageViewModel> languages = await _userLanguageRepository.Get(_profileService.language => language language.Id == _userAppContext.CurrentUserId);
             throw new NotImplementedException();
         }
 
@@ -147,7 +148,10 @@ namespace Talent.Services.Profile.Controllers
         public ActionResult AddLanguage([FromBody] AddLanguageViewModel language)
         {
             //Your code here;
-            throw new NotImplementedException();
+            // TODO: Add language
+            _profileService.AddNewLanguage(language);
+            //return _userLanguageRepository.Get(language => language.UserId == _userAppContext.CurrentUserId);
+            return Json(new { Success = true });
         }
 
         [HttpPost("updateLanguage")]
@@ -155,6 +159,7 @@ namespace Talent.Services.Profile.Controllers
         public async Task<ActionResult> UpdateLanguage([FromBody] AddLanguageViewModel language)
         {
             //Your code here;
+            // TODO: Update language
             throw new NotImplementedException();
         }
 
@@ -163,6 +168,7 @@ namespace Talent.Services.Profile.Controllers
         public async Task<ActionResult> DeleteLanguage([FromBody] AddLanguageViewModel language)
         {
             //Your code here;
+            // TODO: Delete language
             throw new NotImplementedException();
         }
 

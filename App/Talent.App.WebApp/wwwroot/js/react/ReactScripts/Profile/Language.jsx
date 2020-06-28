@@ -70,11 +70,11 @@ export default class Language extends React.Component {
 			case undefined:
 				dataname = name;
 				this.setState({ [name]: value }, () => {
-					console.log(this.state.languageLevel);
+					// console.log(this.state.languageLevel);
 					const validation = this.checkStateForValidation({
 						languageLevel: this.state.languageLevel,
 					});
-					console.log("Validation: ", !validation);
+					// console.log("Validation: ", !validation);
 					data[dataname] = !validation;
 					this.setState({ schema: data });
 				});
@@ -84,11 +84,11 @@ export default class Language extends React.Component {
 				this.setState(
 					{ [event.target.name]: event.target.value },
 					() => {
-						console.log(this.state.language);
+						// console.log(this.state.language);
 						const validation = this.checkStateForValidation({
 							language: this.state.language,
 						});
-						console.log("Validation: ", !validation);
+						// console.log("Validation: ", !validation);
 						data[dataname] = !validation;
 						this.setState({ schema: data });
 					}
@@ -99,7 +99,7 @@ export default class Language extends React.Component {
 
 	checkStateForValidation(state) {
 		const { value, error } = this.schema.validate(state);
-		console.log("Validation State Check: ", value, error);
+		// console.log("Validation State Check: ", value, error);
 		if (error == undefined) {
 			return true;
 		} else {
@@ -109,13 +109,13 @@ export default class Language extends React.Component {
 
 	openAdd(event = null) {
 		this.setState({ openAdd: !this.state.openAdd }, () => {
-			console.log("Open Add: ", this.state.openAdd);
+			// console.log("Open Add: ", this.state.openAdd);
 		});
 	}
 
 	openEdit(event = null) {
 		this.setState({ openEdit: !this.state.openEdit }, () => {
-			console.log("Open Edit: ", this.state.openEdit);
+			// console.log("Open Edit: ", this.state.openEdit);
 		});
 
 		// Set the values in the edit if used from the edit button
@@ -134,16 +134,14 @@ export default class Language extends React.Component {
 			const data = Object.assign(
 				{},
 				{
-					newLanguage: {
-						language: this.state.language,
-						languageLevel: this.state.languageLevel,
-					},
+					name: this.state.language,
+					level: this.state.languageLevel,
 				}
 			);
-			this.props.updateProfileData(data);
+			this.props.addLanguage(data);
 			this.openAdd();
 		} else {
-            // Set warning
+			// Set warning
 			this.setState({ schema: { language: true } });
 			TalentUtil.notification.show(
 				"Please check and resolve the errors",
@@ -152,11 +150,11 @@ export default class Language extends React.Component {
 				null
 			);
 		}
-    }
-    
-    editLanguage() {
-        console.log("Edit language");
-        // Validate first
+	}
+
+	editLanguage() {
+		console.log("Edit language");
+		// Validate first
 		if (
 			this.checkStateForValidation({
 				language: this.state.language,
@@ -168,16 +166,14 @@ export default class Language extends React.Component {
 			const data = Object.assign(
 				{},
 				{
-					editedLanguage: {
-						language: this.state.language,
-						languageLevel: this.state.languageLevel,
-					},
+					name: this.state.language,
+					level: this.state.languageLevel,
 				}
 			);
-			this.props.updateProfileData(data);
+			this.props.updateLanguage(data);
 			this.openEdit();
 		} else {
-            // Set warning
+			// Set warning
 			this.setState({ schema: { language: true } });
 			TalentUtil.notification.show(
 				"Please check and resolve the errors",
@@ -186,7 +182,7 @@ export default class Language extends React.Component {
 				null
 			);
 		}
-    }
+	}
 
 	render() {
 		return (
