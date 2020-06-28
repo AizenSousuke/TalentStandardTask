@@ -43,30 +43,90 @@ export default class Language extends React.Component {
 
 		this.schema = Joi.object({
 			language: Joi.string().max(80),
+			languageLevel: Joi.string().max(80),
 		});
 
 		this.state = {
 			openEdit: false,
 			language: "",
+			languageLevel: "",
 			options: options,
-			schema: this.schema,
+			// For validation
+			schema: {},
 		};
 	}
 
-	handleChange(event) {
-		// console.log(event.target.value);
-		this.setState({ language: event.target.value }, () =>
-			console.log(this.state.language)
-		);
+	handleChange(event, name = null, value = null) {
+		// console.log(event.target.name, event.target.value, name, value);
+		const data = Object.assign({}, this.state.schema);
+		let dataname = "";
+		switch (event.target.name) {
+			case undefined:
+				dataname = name;
+				this.setState({ [name]: value }, () => {
+					console.log(this.state.languageLevel);
+					const validation = this.checkStateForValidation({
+						languageLevel: this.state.languageLevel,
+					});
+					console.log("Validation: ", !validation);
+					data[dataname] = !validation;
+					this.setState({ schema: data });
+				});
+				break;
+			default:
+				dataname = event.target.name;
+				this.setState(
+					{ [event.target.name]: event.target.value },
+					() => {
+						console.log(this.state.language);
+						const validation = this.checkStateForValidation({
+							language: this.state.language,
+						});
+						console.log("Validation: ", !validation);
+						data[dataname] = !validation;
+						this.setState({ schema: data });
+					}
+				);
+				break;
+		}
+	}
+
+	checkStateForValidation(state) {
+		const { value, error } = this.schema.validate(state);
+		console.log("Validation State Check: ", value, error);
+		if (error == undefined) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	openEdit(event = null) {
 		this.setState({ openEdit: !this.state.openEdit }, () => {
 			console.log("Open Edit: ", this.state.openEdit);
-        });
-        
-        // Set the values in the edit if used from the edit button
-        
+		});
+
+		// Set the values in the edit if used from the edit button
+	}
+
+	addLanguage() {
+		// Validate first
+		if (
+			this.checkStateForValidation({
+				language: this.state.language,
+				languageLevel: this.state.languageLevel,
+			})
+		) {
+			console.log("Adding language");
+		} else {
+            this.setState({ schema: { language: true }});
+			TalentUtil.notification.show(
+				"Please check and resolve the errors",
+				"error",
+				null,
+				null
+			);
+		}
 	}
 
 	render() {
@@ -74,57 +134,73 @@ export default class Language extends React.Component {
 			// <div className="ui sixteen wide column">
 			<Grid container columns="equal">
 				{this.state.openEdit && (
-					<Grid.Row>
-						<Grid.Column>
-							<Input
-								type="text"
-								fluid
-								onChange={(e) => this.handleChange(e)}
-								placeholder="Add language"
-								value={
-									this.state.language
-										? this.state.language
-										: ""
-								}
-								error={this.state.schema.language}
-							/>
-							<Message
-								negative
-								hidden={!this.state.schema.language}
-							>
-								Language too long
-							</Message>
-						</Grid.Column>
-						<Grid.Column>
-							<Select
-								placeholder={"Language Level"}
-								options={this.state.options}
-								fluid
-							/>
-						</Grid.Column>
-						<Grid.Column>
-							<Button
-								color={"green"}
-								onClick={this.addLanguage}
-								fluid
-							>
-								Add
-							</Button>
-						</Grid.Column>
-						<Grid.Column>
-							<Button
-								color={"grey"}
-								onClick={this.cancelAddLanguage}
-								fluid
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    this.openEdit();
-                                }}
-							>
-								Cancel
-							</Button>
-						</Grid.Column>
-					</Grid.Row>
+					<React.Fragment>
+						<Grid.Row>
+							<Grid.Column>
+								<Input
+									name="language"
+									type="text"
+									fluid
+									onChange={(e) => this.handleChange(e)}
+									placeholder="Add language"
+									value={
+										this.state.language
+											? this.state.language
+											: ""
+									}
+									error={this.state.schema.language}
+								/>
+							</Grid.Column>
+							<Grid.Column>
+								<Select
+									name="languageLevel"
+									placeholder={"Language Level"}
+									value={this.state.languageLevel}
+									options={this.state.options}
+									onChange={(e, { name, value }) => {
+										e.preventDefault();
+										this.handleChange(e, name, value);
+									}}
+									fluid
+								/>
+							</Grid.Column>
+							<Grid.Column>
+								<Button
+									color={"green"}
+									onClick={(e) => {
+										e.preventDefault();
+										this.addLanguage();
+									}}
+									fluid
+								>
+									Add
+								</Button>
+							</Grid.Column>
+							<Grid.Column>
+								<Button
+									color={"grey"}
+									fluid
+									onClick={(e) => {
+										e.preventDefault();
+										this.openEdit();
+									}}
+								>
+									Cancel
+								</Button>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column>
+								<Message
+									negative
+									hidden={!this.state.schema.language}
+								>
+									Please enter both language and language
+									level. Max string length is 80 characters.
+								</Message>
+							</Grid.Column>
+						</Grid.Row>
+					</React.Fragment>
 				)}
 
 				<Grid.Row>
