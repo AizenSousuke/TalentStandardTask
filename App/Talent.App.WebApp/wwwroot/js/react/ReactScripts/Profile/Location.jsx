@@ -326,8 +326,8 @@ export class Nationality extends React.Component {
 			<div className="row">
 				<div className="ui sixteen wide column">
 					<Dropdown
+						value={this.props.nationalityData !== null ? this.props.nationalityData : ""}
 						placeholder="Select your nationality"
-						defaultValue={this.props.nationalityData == null ? "Singapore" : this.props.nationalityData}
 						options={this.state.nationality}
 						scrolling
 						onChange={(e, { value }) => {
