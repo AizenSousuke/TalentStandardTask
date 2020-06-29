@@ -54,7 +54,6 @@ export default class AccountProfile extends React.Component {
 		this.saveProfile = this.saveProfile.bind(this);
 		this.loadData = this.loadData.bind(this);
 		this.init = this.init.bind(this);
-		this.addLanguage = this.addLanguage.bind(this);
 	}
 
 	init() {
@@ -132,48 +131,6 @@ export default class AccountProfile extends React.Component {
 				} else {
 					TalentUtil.notification.show(
 						"Profile did not update successfully",
-						"error",
-						null,
-						null
-					);
-				}
-			}.bind(this),
-			error: function (res, a, b) {
-				console.log(res);
-				console.log(a);
-				console.log(b);
-			},
-		});
-	}
-
-	addLanguage(language) {
-		var AddLanguageViewModel = Object.assign(
-			{},
-			{ currentUserId: this.state.profileData.id },
-			language
-		);
-		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
-		var cookies = Cookies.get("talentAuthToken");
-		$.ajax({
-			url: "http://localhost:60290/profile/profile/addLanguage",
-			headers: {
-				Authorization: "Bearer " + cookies,
-				"Content-Type": "application/json",
-			},
-			type: "POST",
-			data: JSON.stringify(AddLanguageViewModel),
-			success: function (res) {
-				console.log(res);
-				if (res.success == true) {
-					TalentUtil.notification.show(
-						"Language updated sucessfully",
-						"success",
-						null,
-						null
-					);
-				} else {
-					TalentUtil.notification.show(
-						"Language did not update successfully",
 						"error",
 						null,
 						null
@@ -266,7 +223,6 @@ export default class AccountProfile extends React.Component {
 														.languages
 												}
 												userId={this.state.profileData.id}
-												addLanguage={this.addLanguage}
 												updateAndSaveData={this.updateAndSaveData}
 											/>
 										</FormItemWrapper>

@@ -96,7 +96,7 @@ export class Address extends React.Component {
 		const { error, value } = this.schema.validate({
 			[event.target.name]: event.target.value,
 		});
-		console.log("Validation Check for Field: ", error, value);
+		// console.log("Validation Check for Field: ", error, value);
 		// ==========
 		if (error != undefined) {
 			const data = Object.assign({}, this.state.schema);
@@ -115,7 +115,7 @@ export class Address extends React.Component {
 
 	checkStateForValidation(state) {
 		const { value, error } = this.schema.validate(state);
-		console.log("Validation State Check: ", value, error);
+		// console.log("Validation State Check: ", value, error);
 		if (error == undefined) {
 			return true;
 		} else {
@@ -317,7 +317,7 @@ export class Nationality extends React.Component {
 		});
 
 		this.setState({ nationality: nationalityArray }, () => {
-			console.log(this.state.nationality);
+			// console.log(this.state.nationality);
 		});
 	}
 
@@ -332,10 +332,10 @@ export class Nationality extends React.Component {
 						options={this.state.nationality}
 						scrolling
 						controlFunc={(e) => {
-							console.log(e.target.value);
+							// console.log(e.target.value);
 							const data = Object.assign({}, { nationality: e.target.value });
 							this.props.saveProfileData(data);
-							console.log(data);
+							// console.log(data);
 						}}
 					/>
 				</div>

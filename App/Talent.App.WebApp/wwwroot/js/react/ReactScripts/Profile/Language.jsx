@@ -168,12 +168,12 @@ export default class Language extends React.Component {
 			const data = Object.assign(
 				{},
 				{
+					currentUserId: this.props.userId,
 					name: this.state.language,
 					level: this.state.languageLevel,
 				}
 			);
-			this.props.addLanguage(data);
-            this.getLanguage();
+			this.addingLanguage(data);
 			this.openAdd();
 		} else {
 			// Set warning
@@ -185,6 +185,48 @@ export default class Language extends React.Component {
 				null
 			);
 		}
+	}
+
+	addingLanguage(language) {
+		var AddLanguageViewModel = Object.assign(
+			{},
+			language
+		);
+		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/addLanguage",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(AddLanguageViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					this.getLanguage();
+					TalentUtil.notification.show(
+						"Language updated sucessfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Language did not update successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
 	}
 
 	editLanguage(id = null) {
