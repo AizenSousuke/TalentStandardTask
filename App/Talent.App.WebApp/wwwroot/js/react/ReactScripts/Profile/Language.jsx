@@ -54,9 +54,9 @@ export default class Language extends React.Component {
 		this.state = {
 			languagesArray: [],
 			openAdd: false,
-            openEdit: false,
-            // Only open the one that is the same as this
-            openEditId: null,
+			openEdit: false,
+			// Only open the one that is the same as this
+			openEditId: null,
 			language: "",
 			languageLevel: "",
 			options: options,
@@ -125,11 +125,19 @@ export default class Language extends React.Component {
 	}
 
 	openEdit(event = null, id = null, name = null, level = null) {
-        // Set the values in the edit if used from the edit button
-		this.setState({ openEdit: !this.state.openEdit, openAdd: false, openEditId: id, language: name, languageLevel: level }, () => {
-			// console.log("Open Edit: ", this.state.openEdit);
-		});
-
+		// Set the values in the edit if used from the edit button
+		this.setState(
+			{
+				openEdit: !this.state.openEdit,
+				openAdd: false,
+				openEditId: id,
+				language: name,
+				languageLevel: level,
+			},
+			() => {
+				// console.log("Open Edit: ", this.state.openEdit);
+			}
+		);
 	}
 
 	getLanguage() {
@@ -144,7 +152,11 @@ export default class Language extends React.Component {
 			success: function (res) {
 				// console.log("getLanguage: ", res);
 				if (res.success == true) {
-					this.setState({ languagesArray: res.data });
+					this.setState({ languagesArray: res.data }, () => {
+						// Update the languages data in profile
+						const obj = Object.assign({}, { languages: this.state.languagesArray });
+						this.props.updateAndSaveData(obj);
+					});
 				}
 			}.bind(this),
 			error: function (res, a, b) {
@@ -188,10 +200,7 @@ export default class Language extends React.Component {
 	}
 
 	addingLanguage(language) {
-		var AddLanguageViewModel = Object.assign(
-			{},
-			language
-		);
+		var AddLanguageViewModel = Object.assign({}, language);
 		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
@@ -243,8 +252,8 @@ export default class Language extends React.Component {
 			const data = Object.assign(
 				{},
 				{
-                    currentUserId: this.props.userId,
-                    id: id,
+					currentUserId: this.props.userId,
+					id: id,
 					name: this.state.language,
 					level: this.state.languageLevel,
 				}
@@ -261,13 +270,10 @@ export default class Language extends React.Component {
 				null
 			);
 		}
-    }
-    
+	}
+
 	updateLanguage(language) {
-		var AddLanguageViewModel = Object.assign(
-			{},
-			language
-		);
+		var AddLanguageViewModel = Object.assign({}, language);
 		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
@@ -281,7 +287,7 @@ export default class Language extends React.Component {
 			success: function (res) {
 				console.log(res);
 				if (res.success == true) {
-                    this.getLanguage();
+					this.getLanguage();
 					TalentUtil.notification.show(
 						"Language updated sucessfully",
 						"success",
@@ -305,9 +311,47 @@ export default class Language extends React.Component {
 		});
 	}
 
+	deleteLanguage(language) {
+		console.log("Deleting ", language);
+		var DeleteLanguageViewModel = Object.assign({}, language);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/deleteLanguage",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(DeleteLanguageViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					this.getLanguage();
+					TalentUtil.notification.show(
+						"Language deleted sucessfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Language did not delete successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
+	}
+
 	render() {
 		return (
-			// <div className="ui sixteen wide column">
 			<Grid container columns="equal">
 				{this.state.openAdd && (
 					<React.Fragment>
@@ -407,7 +451,8 @@ export default class Language extends React.Component {
 							{this.state.languagesArray.map((l) => {
 								return (
 									<React.Fragment key={l.id}>
-										{this.state.openEdit && this.state.openEditId == l.id ? (
+										{this.state.openEdit &&
+										this.state.openEditId == l.id ? (
 											<TableRow>
 												<TableCell width={6}>
 													<Input
@@ -429,13 +474,18 @@ export default class Language extends React.Component {
 																.language
 														}
 													/>
-                                                    <Message
-                                                        negative
-                                                        hidden={!this.state.schema.language}
-                                                    >
-                                                        Please enter both language and language
-                                                        level. Max string length is 80 characters.
-                                                    </Message>
+													<Message
+														negative
+														hidden={
+															!this.state.schema
+																.language
+														}
+													>
+														Please enter both
+														language and language
+														level. Max string length
+														is 80 characters.
+													</Message>
 												</TableCell>
 												<TableCell width={6}>
 													<Select
@@ -470,7 +520,9 @@ export default class Language extends React.Component {
 														primary
 														onClick={(e) => {
 															e.preventDefault();
-															this.editLanguage(l.id);
+															this.editLanguage(
+																l.id
+															);
 														}}
 													>
 														Update
@@ -502,13 +554,24 @@ export default class Language extends React.Component {
 														size="mini"
 														onClick={(e) => {
 															e.preventDefault();
-															this.openEdit(e, l.id, l.name, l.level);
+															this.openEdit(
+																e,
+																l.id,
+																l.name,
+																l.level
+															);
 														}}
 													></Button>
 													<Button
 														basic
 														icon="close"
 														size="mini"
+														onClick={(e) => {
+															e.preventDefault();
+															this.deleteLanguage(
+																l
+															);
+														}}
 													></Button>
 												</TableCell>
 											</TableRow>
@@ -520,7 +583,6 @@ export default class Language extends React.Component {
 					</Table>
 				</Grid.Row>
 			</Grid>
-			// </div>
 		);
 	}
 }

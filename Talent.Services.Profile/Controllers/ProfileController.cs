@@ -159,7 +159,7 @@ namespace Talent.Services.Profile.Controllers
         {
             //Your code here;
             // TODO: Update language
-            _profileService.UpdateLanguageAsync(language);
+            await _profileService.UpdateLanguageAsync(language);
             return Json(new { Success = true });
         }
 
@@ -169,7 +169,8 @@ namespace Talent.Services.Profile.Controllers
         {
             //Your code here;
             // TODO: Delete language
-            throw new NotImplementedException();
+            await _profileService.DeleteLanguageAsync(language);
+            return Json(new { Success = true });
         }
 
         [HttpGet("getSkill")]

@@ -76,13 +76,30 @@ namespace Talent.Services.Profile.Domain.Services
                 throw e;
             }
         }
+        public async Task<bool> DeleteLanguageAsync(AddLanguageViewModel language)
+        {
+            //Your code here;
+            // TODO: Delete language in service
+            try
+            {
+                UserLanguage deletedUserLanguage = LanguageFromViewModel(language);
+                deletedUserLanguage.IsDeleted = true;
+                await _userLanguageRepository.Update(deletedUserLanguage);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
         public async Task<List<AddLanguageViewModel>> GetAllLanguageAsync()
         {
             //Your code here;
             try
             {
                 IEnumerable<UserLanguage> userLanguage = await _userLanguageRepository.Get(language => language.UserId == _userAppContext.CurrentUserId);
-                return userLanguage.Select(x => ViewModelFromLanguage(x)).ToList(); 
+                return userLanguage.Where(l => l.IsDeleted == false).Select(x => ViewModelFromLanguage(x)).ToList(); 
             }
             catch (Exception e)
             {
