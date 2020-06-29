@@ -20,6 +20,7 @@ namespace Talent.Services.Profile.Domain.Services
     {
         private readonly IUserAppContext _userAppContext;
         IRepository<UserLanguage> _userLanguageRepository;
+        IRepository<UserSkill> _userSkillRepository;
         IRepository<User> _userRepository;
         IRepository<Employer> _employerRepository;
         IRepository<Job> _jobRepository;
@@ -29,6 +30,7 @@ namespace Talent.Services.Profile.Domain.Services
 
         public ProfileService(IUserAppContext userAppContext,
                               IRepository<UserLanguage> userLanguageRepository,
+                              IRepository<UserSkill> userSkillRepository,
                               IRepository<User> userRepository,
                               IRepository<Employer> employerRepository,
                               IRepository<Job> jobRepository,
@@ -37,11 +39,76 @@ namespace Talent.Services.Profile.Domain.Services
         {
             _userAppContext = userAppContext;
             _userLanguageRepository = userLanguageRepository;
+            _userSkillRepository = userSkillRepository;
             _userRepository = userRepository;
             _employerRepository = employerRepository;
             _jobRepository = jobRepository;
             _recruiterRepository = recruiterRepository;
             _fileService = fileService;
+        }
+
+        #region Nik Custom Code
+        public bool AddNewSkill(AddSkillViewModel skill)
+        {
+            //Your code here;
+            // TODO: Add new skill in service
+            try
+            {
+                _userSkillRepository.Add(SkillFromViewModel(skill));
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
+
+        public async Task<bool> UpdateSkillAsync(AddSkillViewModel skill)
+        {
+            //Your code here;
+            // TODO: Update skill in service
+            try
+            {
+                await _userSkillRepository.Update(SkillFromViewModel(skill));
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
+        public async Task<bool> DeleteSkillAsync(AddSkillViewModel skill)
+        {
+            //Your code here;
+            // TODO: Delete skill in service
+            try
+            {
+                UserSkill deletedUserSkill = SkillFromViewModel(skill);
+                deletedUserSkill.IsDeleted = true;
+                await _userSkillRepository.Update(deletedUserSkill);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
+        public async Task<List<AddSkillViewModel>> GetAllSkillAsync()
+        {
+            //Your code here;
+            try
+            {
+                IEnumerable<UserSkill> userSkill = await _userSkillRepository.Get(skill => skill.UserId == _userAppContext.CurrentUserId);
+                return userSkill.Where(l => l.IsDeleted == false).Select(x => ViewModelFromSkill(x)).ToList();
+            }
+            catch (Exception e)
+            {
+                return null;
+                throw e;
+            }
         }
 
         public bool AddNewLanguage(AddLanguageViewModel language)
@@ -107,6 +174,8 @@ namespace Talent.Services.Profile.Domain.Services
                 throw e;
             }
         }
+
+        #endregion
 
         public async Task<TalentProfileViewModel> GetTalentProfile(string Id)
         {
@@ -194,6 +263,19 @@ namespace Talent.Services.Profile.Domain.Services
                     });
 
                     existingUser.Languages = userLanguagesList;
+                }
+
+
+                List<UserSkill> userSkillsList = new List<UserSkill>();
+                if (model.Skills != null)
+                {
+                    model.Skills.ForEach(skill =>
+                    {
+                        UserSkill userSkill = SkillFromViewModel(skill);
+                        userSkillsList.Add(userSkill);
+                    });
+
+                    existingUser.Skills = userSkillsList;
                 }
 
                 // Update
@@ -482,7 +564,8 @@ namespace Talent.Services.Profile.Domain.Services
             {
                 Id = skill.Id,
                 Level = skill.ExperienceLevel,
-                Name = skill.Skill
+                Name = skill.Skill,
+                CurrentUserId = skill.UserId,
             };
         }
         protected AddLanguageViewModel ViewModelFromLanguage(UserLanguage language)
@@ -515,8 +598,10 @@ namespace Talent.Services.Profile.Domain.Services
             return new UserSkill
             {
                 Id = model.Id,
+                UserId = model.CurrentUserId,
                 Skill = model.Name,
                 ExperienceLevel = model.Level,
+                IsDeleted = false,
             };
         }
 

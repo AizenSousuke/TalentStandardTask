@@ -72,7 +72,10 @@ export class Address extends React.Component {
 			newAddress: address,
 		});
 		// Set cities array in case a country is already defined from props
-		this.setCitiesArray(this.props.addressData.country);
+		if (this.props.addressData.country !== "")
+		{
+			this.setCitiesArray(this.props.addressData.country);
+		}
 	}
 
 	closeEdit() {

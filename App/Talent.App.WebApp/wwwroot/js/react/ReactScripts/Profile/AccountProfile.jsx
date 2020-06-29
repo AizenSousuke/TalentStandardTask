@@ -226,16 +226,17 @@ export default class AccountProfile extends React.Component {
 												updateAndSaveData={this.updateAndSaveData}
 											/>
 										</FormItemWrapper>
-										{/* <FormItemWrapper
+										<FormItemWrapper
                                             title='Skills'
                                             tooltip='List your skills'
                                         >
                                             <Skill
                                                 skillData={this.state.profileData.skills}
-                                                updateProfileData={this.updateAndSaveData}
+												userId={this.state.profileData.id}
+                                                updateAndSaveData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                        {/* <FormItemWrapper
                                             title='Work experience'
                                             tooltip='Add your work experience'
                                         >

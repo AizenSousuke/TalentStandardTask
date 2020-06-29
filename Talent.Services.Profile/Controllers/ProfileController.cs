@@ -33,9 +33,9 @@ namespace Talent.Services.Profile.Controllers
         private readonly IUserAppContext _userAppContext;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<UserLanguage> _userLanguageRepository;
+        private readonly IRepository<UserSkill> _userSkillRepository;
         private readonly IRepository<UserDescription> _personDescriptionRespository;
         private readonly IRepository<UserAvailability> _userAvailabilityRepository;
-        private readonly IRepository<UserSkill> _userSkillRepository;
         private readonly IRepository<UserEducation> _userEducationRepository;
         private readonly IRepository<UserCertification> _userCertificationRepository;
         private readonly IRepository<UserLocation> _userLocationRepository;
@@ -51,9 +51,9 @@ namespace Talent.Services.Profile.Controllers
             IFileService documentService,
             IRepository<User> userRepository,
             IRepository<UserLanguage> userLanguageRepository,
+            IRepository<UserSkill> userSkillRepository,
             IRepository<UserDescription> personDescriptionRepository,
             IRepository<UserAvailability> userAvailabilityRepository,
-            IRepository<UserSkill> userSkillRepository,
             IRepository<UserEducation> userEducationRepository,
             IRepository<UserCertification> userCertificationRepository,
             IRepository<UserLocation> userLocationRepository,
@@ -71,8 +71,8 @@ namespace Talent.Services.Profile.Controllers
             _userRepository = userRepository;
             _personDescriptionRespository = personDescriptionRepository;
             _userLanguageRepository = userLanguageRepository;
-            _userAvailabilityRepository = userAvailabilityRepository;
             _userSkillRepository = userSkillRepository;
+            _userAvailabilityRepository = userAvailabilityRepository;
             _userEducationRepository = userEducationRepository;
             _userCertificationRepository = userCertificationRepository;
             _userLocationRepository = userLocationRepository;
@@ -178,7 +178,8 @@ namespace Talent.Services.Profile.Controllers
         public async Task<IActionResult> GetSkills()
         {
             //Your code here;
-            throw new NotImplementedException();
+            List<AddSkillViewModel> userSkills = await _profileService.GetAllSkillAsync();
+            return Json(new { Success = true, Data = userSkills });
         }
 
         [HttpPost("addSkill")]
@@ -186,7 +187,8 @@ namespace Talent.Services.Profile.Controllers
         public ActionResult AddSkill([FromBody]AddSkillViewModel skill)
         {
             //Your code here;
-            throw new NotImplementedException();
+            _profileService.AddNewSkill(skill);
+            return Json(new { Success = true });
         }
 
         [HttpPost("updateSkill")]
@@ -194,7 +196,8 @@ namespace Talent.Services.Profile.Controllers
         public async Task<IActionResult> UpdateSkill([FromBody]AddSkillViewModel skill)
         {
             //Your code here;
-            throw new NotImplementedException();
+            await _profileService.UpdateSkillAsync(skill);
+            return Json(new { Success = true });
         }
 
         [HttpPost("deleteSkill")]
@@ -202,7 +205,8 @@ namespace Talent.Services.Profile.Controllers
         public async Task<IActionResult> DeleteSkill([FromBody]AddSkillViewModel skill)
         {
             //Your code here;
-            throw new NotImplementedException();
+            await _profileService.DeleteSkillAsync(skill);
+            return Json(new { Success = true });
         }
 
         [HttpGet("getCertification")]
