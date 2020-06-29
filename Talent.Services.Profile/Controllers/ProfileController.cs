@@ -34,6 +34,7 @@ namespace Talent.Services.Profile.Controllers
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<UserLanguage> _userLanguageRepository;
         private readonly IRepository<UserSkill> _userSkillRepository;
+        private readonly IRepository<UserExperience> _userExperienceRepository;
         private readonly IRepository<UserDescription> _personDescriptionRespository;
         private readonly IRepository<UserAvailability> _userAvailabilityRepository;
         private readonly IRepository<UserEducation> _userEducationRepository;
@@ -52,6 +53,7 @@ namespace Talent.Services.Profile.Controllers
             IRepository<User> userRepository,
             IRepository<UserLanguage> userLanguageRepository,
             IRepository<UserSkill> userSkillRepository,
+            IRepository<UserExperience> userExperienceRespository,
             IRepository<UserDescription> personDescriptionRepository,
             IRepository<UserAvailability> userAvailabilityRepository,
             IRepository<UserEducation> userEducationRepository,
@@ -72,6 +74,7 @@ namespace Talent.Services.Profile.Controllers
             _personDescriptionRespository = personDescriptionRepository;
             _userLanguageRepository = userLanguageRepository;
             _userSkillRepository = userSkillRepository;
+            _userExperienceRepository = userExperienceRespository;
             _userAvailabilityRepository = userAvailabilityRepository;
             _userEducationRepository = userEducationRepository;
             _userCertificationRepository = userCertificationRepository;
@@ -208,6 +211,45 @@ namespace Talent.Services.Profile.Controllers
             await _profileService.DeleteSkillAsync(skill);
             return Json(new { Success = true });
         }
+
+        #region User Experiences
+
+        [HttpGet("getExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> GetExperience()
+        {
+            //Your code here;
+            List<ExperienceViewModel> userExperiences = await _profileService.GetAllExperienceAsync();
+            return Json(new { Success = true, Data = userExperiences });
+        }
+
+        [HttpPost("addExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public ActionResult AddExperience([FromBody] ExperienceViewModel experience)
+        {
+            //Your code here;
+            _profileService.AddNewExperience(experience);
+            return Json(new { Success = true });
+        }
+
+        [HttpPost("updateExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> UpdateExperience([FromBody] ExperienceViewModel experience)
+        {
+            //Your code here;
+            await _profileService.UpdateExperienceAsync(experience);
+            return Json(new { Success = true });
+        }
+
+        [HttpPost("deleteExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> DeleteExperience([FromBody] ExperienceViewModel experience)
+        {
+            //Your code here;
+            await _profileService.DeleteExperienceAsync(experience);
+            return Json(new { Success = true });
+        }
+        #endregion
 
         [HttpGet("getCertification")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]

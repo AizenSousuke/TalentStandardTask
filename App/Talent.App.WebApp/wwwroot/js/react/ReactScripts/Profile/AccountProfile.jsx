@@ -236,7 +236,7 @@ export default class AccountProfile extends React.Component {
                                                 updateAndSaveData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        {/* <FormItemWrapper
+                                        <FormItemWrapper
                                             title='Work experience'
                                             tooltip='Add your work experience'
                                         >
@@ -245,7 +245,7 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                        {/* <FormItemWrapper
                                             title='Education'
                                             tooltip='Add your educational background'
                                         >

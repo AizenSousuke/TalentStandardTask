@@ -150,8 +150,8 @@ export default class Skill extends React.Component {
 				if (res.success == true) {
 					this.setState({ skillsArray: res.data }, () => {
 						// Update the skills data in profile
-						const obj = Object.assign({}, { skills: this.state.skillsArray });
-						this.props.updateAndSaveData(obj);
+						// const obj = Object.assign({}, { skills: this.state.skillsArray });
+						// this.props.updateAndSaveData(obj);
 					});
 				}
 			}.bind(this),

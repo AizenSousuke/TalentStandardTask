@@ -11,6 +11,10 @@ namespace Talent.Services.Profile.Domain.Contracts
 {
     public interface IProfileService
     {
+        bool AddNewExperience(ExperienceViewModel experience);
+        Task<bool> UpdateExperienceAsync(ExperienceViewModel experience);
+        Task<bool> DeleteExperienceAsync(ExperienceViewModel experience);
+        Task<List<ExperienceViewModel>> GetAllExperienceAsync();
         bool AddNewSkill(AddSkillViewModel skill);
         Task<bool> UpdateSkillAsync(AddSkillViewModel skill);
         Task<bool> DeleteSkillAsync(AddSkillViewModel skill);

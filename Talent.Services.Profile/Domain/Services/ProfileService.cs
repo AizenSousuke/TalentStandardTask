@@ -21,6 +21,7 @@ namespace Talent.Services.Profile.Domain.Services
         private readonly IUserAppContext _userAppContext;
         IRepository<UserLanguage> _userLanguageRepository;
         IRepository<UserSkill> _userSkillRepository;
+        IRepository<UserExperience> _userExperienceRepository;
         IRepository<User> _userRepository;
         IRepository<Employer> _employerRepository;
         IRepository<Job> _jobRepository;
@@ -31,6 +32,7 @@ namespace Talent.Services.Profile.Domain.Services
         public ProfileService(IUserAppContext userAppContext,
                               IRepository<UserLanguage> userLanguageRepository,
                               IRepository<UserSkill> userSkillRepository,
+                              IRepository<UserExperience> userExperienceRepository,
                               IRepository<User> userRepository,
                               IRepository<Employer> employerRepository,
                               IRepository<Job> jobRepository,
@@ -40,6 +42,7 @@ namespace Talent.Services.Profile.Domain.Services
             _userAppContext = userAppContext;
             _userLanguageRepository = userLanguageRepository;
             _userSkillRepository = userSkillRepository;
+            _userExperienceRepository = userExperienceRepository;
             _userRepository = userRepository;
             _employerRepository = employerRepository;
             _jobRepository = jobRepository;
@@ -48,6 +51,74 @@ namespace Talent.Services.Profile.Domain.Services
         }
 
         #region Nik Custom Code
+
+        #region Experience
+        public bool AddNewExperience(ExperienceViewModel experience)
+        {
+            //Your code here;
+            // TODO: Add new experience in service
+            try
+            {
+                _userExperienceRepository.Add(ExperienceFromViewModel(experience));
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
+
+        public async Task<bool> UpdateExperienceAsync(ExperienceViewModel experience)
+        {
+            //Your code here;
+            // TODO: Update experience in service
+            try
+            {
+                await _userExperienceRepository.Update(ExperienceFromViewModel(experience));
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
+        public async Task<bool> DeleteExperienceAsync(ExperienceViewModel experience)
+        {
+            //Your code here;
+            // TODO: Delete experience in service
+            try
+            {
+                UserExperience deletedUserExperience = ExperienceFromViewModel(experience);
+                deletedUserExperience.IsDeleted = true;
+                await _userExperienceRepository.Update(deletedUserExperience);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+        }
+        public async Task<List<ExperienceViewModel>> GetAllExperienceAsync()
+        {
+            //Your code here;
+            try
+            {
+                IEnumerable<UserExperience> userExperience = await _userExperienceRepository.Get(experience => experience.UserId == _userAppContext.CurrentUserId);
+                return userExperience.Where(l => l.IsDeleted == false).Select(x => ViewModelFromExperience(x)).ToList();
+            }
+            catch (Exception e)
+            {
+                return null;
+                throw e;
+            }
+        }
+
+        #endregion
+
+        #region Skill
         public bool AddNewSkill(AddSkillViewModel skill)
         {
             //Your code here;
@@ -110,7 +181,9 @@ namespace Talent.Services.Profile.Domain.Services
                 throw e;
             }
         }
+        #endregion
 
+        #region Language
         public bool AddNewLanguage(AddLanguageViewModel language)
         {
             //Your code here;
@@ -174,7 +247,7 @@ namespace Talent.Services.Profile.Domain.Services
                 throw e;
             }
         }
-
+        #endregion
         #endregion
 
         public async Task<TalentProfileViewModel> GetTalentProfile(string Id)
@@ -196,6 +269,7 @@ namespace Talent.Services.Profile.Domain.Services
                     var skills = profile.Skills.Select(x => ViewModelFromSkill(x)).ToList();
                     var certifications = profile.Certifications.Select(x => ViewModelFromCertification(x)).ToList();
                     var languages = profile.Languages.Select(x => ViewModelFromLanguage(x)).ToList();
+                    //var experience = profile.Experience.Select(x => ViewModelFromLanguage(x)).ToList();
 
                     var result = new TalentProfileViewModel
                     {
@@ -276,6 +350,19 @@ namespace Talent.Services.Profile.Domain.Services
                     });
 
                     existingUser.Skills = userSkillsList;
+                }
+
+
+                List<UserExperience> userExperiencesList = new List<UserExperience>();
+                if (model.Experience != null)
+                {
+                    model.Experience.ForEach(experience =>
+                    {
+                        UserExperience userExperience = ExperienceFromViewModel(experience);
+                        userExperiencesList.Add(userExperience);
+                    });
+
+                    existingUser.Experience = userExperiencesList;
                 }
 
                 // Update
@@ -578,6 +665,18 @@ namespace Talent.Services.Profile.Domain.Services
                 CurrentUserId = language.UserId,
             };
         }
+        protected ExperienceViewModel ViewModelFromExperience(UserExperience experience)
+        {
+            return new ExperienceViewModel
+            {
+                Id = experience.Id,
+                Company = experience.Company,
+                Position = experience.Position,
+                Responsibilities = experience.Responsibilities,
+                Start = experience.Start,
+                End = experience.End,
+            };
+        }
 
         // Nik custom code
         protected UserLanguage LanguageFromViewModel(AddLanguageViewModel model)
@@ -601,6 +700,22 @@ namespace Talent.Services.Profile.Domain.Services
                 UserId = model.CurrentUserId,
                 Skill = model.Name,
                 ExperienceLevel = model.Level,
+                IsDeleted = false,
+            };
+        }
+
+        // Nik custom code
+        protected UserExperience ExperienceFromViewModel(ExperienceViewModel model)
+        {
+            return new UserExperience
+            {
+                Id = model.Id,
+                UserId = _userAppContext.CurrentUserId,
+                Company = model.Company,
+                Position = model.Position,
+                Responsibilities = model.Responsibilities,
+                Start = model.Start,
+                End = model.End,
                 IsDeleted = false,
             };
         }
