@@ -216,7 +216,7 @@ export default class Language extends React.Component {
 				if (res.success == true) {
 					this.getLanguage();
 					TalentUtil.notification.show(
-						"Language updated sucessfully",
+						"Language updated successfully",
 						"success",
 						null,
 						null
@@ -289,7 +289,7 @@ export default class Language extends React.Component {
 				if (res.success == true) {
 					this.getLanguage();
 					TalentUtil.notification.show(
-						"Language updated sucessfully",
+						"Language updated successfully",
 						"success",
 						null,
 						null
@@ -328,7 +328,7 @@ export default class Language extends React.Component {
 				if (res.success == true) {
 					this.getLanguage();
 					TalentUtil.notification.show(
-						"Language deleted sucessfully",
+						"Language deleted successfully",
 						"success",
 						null,
 						null

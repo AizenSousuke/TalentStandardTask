@@ -123,7 +123,7 @@ export default class AccountProfile extends React.Component {
 				console.log(res);
 				if (res.success == true) {
 					TalentUtil.notification.show(
-						"Profile updated sucessfully",
+						"Profile updated successfully",
 						"success",
 						null,
 						null

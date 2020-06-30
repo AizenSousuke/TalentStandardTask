@@ -212,7 +212,7 @@ export default class Skill extends React.Component {
 				if (res.success == true) {
 					this.getSkill();
 					TalentUtil.notification.show(
-						"Skill updated sucessfully",
+						"Skill updated successfully",
 						"success",
 						null,
 						null
@@ -285,7 +285,7 @@ export default class Skill extends React.Component {
 				if (res.success == true) {
 					this.getSkill();
 					TalentUtil.notification.show(
-						"Skill updated sucessfully",
+						"Skill updated successfully",
 						"success",
 						null,
 						null
@@ -324,7 +324,7 @@ export default class Skill extends React.Component {
 				if (res.success == true) {
 					this.getSkill();
 					TalentUtil.notification.show(
-						"Skill deleted sucessfully",
+						"Skill deleted successfully",
 						"success",
 						null,
 						null

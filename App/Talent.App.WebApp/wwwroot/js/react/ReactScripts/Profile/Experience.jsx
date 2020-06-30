@@ -228,7 +228,7 @@ export default class Experience extends React.Component {
 				if (res.success == true) {
 					this.getExperience();
 					TalentUtil.notification.show(
-						"Experience updated sucessfully",
+						"Experience updated successfully",
 						"success",
 						null,
 						null
@@ -311,7 +311,7 @@ export default class Experience extends React.Component {
 				if (res.success == true) {
 					this.getExperience();
 					TalentUtil.notification.show(
-						"Experience updated sucessfully",
+						"Experience updated successfully",
 						"success",
 						null,
 						null
@@ -319,6 +319,45 @@ export default class Experience extends React.Component {
 				} else {
 					TalentUtil.notification.show(
 						"Experience did not update successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
+	}
+	
+	deleteExperience(experience) {
+		console.log("Deleting ", experience);
+		var DeleteExperienceViewModel = Object.assign({}, experience);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/deleteExperience",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(DeleteExperienceViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					this.getExperience();
+					TalentUtil.notification.show(
+						"Experience deleted successfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Experience did not delete successfully",
 						"error",
 						null,
 						null
