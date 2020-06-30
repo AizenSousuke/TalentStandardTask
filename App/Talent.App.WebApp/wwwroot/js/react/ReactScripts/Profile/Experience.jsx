@@ -133,8 +133,8 @@ export default class Experience extends React.Component {
 				company: company,
 				position: position,
 				responsibilities: responsibilities,
-				startdate: startdate,
-				enddate: enddate,
+				startdate: new Date(new Date(startdate).getFullYear(), new Date(startdate).getMonth(), new Date(startdate).getDate() + 1).toISOString().slice(0, 10),
+				enddate: new Date(new Date(enddate).getFullYear(), new Date(enddate).getMonth(), new Date(enddate).getDate() + 1).toISOString().slice(0, 10),
 			},
 			() => {
 				// console.log("Open Edit: ", this.state.openEdit);
@@ -189,8 +189,12 @@ export default class Experience extends React.Component {
 					company: this.state.company,
 					position: this.state.position,
 					responsibilities: this.state.responsibilities,
-					start: this.state.startdate,
-					end: this.state.enddate,
+					start: new Date(this.state.startdate)
+						.toLocaleString()
+						.slice(0, 10),
+					end: new Date(this.state.enddate)
+						.toLocaleString()
+						.slice(0, 10),
 				}
 			);
 			this.addingExperience(data);
@@ -518,10 +522,8 @@ export default class Experience extends React.Component {
 														placeholder="Edit startdate"
 														value={
 															this.state.startdate
-																? this.state.startdate.slice(
-																		0,
-																		10
-																  )
+																? this.state
+																		.startdate
 																: ""
 														}
 														error={
@@ -556,10 +558,8 @@ export default class Experience extends React.Component {
 														placeholder="Edit enddate"
 														value={
 															this.state.enddate
-																? this.state.enddate.slice(
-																		0,
-																		10
-																  )
+																? this.state
+																		.enddate
 																: ""
 														}
 														error={
