@@ -81,7 +81,7 @@ export default class Experience extends React.Component {
 						const validation = this.checkStateForValidation({
 							[dataname]: datavalue,
 						});
-						console.log("Validation: ", !validation);
+						// console.log("Validation: ", !validation);
 						data[dataname] = !validation;
 						this.setState({ schema: data });
 					}
@@ -134,8 +134,20 @@ export default class Experience extends React.Component {
 				company: company,
 				position: position,
 				responsibilities: responsibilities,
-				startdate: new Date(new Date(startdate).getFullYear(), new Date(startdate).getMonth(), new Date(startdate).getDate() + 1).toISOString().slice(0, 10),
-				enddate: new Date(new Date(enddate).getFullYear(), new Date(enddate).getMonth(), new Date(enddate).getDate() + 1).toISOString().slice(0, 10),
+				startdate: new Date(
+					new Date(startdate).getFullYear(),
+					new Date(startdate).getMonth(),
+					new Date(startdate).getDate() + 1
+				)
+					.toISOString()
+					.slice(0, 10),
+				enddate: new Date(
+					new Date(enddate).getFullYear(),
+					new Date(enddate).getMonth(),
+					new Date(enddate).getDate() + 1
+				)
+					.toISOString()
+					.slice(0, 10),
 			},
 			() => {
 				// console.log("Open Edit: ", this.state.openEdit);
@@ -293,7 +305,7 @@ export default class Experience extends React.Component {
 			);
 		}
 	}
-	
+
 	updateExperience(experience) {
 		var AddExperienceViewModel = Object.assign({}, experience);
 		console.log("AddExperienceViewModel: ", AddExperienceViewModel);
@@ -332,7 +344,7 @@ export default class Experience extends React.Component {
 			},
 		});
 	}
-	
+
 	deleteExperience(experience) {
 		console.log("Deleting ", experience);
 		var DeleteExperienceViewModel = Object.assign({}, experience);
@@ -501,7 +513,7 @@ export default class Experience extends React.Component {
 				)}
 
 				<Grid.Row>
-					<Table>
+					<Table structured>
 						<TableHeader>
 							<TableRow>
 								<TableHeaderCell>Company</TableHeaderCell>
@@ -531,198 +543,237 @@ export default class Experience extends React.Component {
 									<React.Fragment key={l.id}>
 										{this.state.openEdit &&
 										this.state.openEditId == l.id ? (
-											<TableRow>
-												<TableCell>
-													Company:
-													<Input
-														name="company"
-														type="text"
-														fluid
-														onChange={(e) =>
-															this.handleChange(e)
-														}
-														placeholder="Edit company"
-														value={
-															this.state.company
-																? this.state
-																		.company
-																: ""
-														}
-														error={
-															this.state.schema
-																.company
-														}
-													/>
-													<Message
-														negative
-														hidden={
-															!this.state.schema
-																.company
-														}
-													>
-														Please fill up all the
-														fields. Max string
-														length is 80 characters.
-													</Message>
-												</TableCell>
-												<TableCell>
-													Position:
-													<Input
-														name="position"
-														type="text"
-														fluid
-														onChange={(e) =>
-															this.handleChange(e)
-														}
-														placeholder="Edit position"
-														value={
-															this.state.position
-																? this.state
-																		.position
-																: ""
-														}
-														error={
-															this.state.schema
-																.position
-														}
-													/>
-													<Message
-														negative
-														hidden={
-															!this.state.schema
-																.position
-														}
-													>
-														Please fill up all the
-														fields. Max string
-														length is 80 characters.
-													</Message>
-												</TableCell>
-												<TableCell>
-													Responsibilities:
-													<Input
-														name="responsibilities"
-														type="text"
-														fluid
-														onChange={(e) =>
-															this.handleChange(e)
-														}
-														placeholder="Edit responsibilities"
-														value={
-															this.state
-																.responsibilities
-																? this.state
-																		.responsibilities
-																: ""
-														}
-														error={
-															this.state.schema
-																.responsibilities
-														}
-													/>
-													<Message
-														negative
-														hidden={
-															!this.state.schema
-																.responsibilities
-														}
-													>
-														Please fill up all the
-														fields. Max string
-														length is 80 characters.
-													</Message>
-												</TableCell>
-												<TableCell>
-													Start Date:
-													<Input
-														name="startdate"
-														type="date"
-														fluid
-														onChange={(e) =>
-															this.handleChange(e)
-														}
-														placeholder="Edit startdate"
-														value={
-															this.state.startdate
-																? this.state
-																		.startdate
-																: ""
-														}
-														error={
-															this.state.schema
-																.startdate
-														}
-													/>
-													<Message
-														negative
-														hidden={
-															!this.state.schema
-																.startdate
-														}
-													>
-														Please fill up all the
-														fields. Max string
-														length is 80 characters.
-													</Message>
-												</TableCell>
-												<TableCell>
-													End Date:
-													<Input
-														name="enddate"
-														type="date"
-														fluid
-														onChange={(e) =>
-															this.handleChange(e)
-														}
-														placeholder="Edit enddate"
-														value={
-															this.state.enddate
-																? this.state
-																		.enddate
-																: ""
-														}
-														error={
-															this.state.schema
-																.enddate
-														}
-													/>
-													<Message
-														negative
-														hidden={
-															!this.state.schema
-																.enddate
-														}
-													>
-														Please fill up all the
-														fields. Max string
-														length is 80 characters.
-													</Message>
-												</TableCell>
-												<TableCell textAlign={"right"}>
-													<Button
-														basic
-														primary
-														onClick={(e) => {
-															e.preventDefault();
-															this.editExperience(
-																l.id
-															);
-														}}
-													>
-														Update
-													</Button>
-													<Button
-														basic
-														negative
-														onClick={(e) => {
-															e.preventDefault();
-															this.openEdit(e);
-														}}
-													>
-														Cancel
-													</Button>
-												</TableCell>
-											</TableRow>
+											<React.Fragment>
+												<TableRow>
+													<TableCell colSpan={"3"}>
+														Company:
+														<Input
+															name="company"
+															type="text"
+															fluid
+															onChange={(e) =>
+																this.handleChange(
+																	e
+																)
+															}
+															placeholder="Edit company"
+															value={
+																this.state
+																	.company
+																	? this.state
+																			.company
+																	: ""
+															}
+															error={
+																this.state
+																	.schema
+																	.company
+															}
+														/>
+														<Message
+															negative
+															hidden={
+																!this.state
+																	.schema
+																	.company
+															}
+														>
+															Please fill up all
+															the fields. Max
+															string length is 80
+															characters.
+														</Message>
+													</TableCell>
+													<TableCell colSpan={"3"}>
+														Position:
+														<Input
+															name="position"
+															type="text"
+															fluid
+															onChange={(e) =>
+																this.handleChange(
+																	e
+																)
+															}
+															placeholder="Edit position"
+															value={
+																this.state
+																	.position
+																	? this.state
+																			.position
+																	: ""
+															}
+															error={
+																this.state
+																	.schema
+																	.position
+															}
+														/>
+														<Message
+															negative
+															hidden={
+																!this.state
+																	.schema
+																	.position
+															}
+														>
+															Please fill up all
+															the fields. Max
+															string length is 80
+															characters.
+														</Message>
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell colSpan={"3"}>
+														Start Date:
+														<Input
+															name="startdate"
+															type="date"
+															fluid
+															onChange={(e) =>
+																this.handleChange(
+																	e
+																)
+															}
+															placeholder="Edit startdate"
+															value={
+																this.state
+																	.startdate
+																	? this.state
+																			.startdate
+																	: ""
+															}
+															error={
+																this.state
+																	.schema
+																	.startdate
+															}
+														/>
+														<Message
+															negative
+															hidden={
+																!this.state
+																	.schema
+																	.startdate
+															}
+														>
+															Please fill up all
+															the fields. Max
+															string length is 80
+															characters.
+														</Message>
+													</TableCell>
+													<TableCell colSpan={"3"}>
+														End Date:
+														<Input
+															name="enddate"
+															type="date"
+															fluid
+															onChange={(e) =>
+																this.handleChange(
+																	e
+																)
+															}
+															placeholder="Edit enddate"
+															value={
+																this.state
+																	.enddate
+																	? this.state
+																			.enddate
+																	: ""
+															}
+															error={
+																this.state
+																	.schema
+																	.enddate
+															}
+														/>
+														<Message
+															negative
+															hidden={
+																!this.state
+																	.schema
+																	.enddate
+															}
+														>
+															Please fill up all
+															the fields. Max
+															string length is 80
+															characters.
+														</Message>
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell colSpan={"6"}>
+														Responsibilities:
+														<Input
+															name="responsibilities"
+															type="text"
+															fluid
+															onChange={(e) =>
+																this.handleChange(
+																	e
+																)
+															}
+															placeholder="Edit responsibilities"
+															value={
+																this.state
+																	.responsibilities
+																	? this.state
+																			.responsibilities
+																	: ""
+															}
+															error={
+																this.state
+																	.schema
+																	.responsibilities
+															}
+														/>
+														<Message
+															negative
+															hidden={
+																!this.state
+																	.schema
+																	.responsibilities
+															}
+														>
+															Please fill up all
+															the fields. Max
+															string length is 80
+															characters.
+														</Message>
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell colSpan={"6"}>
+														<Button
+															basic
+															primary
+															onClick={(e) => {
+																e.preventDefault();
+																this.editExperience(
+																	l.id
+																);
+															}}
+														>
+															Update
+														</Button>
+														<Button
+															basic
+															negative
+															onClick={(e) => {
+																e.preventDefault();
+																this.openEdit(
+																	e
+																);
+															}}
+														>
+															Cancel
+														</Button>
+													</TableCell>
+												</TableRow>
+											</React.Fragment>
 										) : (
 											<TableRow>
 												<TableCell>
@@ -735,14 +786,14 @@ export default class Experience extends React.Component {
 													{l.responsibilities}
 												</TableCell>
 												<TableCell>
-													{
-														moment(l.start).format("Do MMM, YYYY").toString()
-													}
+													{moment(l.start)
+														.format("Do MMM, YYYY")
+														.toString()}
 												</TableCell>
 												<TableCell>
-													{
-														moment(l.end).format("Do MMM, YYYY").toString()
-													}
+													{moment(l.end)
+														.format("Do MMM, YYYY")
+														.toString()}
 												</TableCell>
 												<TableCell textAlign={"right"}>
 													<Button
