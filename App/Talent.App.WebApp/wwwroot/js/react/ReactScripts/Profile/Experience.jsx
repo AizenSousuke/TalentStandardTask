@@ -18,6 +18,7 @@ import {
 } from "semantic-ui-react";
 import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import Joi from "@hapi/joi";
+import { now } from "moment";
 
 export default class Experience extends React.Component {
 	constructor(props) {
@@ -28,11 +29,11 @@ export default class Experience extends React.Component {
 			position: Joi.string().max(80),
 			responsibilities: Joi.string().max(80),
 			startdate: Joi.date(),
-			enddate: Joi.date(),
+			enddate: Joi.date().min(Joi.ref("startdate")),
 		});
 
 		this.state = {
-			workexperiencesArray: [],
+			experiencesArray: [],
 			openAdd: false,
 			openEdit: false,
 			// Only open the one that is the same as this
@@ -45,34 +46,41 @@ export default class Experience extends React.Component {
 			// For validation
 			schema: {},
 		};
-    }
-    handleChange(event, name = null, value = null) {
+	}
+
+	componentWillMount() {
+		this.getExperience();
+	}
+
+	handleChange(event, name = null, value = null) {
 		console.log(event.target.name, event.target.value, name, value);
 		const data = Object.assign({}, this.state.schema);
 		let dataname = "";
+		let datavalue = "";
 		switch (event.target.name) {
-			case undefined:
-				dataname = name;
-				this.setState({ [name]: value }, () => {
-					// console.log(this.state.languageLevel);
-					const validation = this.checkStateForValidation({
-						languageLevel: this.state.languageLevel,
-					});
-					// console.log("Validation: ", !validation);
-					data[dataname] = !validation;
-					this.setState({ schema: data });
-				});
-				break;
+			// case undefined:
+			// 	dataname = name;
+			// 	this.setState({ [name]: value }, () => {
+			// 		// console.log(this.state.languageLevel);
+			// 		const validation = this.checkStateForValidation({
+			// 			languageLevel: this.state.languageLevel,
+			// 		});
+			// 		// console.log("Validation: ", !validation);
+			// 		data[dataname] = !validation;
+			// 		this.setState({ schema: data });
+			// 	});
+			// 	break;
 			default:
 				dataname = event.target.name;
+				datavalue = event.target.value;
 				this.setState(
 					{ [event.target.name]: event.target.value },
 					() => {
 						// console.log(this.state.language);
 						const validation = this.checkStateForValidation({
-							language: this.state.language,
+							[dataname]: datavalue,
 						});
-						// console.log("Validation: ", !validation);
+						console.log("Validation: ", !validation);
 						data[dataname] = !validation;
 						this.setState({ schema: data });
 					}
@@ -83,7 +91,7 @@ export default class Experience extends React.Component {
 
 	checkStateForValidation(state) {
 		const { value, error } = this.schema.validate(state);
-		// console.log("Validation State Check: ", value, error);
+		console.log("Validation State Check: ", value, error);
 		if (error == undefined) {
 			return true;
 		} else {
@@ -94,14 +102,26 @@ export default class Experience extends React.Component {
 	openAdd(event = null) {
 		if (this.openAdd) {
 			// Clear inputs
-			this.setState({ company: "", position: "", responsibilities: "", startdate: "", enddate: "" });
+			this.setState({
+				company: "",
+				position: "",
+				responsibilities: "",
+				startdate: new Date().toISOString().slice(0, 10),
+				enddate: new Date().toISOString().slice(0, 10),
+			});
 		}
 		this.setState({ openAdd: !this.state.openAdd, openEdit: false }, () => {
 			// console.log("Open Add: ", this.state.openAdd);
 		});
-    }
-    
-	openEdit(event = null, id = null, company = null, position = null, responsibilities = null) {
+	}
+
+	openEdit(
+		event = null,
+		id = null,
+		company = null,
+		position = null,
+		responsibilities = null
+	) {
 		// Set the values in the edit if used from the edit button
 		this.setState(
 			{
@@ -110,14 +130,117 @@ export default class Experience extends React.Component {
 				openEditId: id,
 				company: company,
 				position: position,
-                responsibilities: responsibilities,
-                startdate: "",
-                enddate: "",
+				responsibilities: responsibilities,
+				startdate: "",
+				enddate: "",
 			},
 			() => {
 				// console.log("Open Edit: ", this.state.openEdit);
 			}
 		);
+	}
+
+	getExperience() {
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/getExperience",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "GET",
+			success: function (res) {
+				console.log("getExperience: ", res);
+				if (res.success == true) {
+					this.setState({ experiencesArray: res.data }, () => {
+						// Update the experiences data in profile
+						// const obj = Object.assign({}, { experiences: this.state.experiencesArray });
+						// this.props.updateAndSaveData(obj);
+					});
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
+	}
+
+	addExperience() {
+		// Validate first
+		if (
+			this.checkStateForValidation({
+				company: this.state.company,
+				position: this.state.position,
+				responsibilities: this.state.responsibilities,
+				startdate: this.state.startdate,
+				enddate: this.state.enddate,
+			})
+		) {
+			console.log("Adding experience");
+			// Should add on to experience
+			const data = Object.assign(
+				{},
+				{
+					company: this.state.company,
+					position: this.state.position,
+					responsibilities: this.state.responsibilities,
+					start: this.state.startdate,
+					end: this.state.enddate,
+				}
+			);
+			this.addingExperience(data);
+			this.openAdd();
+		} else {
+			// Set warning
+			this.setState({ schema: { company: true } });
+			TalentUtil.notification.show(
+				"Please check and resolve the errors",
+				"error",
+				null,
+				null
+			);
+		}
+	}
+
+	addingExperience(experience) {
+		var AddExperienceViewModel = Object.assign({}, experience);
+		console.log("AddExperienceViewModel: ", AddExperienceViewModel);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/addExperience",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(AddExperienceViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					this.getExperience();
+					TalentUtil.notification.show(
+						"Experience updated sucessfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Experience did not update successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
 	}
 
 	render() {
@@ -158,43 +281,39 @@ export default class Experience extends React.Component {
 									error={this.state.schema.position}
 								/>
 							</Grid.Column>
-							{/* <Grid.Column>
-								<Select
-									name="workexperienceLevel"									placeholder={"Work Experience Level"}
-									value={this.state.workexperienceLevel}
-									options={this.state.options}
-									onChange={(e, { name, value }) => {
-										e.preventDefault();
-										this.handleChange(e, name, value);
-									}}
-									fluid
-								/>
-							</Grid.Column> */}
 						</Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
-                                Start Date:
-                                <Input 
-                                    name="startdate"
-                                    type="date"
-                                    fluid
-                                    value={this.state.startdate ? this.state.startdate : ""}
+						<Grid.Row>
+							<Grid.Column>
+								Start Date:
+								<Input
+									name="startdate"
+									type="date"
+									fluid
+									value={
+										this.state.startdate
+											? this.state.startdate
+											: ""
+									}
 									error={this.state.schema.startdate}
 									onChange={(e) => this.handleChange(e)}
-                                />
-                            </Grid.Column>
-                            <Grid.Column>
-                                End Date:
-                                <Input 
-                                    name="enddate"
-                                    type="date"
-                                    fluid
-                                    value={this.state.enddate ? this.state.enddate : ""}
+								/>
+							</Grid.Column>
+							<Grid.Column>
+								End Date:
+								<Input
+									name="enddate"
+									type="date"
+									fluid
+									value={
+										this.state.enddate
+											? this.state.enddate
+											: ""
+									}
 									onChange={(e) => this.handleChange(e)}
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
+								/>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
 							<Grid.Column>
 								Responsibilities:
 								<Input
@@ -211,15 +330,14 @@ export default class Experience extends React.Component {
 									error={this.state.schema.responsibilities}
 								/>
 							</Grid.Column>
-                        </Grid.Row>
+						</Grid.Row>
 						<Grid.Row>
 							<Grid.Column>
 								<Message
 									negative
-									hidden={!this.state.schema.workexperience}
+									hidden={!this.state.schema.company}
 								>
-									Please enter both work experience and work
-									experience level. Max string length is 80
+									Please fill up all the fields. Max string length is 80
 									characters.
 								</Message>
 							</Grid.Column>
@@ -230,7 +348,7 @@ export default class Experience extends React.Component {
 									color={"green"}
 									onClick={(e) => {
 										e.preventDefault();
-										this.addWorkExperience();
+										this.addExperience();
 									}}
 									fluid
 								>
@@ -257,21 +375,13 @@ export default class Experience extends React.Component {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHeaderCell>
-									Company
-								</TableHeaderCell>
-								<TableHeaderCell>
-									Position
-								</TableHeaderCell>
+								<TableHeaderCell>Company</TableHeaderCell>
+								<TableHeaderCell>Position</TableHeaderCell>
 								<TableHeaderCell>
 									Responsibilities
 								</TableHeaderCell>
-								<TableHeaderCell>
-									Start
-								</TableHeaderCell>
-								<TableHeaderCell>
-									End
-								</TableHeaderCell>
+								<TableHeaderCell>Start</TableHeaderCell>
+								<TableHeaderCell>End</TableHeaderCell>
 								<TableHeaderCell>
 									<Button
 										color={"black"}
@@ -287,7 +397,7 @@ export default class Experience extends React.Component {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{this.state.workexperiencesArray.map((l) => {
+							{this.state.experiencesArray.map((l) => {
 								return (
 									<React.Fragment key={l.id}>
 										{this.state.openEdit &&
@@ -404,8 +514,7 @@ export default class Experience extends React.Component {
 														}
 														placeholder="Edit startdate"
 														value={
-															this.state
-																.startdate
+															this.state.startdate
 																? this.state
 																		.startdate
 																: ""
@@ -438,8 +547,7 @@ export default class Experience extends React.Component {
 														}
 														placeholder="Edit enddate"
 														value={
-															this.state
-																.enddate
+															this.state.enddate
 																? this.state
 																		.enddate
 																: ""
@@ -467,7 +575,7 @@ export default class Experience extends React.Component {
 														primary
 														onClick={(e) => {
 															e.preventDefault();
-															this.editWorkExperience(
+															this.editExperience(
 																l.id
 															);
 														}}
@@ -524,7 +632,7 @@ export default class Experience extends React.Component {
 														size="mini"
 														onClick={(e) => {
 															e.preventDefault();
-															this.deleteWorkExperience(
+															this.deleteExperience(
 																l
 															);
 														}}
