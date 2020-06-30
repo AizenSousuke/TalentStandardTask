@@ -18,7 +18,7 @@ import {
 } from "semantic-ui-react";
 import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import Joi from "@hapi/joi";
-import { now } from "moment";
+import moment, { now } from "moment";
 
 export default class Experience extends React.Component {
 	constructor(props) {
@@ -653,9 +653,6 @@ export default class Experience extends React.Component {
 																.startdate
 														}
 													/>
-													{/* {new Date(
-														this.state.startdate
-													).toLocaleString("en-GB").slice(0, 10)} */}
 													<Message
 														negative
 														hidden={
@@ -738,28 +735,14 @@ export default class Experience extends React.Component {
 													{l.responsibilities}
 												</TableCell>
 												<TableCell>
-													{new Date(
-														l.start
-													).toLocaleDateString(
-														"en-GB",
-														{
-															year: "numeric",
-															month: "long",
-															day: "numeric",
-														}
-													)}
+													{
+														moment(l.start).format("Do MMM, YYYY").toString()
+													}
 												</TableCell>
 												<TableCell>
-													{new Date(
-														l.end
-													).toLocaleDateString(
-														"en-GB",
-														{
-															year: "numeric",
-															month: "long",
-															day: "numeric",
-														}
-													)}
+													{
+														moment(l.end).format("Do MMM, YYYY").toString()
+													}
 												</TableCell>
 												<TableCell textAlign={"right"}>
 													<Button
