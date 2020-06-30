@@ -120,7 +120,9 @@ export default class Experience extends React.Component {
 		id = null,
 		company = null,
 		position = null,
-		responsibilities = null
+		responsibilities = null,
+		startdate = null,
+		enddate = null
 	) {
 		// Set the values in the edit if used from the edit button
 		this.setState(
@@ -131,11 +133,12 @@ export default class Experience extends React.Component {
 				company: company,
 				position: position,
 				responsibilities: responsibilities,
-				startdate: "",
-				enddate: "",
+				startdate: startdate,
+				enddate: enddate,
 			},
 			() => {
 				// console.log("Open Edit: ", this.state.openEdit);
+				// Additional scripts to set the values in the date input
 			}
 		);
 	}
@@ -515,8 +518,10 @@ export default class Experience extends React.Component {
 														placeholder="Edit startdate"
 														value={
 															this.state.startdate
-																? this.state
-																		.startdate
+																? this.state.startdate.slice(
+																		0,
+																		10
+																  )
 																: ""
 														}
 														error={
@@ -524,6 +529,9 @@ export default class Experience extends React.Component {
 																.startdate
 														}
 													/>
+													{/* {new Date(
+														this.state.startdate
+													).toLocaleString("en-GB").slice(0, 10)} */}
 													<Message
 														negative
 														hidden={
@@ -537,7 +545,7 @@ export default class Experience extends React.Component {
 													</Message>
 												</TableCell>
 												<TableCell>
-													Start Date:
+													End Date:
 													<Input
 														name="enddate"
 														type="date"
@@ -548,8 +556,10 @@ export default class Experience extends React.Component {
 														placeholder="Edit enddate"
 														value={
 															this.state.enddate
-																? this.state
-																		.enddate
+																? this.state.enddate.slice(
+																		0,
+																		10
+																  )
 																: ""
 														}
 														error={
@@ -639,8 +649,11 @@ export default class Experience extends React.Component {
 															this.openEdit(
 																e,
 																l.id,
-																l.name,
-																l.level
+																l.company,
+																l.position,
+																l.responsibilities,
+																l.start,
+																l.end
 															);
 														}}
 													></Button>
