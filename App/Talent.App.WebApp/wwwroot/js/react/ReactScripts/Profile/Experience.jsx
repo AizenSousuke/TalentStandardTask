@@ -337,8 +337,8 @@ export default class Experience extends React.Component {
 									negative
 									hidden={!this.state.schema.company}
 								>
-									Please fill up all the fields. Max string length is 80
-									characters.
+									Please fill up all the fields. Max string
+									length is 80 characters.
 								</Message>
 							</Grid.Column>
 						</Grid.Row>
@@ -606,10 +606,28 @@ export default class Experience extends React.Component {
 													{l.responsibilities}
 												</TableCell>
 												<TableCell>
-													{l.startdate}
+													{new Date(
+														l.start
+													).toLocaleDateString(
+														"en-GB",
+														{
+															year: "numeric",
+															month: "long",
+															day: "numeric",
+														}
+													)}
 												</TableCell>
 												<TableCell>
-													{l.enddate}
+													{new Date(
+														l.end
+													).toLocaleDateString(
+														"en-GB",
+														{
+															year: "numeric",
+															month: "long",
+															day: "numeric",
+														}
+													)}
 												</TableCell>
 												<TableCell textAlign={"right"}>
 													<Button
