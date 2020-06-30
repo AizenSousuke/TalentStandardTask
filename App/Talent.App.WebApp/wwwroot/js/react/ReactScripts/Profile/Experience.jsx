@@ -29,7 +29,8 @@ export default class Experience extends React.Component {
 			position: Joi.string().max(80),
 			responsibilities: Joi.string().max(80),
 			startdate: Joi.date(),
-			enddate: Joi.date().min(Joi.ref("startdate")),
+			enddate: Joi.date(),
+			// enddate: Joi.date().min(Joi.ref("startdate")),
 		});
 
 		this.state = {
@@ -138,7 +139,6 @@ export default class Experience extends React.Component {
 			},
 			() => {
 				// console.log("Open Edit: ", this.state.openEdit);
-				// Additional scripts to set the values in the date input
 			}
 		);
 	}
@@ -217,6 +217,89 @@ export default class Experience extends React.Component {
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
 			url: "http://localhost:60290/profile/profile/addExperience",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "POST",
+			data: JSON.stringify(AddExperienceViewModel),
+			success: function (res) {
+				console.log(res);
+				if (res.success == true) {
+					this.getExperience();
+					TalentUtil.notification.show(
+						"Experience updated sucessfully",
+						"success",
+						null,
+						null
+					);
+				} else {
+					TalentUtil.notification.show(
+						"Experience did not update successfully",
+						"error",
+						null,
+						null
+					);
+				}
+			}.bind(this),
+			error: function (res, a, b) {
+				console.log(res);
+				console.log(a);
+				console.log(b);
+			},
+		});
+	}
+
+	editExperience(id = null) {
+		console.log("Edit experience");
+		// Validate first
+		if (
+			this.checkStateForValidation({
+				company: this.state.company,
+				position: this.state.position,
+				responsibilities: this.state.responsibilities,
+				startdate: this.state.startdate,
+				enddate: this.state.enddate,
+			})
+		) {
+			console.log("Editing experience");
+			// Should add on to experience
+			const data = Object.assign(
+				{},
+				{
+					currentUserId: this.props.userId,
+					id: id,
+					company: this.state.company,
+					position: this.state.position,
+					responsibilities: this.state.responsibilities,
+					start: new Date(this.state.startdate)
+						.toLocaleString()
+						.slice(0, 10),
+					end: new Date(this.state.enddate)
+						.toLocaleString()
+						.slice(0, 10),
+				}
+			);
+			this.updateExperience(data);
+			this.openEdit();
+		} else {
+			// Set warning
+			this.setState({ schema: { company: true } });
+			TalentUtil.notification.show(
+				"Please check and resolve the errors",
+				"error",
+				null,
+				null
+			);
+		}
+	}
+	
+	updateExperience(experience) {
+		var AddExperienceViewModel = Object.assign({}, experience);
+		console.log("AddExperienceViewModel: ", AddExperienceViewModel);
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/updateExperience",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",

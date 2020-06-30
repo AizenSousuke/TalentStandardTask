@@ -241,6 +241,7 @@ export default class AccountProfile extends React.Component {
                                             tooltip='Add your work experience'
                                         >
                                             <Experience
+												userId={this.state.profileData.id}
                                                 experienceData={this.state.profileData.experience}
                                                 updateProfileData={this.updateAndSaveData}
                                             />
