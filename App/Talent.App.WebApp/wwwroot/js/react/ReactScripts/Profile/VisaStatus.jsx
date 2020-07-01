@@ -215,7 +215,7 @@ export default class VisaStatus extends React.Component {
 			<Grid container columns="equal">
 				<Grid.Row>
 					<Grid.Column width={4}>
-						Visa type:
+						Visa type
 						<Select
 							name="visaStatus"
 							type="text"
@@ -236,7 +236,7 @@ export default class VisaStatus extends React.Component {
 						this.props.visaStatus !== "Permanent Resident" && (
 							<React.Fragment>
 								<Grid.Column width={4}>
-									Visa Expiry Date:
+									Visa Expiry Date
 									<Input
 										name="visaExpiryDate"
 										type="date"
