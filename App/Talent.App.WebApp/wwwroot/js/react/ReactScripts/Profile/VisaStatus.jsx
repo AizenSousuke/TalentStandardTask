@@ -46,25 +46,22 @@ export default class VisaStatus extends React.Component {
 		];
 
 		this.schema = Joi.object({
-			visaType: Joi.string().max(80),
+			visaStatus: Joi.string().max(80),
 			visaExpiryDate: Joi.date(),
 		});
 
 		this.state = {
 			openEdit: false,
-			visaType: "",
-			visaTypeOptions: options,
+			visaStatus: "",
+			visaStatusOptions: options,
 			visaExpiryDate: "",
 			schema: {},
 		};
-    }
-    
-    componentWillMount() {
-        this.getVisaStatus();
-    }
+	}
 
 	handleChange(event, name = null, value = null) {
 		event.preventDefault();
+		this.getVisaStatus();
 		console.log(event.target.name, event.target.value, name, value);
 		const data = Object.assign({}, this.state.schema);
 		let dataname = "";
@@ -72,13 +69,16 @@ export default class VisaStatus extends React.Component {
 			case undefined:
 				dataname = name;
 				this.setState({ [name]: value }, () => {
-					// console.log(this.state.visaType);
+					// console.log(this.state.visaStatus);
 					const validation = this.checkStateForValidation({
-						visaType: this.state.visaType,
+						visaStatus: this.state.visaStatus,
 					});
 					// console.log("Validation: ", !validation);
 					data[dataname] = !validation;
 					this.setState({ schema: data });
+					// Update visa status and expiry date if any
+					console.log("Setting visa status");
+					this.setVisaStatus();
 				});
 				break;
 			default:
@@ -93,6 +93,9 @@ export default class VisaStatus extends React.Component {
 						// console.log("Validation: ", !validation);
 						data[dataname] = !validation;
 						this.setState({ schema: data });
+						// Update visa status and expiry date if any
+						console.log("Setting visa status");
+						this.setVisaStatus();
 					}
 				);
 				break;
@@ -107,25 +110,104 @@ export default class VisaStatus extends React.Component {
 		} else {
 			return false;
 		}
-    }
+	}
 
-    getVisaStatus() {
+	getVisaStatus() {
+		console.log(
+			"Getting visa status:",
+			this.props.visaStatus,
+			this.props.visaExpiryDate
+		);
 
-    }
-    
-    setVisaStatus(event) {
-        event.preventDefault();
-        
-    }
+		this.setState(
+			{
+				visaStatus: this.props.visaStatus,
+				visaExpiryDate: this.props.visaExpiryDate,
+			},
+			() => {
+				console.log(
+					"Visa status set state:",
+					this.state.visaStatus,
+					this.state.visaExpiryDate
+				);
+			}
+		);
+	}
+
+	setVisaStatus(event = null) {
+		if (event) {
+			event.preventDefault();
+		}
+		// console.log("Saving visa with type: ", this.state.visaStatus);
+		if (
+			this.checkStateForValidation({
+				visaStatus: this.state.visaStatus,
+				visaExpiryDate:
+					(this.state.visaStatus !== "Citizen" &&
+					this.state.visaStatus !== "Permanent Resident")
+						? this.state.visaExpiryDate
+						: undefined,
+			})
+		) {
+			console.log(
+				"Visa type",
+				this.state.visaStatus,
+				this.state.visaExpiryDate
+			);
+			// Clear warning
+			this.setState({ schema: {} });
+
+			switch (this.state.visaStatus) {
+				case "Work Visa":
+					this.visaUpdate(
+						this.state.visaStatus,
+						this.state.visaExpiryDate
+					);
+					console.log("Updating visa with expiry date");
+					break;
+				case "Student Visa":
+						this.visaUpdate(
+							this.state.visaStatus,
+							this.state.visaExpiryDate
+						);
+						console.log("Updating visa with expiry date");
+						break;
+				default:
+					this.visaUpdate(this.state.visaStatus);
+					break;
+			}
+		} else {
+			// Set warning
+			this.setState({ schema: { visaExpiryDate: true } });
+			TalentUtil.notification.show(
+				"Please check and resolve the errors",
+				"error",
+				null,
+				null
+			);
+		}
+	}
+
+	visaUpdate(status, expiryDate = null) {
+		const data = Object.assign(
+			{},
+			{
+				visaStatus: status,
+				visaExpiryDate: expiryDate,
+			}
+		);
+		console.log("Visa Update Data: ", data);
+		this.props.saveProfileData(data);
+	}
 
 	render() {
 		return (
 			<Grid container columns="equal">
 				<Grid.Row>
-					<Grid.Column>
+					<Grid.Column width={4}>
 						Visa type:
 						<Select
-							name="visaType"
+							name="visaStatus"
 							type="text"
 							fluid
 							onChange={(e, { name, value }) =>
@@ -133,35 +215,55 @@ export default class VisaStatus extends React.Component {
 							}
 							placeholder="Add visa type"
 							value={
-								this.state.visaType ? this.state.visaType : ""
-							}
-							options={this.state.visaTypeOptions}
-						/>
-					</Grid.Column>
-					<Grid.Column>
-						Visa Expiry Date:
-						<Input
-							name="visaExpiryDate"
-							type="date"
-							fluid
-							onChange={(e) => this.handleChange(e)}
-							placeholder="Add visa expiry date"
-							value={
-								this.state.visaExpiryDate
-									? this.state.visaExpiryDate
+								this.props.visaStatus
+									? this.props.visaStatus
 									: ""
 							}
+							options={this.state.visaStatusOptions}
 						/>
 					</Grid.Column>
-					<Grid.Column verticalAlign={"middle"}>
-						<Grid.Row>
-							<Button
-								secondary
-								onClick={(e) => this.setVisaStatus(e)}
-							>
-								Save
-							</Button>
-						</Grid.Row>
+					{this.props.visaStatus !== "Citizen" &&
+						this.props.visaStatus !== "Permanent Resident" && (
+							<React.Fragment>
+								<Grid.Column width={4}>
+									Visa Expiry Date:
+									<Input
+										name="visaExpiryDate"
+										type="date"
+										fluid
+										onChange={(e) => this.handleChange(e)}
+										placeholder="Add visa expiry date"
+										value={
+											this.props.visaExpiryDate
+												? this.props.visaExpiryDate.slice(0, 10)
+												: ""
+										}
+										error={this.state.schema.visaExpiryDate}
+									/>
+								</Grid.Column>
+								<Grid.Column verticalAlign={"middle"}>
+									<Grid.Row>
+										<Button
+											secondary
+											onClick={(e) =>
+												this.setVisaStatus(e)
+											}
+										>
+											Save
+										</Button>
+									</Grid.Row>
+								</Grid.Column>
+							</React.Fragment>
+						)}
+				</Grid.Row>
+				<Grid.Row>
+					<Grid.Column>
+						<Message
+							negative
+							hidden={!this.state.schema.visaExpiryDate}
+						>
+							Please enter the visa expiry date.
+						</Message>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>

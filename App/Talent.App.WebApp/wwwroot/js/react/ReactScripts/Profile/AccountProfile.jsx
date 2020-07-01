@@ -86,6 +86,7 @@ export default class AccountProfile extends React.Component {
 
 	//updates component's state without saving data
 	updateWithoutSave(newValues) {
+		console.log("Current profile data", this.state.profileData);
 		console.log("Update without save data", newValues);
 		let newProfile = Object.assign({}, this.state.profileData, newValues);
 		this.setState({
@@ -95,6 +96,7 @@ export default class AccountProfile extends React.Component {
 
 	//updates component's state and saves data
 	updateAndSaveData(newValues) {
+		console.log("Current profile data", this.state.profileData);
 		console.log("Update and save data", newValues);
 		let newProfile = Object.assign({}, this.state.profileData, newValues);
 		this.setState(

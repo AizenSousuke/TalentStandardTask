@@ -365,6 +365,9 @@ namespace Talent.Services.Profile.Domain.Services
                     existingUser.Experience = userExperiencesList;
                 }
 
+                existingUser.VisaStatus = model.VisaStatus;
+                existingUser.VisaExpiryDate = model.VisaExpiryDate;
+
                 // Update
                 await _userRepository.Update(existingUser);
                 return true;

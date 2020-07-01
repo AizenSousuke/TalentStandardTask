@@ -251,6 +251,26 @@ namespace Talent.Services.Profile.Controllers
         }
         #endregion
 
+        #region VisaStatus
+        //[HttpGet("getVisaStatus")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        //public async Task<IActionResult> GetVisaStatus()
+        //{
+        //    //Your code here;
+        //    List<AddSkillViewModel> userVisaStatus = await _profileService.GetVisaStatusAsync();
+        //    return Json(new { Success = true, Data = userVisaStatus });
+        //}
+
+        //[HttpPost("updateVisaStatus")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        //public async Task<IActionResult> UpdateVisaStatus([FromBody] VisaStatusViewModel visaStatus)
+        //{
+        //    //Your code here;
+        //    await _profileService.UpdateVisaStatusAsync(skill);
+        //    return Json(new { Success = true });
+        //}
+        #endregion
+
         [HttpGet("getCertification")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<IActionResult> getCertification()

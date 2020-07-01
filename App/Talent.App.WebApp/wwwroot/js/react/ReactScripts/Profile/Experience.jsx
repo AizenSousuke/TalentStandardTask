@@ -30,7 +30,7 @@ export default class Experience extends React.Component {
 			responsibilities: Joi.string().max(80),
 			startdate: Joi.date(),
 			enddate: Joi.date(),
-			// enddate: Joi.date().min(Joi.ref("startdate")),
+			// enddate: Joi.date().min(Joi.ref("startdate")), // Some issues here where the error is referencing incorrectly by Joi
 		});
 
 		this.state = {
