@@ -138,15 +138,15 @@ export default class VisaStatus extends React.Component {
 		if (event) {
 			event.preventDefault();
 		}
-		// console.log("Saving visa with type: ", this.state.visaStatus);
+		console.log("Saving visa with type: ", this.state.visaStatus);
 		if (
 			this.checkStateForValidation({
 				visaStatus: this.state.visaStatus,
-				visaExpiryDate:
-					(this.state.visaStatus !== "Citizen" &&
-					this.state.visaStatus !== "Permanent Resident")
-						? this.state.visaExpiryDate
-						: undefined,
+				// visaExpiryDate:
+				// 	this.state.visaStatus !== "Citizen" &&
+				// 	this.state.visaStatus !== "Permanent Resident"
+				// 		? this.state.visaExpiryDate
+				// 		: undefined,
 			})
 		) {
 			console.log(
@@ -166,12 +166,12 @@ export default class VisaStatus extends React.Component {
 					console.log("Updating visa with expiry date");
 					break;
 				case "Student Visa":
-						this.visaUpdate(
-							this.state.visaStatus,
-							this.state.visaExpiryDate
-						);
-						console.log("Updating visa with expiry date");
-						break;
+					this.visaUpdate(
+						this.state.visaStatus,
+						this.state.visaExpiryDate
+					);
+					console.log("Updating visa with expiry date");
+					break;
 				default:
 					this.visaUpdate(this.state.visaStatus);
 					break;
@@ -201,6 +201,16 @@ export default class VisaStatus extends React.Component {
 	}
 
 	render() {
+		let visaExpiryDate = "";
+		if (this.props.visaExpiryDate !== "") {
+			visaExpiryDate = new Date(
+				new Date(this.props.visaExpiryDate).getFullYear(),
+				new Date(this.props.visaExpiryDate).getMonth(),
+				new Date(this.props.visaExpiryDate).getDate() + 1
+			)
+				.toISOString()
+				.slice(0, 10);
+		}
 		return (
 			<Grid container columns="equal">
 				<Grid.Row>
@@ -234,8 +244,8 @@ export default class VisaStatus extends React.Component {
 										onChange={(e) => this.handleChange(e)}
 										placeholder="Add visa expiry date"
 										value={
-											this.props.visaExpiryDate
-												? this.props.visaExpiryDate.slice(0, 10)
+											this.props.visaExpiryDate !== ""
+												? visaExpiryDate
 												: ""
 										}
 										error={this.state.schema.visaExpiryDate}
