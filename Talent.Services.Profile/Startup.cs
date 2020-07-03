@@ -23,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Talent.Common.Aws;
+using Imgur.API.Authentication.Impl;
+using Imgur.API.Authentication;
 
 namespace Talent.Services.Profile
 {

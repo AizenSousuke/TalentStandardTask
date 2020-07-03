@@ -25,7 +25,7 @@ export default class TalentStatus extends React.Component {
 		super(props);
 
 		this.state = {
-			availableDate: this.props.status.availableDate,
+			availableDate: this.props.status.availableDate !== undefined ? this.props.status.availableDate : null,
 		};
 	}
 
@@ -36,7 +36,7 @@ export default class TalentStatus extends React.Component {
 			{
 				jobSeekingStatus: {
 					status: status,
-					availableDate: this.state.availableDate,
+					availableDate: this.state.availableDate !== undefined ? this.props.status.availableDate : null,
 				},
 			}
 		);
@@ -51,14 +51,16 @@ export default class TalentStatus extends React.Component {
 
 	render() {
 		let availableDate = "";
-		if (this.props.status.availableDate !== "") {
-			availableDate = new Date(
-				new Date(this.props.status.availableDate).getFullYear(),
-				new Date(this.props.status.availableDate).getMonth(),
-				new Date(this.props.status.availableDate).getDate() + 1
-			)
-				.toISOString()
-				.slice(0, 10);
+		if (this.props.status !== null) {
+			if (this.props.status.availableDate !== undefined ? this.props.status.availableDate : null) {
+				availableDate = new Date(
+					new Date(this.props.status.availableDate).getFullYear(),
+					new Date(this.props.status.availableDate).getMonth(),
+					new Date(this.props.status.availableDate).getDate() + 1
+				)
+					.toISOString()
+					.slice(0, 10);
+			}
 		}
 		return (
 			<Grid container columns="equal">

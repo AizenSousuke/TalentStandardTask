@@ -28,6 +28,8 @@ namespace Talent.Common.Aws
         {
             try
             {
+                // Nik custom code
+                //_sessionCredential = await GetTemporaryCredentials();
                 SessionAWSCredentials tempCredentials = _sessionCredential;
                 // Create client by providing temporary security credentials.
                 using (client = new AmazonS3Client(tempCredentials, Amazon.RegionEndpoint.APSoutheast2))

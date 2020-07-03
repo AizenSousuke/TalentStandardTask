@@ -282,7 +282,7 @@ export default class AccountProfile extends React.Component {
                                             tooltip='What is your current status in jobseeking?'
                                         >
                                             <TalentStatus
-                                                status={this.state.profileData.jobSeekingStatus}
+                                                status={this.state.profileData.jobSeekingStatus !== null ? this.state.profileData.jobSeekingStatus : {status: "", availableDate: ""}}
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
                                             />
@@ -293,8 +293,10 @@ export default class AccountProfile extends React.Component {
                                             hideSegment={true}
                                         >
                                             <PhotoUpload
+												userId={this.state.profileData.id}
                                                 imageId={this.state.profileData.profilePhotoUrl}
-                                                updateProfileData={this.updateWithoutSave}
+												updateProfileData={this.updateWithoutSave}
+												loadData={this.loadData}
                                                 savePhotoUrl='http://localhost:60290/profile/profile/updateProfilePhoto'
                                             />
                                         </FormItemWrapper>

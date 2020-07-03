@@ -369,6 +369,9 @@ namespace Talent.Services.Profile.Domain.Services
                 existingUser.VisaExpiryDate = model.VisaExpiryDate;
                 existingUser.JobSeekingStatus = model.JobSeekingStatus;
 
+                existingUser.ProfilePhoto = model.ProfilePhoto;
+                existingUser.ProfilePhotoUrl = model.ProfilePhotoUrl;
+
                 // Update
                 await _userRepository.Update(existingUser);
                 return true;
@@ -549,7 +552,43 @@ namespace Talent.Services.Profile.Domain.Services
         public async Task<bool> UpdateTalentPhoto(string talentId, IFormFile file)
         {
             //Your code here;
-            throw new NotImplementedException();
+            // TODO: Profile photo 
+            var fileExtension = Path.GetExtension(file.FileName);
+            List<string> acceptedExtensions = new List<string> { ".jpg", ".png", ".gif", ".jpeg" };
+
+            if (fileExtension != null && !acceptedExtensions.Contains(fileExtension.ToLower()))
+            {
+                return false;
+            }
+
+            var profile = (await _userRepository.Get(x => x.Id == talentId)).SingleOrDefault();
+
+            if (profile == null)
+            {
+                return false;
+            }
+
+            var newFileName = await _fileService.SaveFile(file, FileType.ProfilePhoto);
+
+            if (!string.IsNullOrWhiteSpace(newFileName))
+            {
+                //var oldFileName = profile.ProfilePhoto;
+
+                //if (!string.IsNullOrWhiteSpace(oldFileName))
+                //{
+                //    await _fileService.DeleteFile(oldFileName, FileType.ProfilePhoto);
+                //}
+
+                profile.ProfilePhoto = newFileName;
+                profile.ProfilePhotoUrl = newFileName;
+                //profile.ProfilePhotoUrl = await _fileService.GetFileURL(newFileName, FileType.ProfilePhoto);
+
+                await _userRepository.Update(profile);
+                return true;
+            }
+
+            return false;
+            //throw new NotImplementedException();
         }
 
         public async Task<bool> AddTalentVideo(string talentId, IFormFile file)
