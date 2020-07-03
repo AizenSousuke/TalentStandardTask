@@ -1,32 +1,29 @@
-﻿import React from 'react';
-
+﻿import React from "react";
+import { Card, Feed } from "semantic-ui-react";
 
 export default class FollowingSuggestion extends React.Component {
-    render() {
-        return (
-            <div className="content">
-                <div className="center aligned header">Follow Talent</div>
-                <div className="ui items following-suggestion">
-                    <div className="item">
-                        <div className="ui image">
-                            <img className="ui circular image" src="http://semantic-ui.com/images/avatar/small/jenny.jpg" />
-                        </div>
-                        <div className="content">
-                            <a className="">Veronika Ossi</a>
-                            <button className="ui primary basic button"><i className="icon user"></i>Follow</button>
-                        </div>
-                    </div>
-                    <div className="item">
-                        <div className="ui image">
-                            <img className="ui circular image" src="http://semantic-ui.com/images/avatar/small/jenny.jpg" />
-                        </div>
-                        <div className="content">
-                            <a className="">Veronika Ossi</a>
-                            <button className="ui primary basic button"><i className="icon user"></i>Follow</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+	render() {
+		return (
+			<div className="content">
+				<Card>
+					<Card.Content>
+						<Card.Header>Follow Talent</Card.Header>
+						<Feed>
+							<Feed.Event>
+								<Feed.Label image="http://semantic-ui.com/images/avatar/small/jenny.jpg" />
+								<Feed.Content>
+									<Feed.Summary>
+										<a className="">Veronika Ossi</a>
+										<button className="ui primary basic button">
+											<i className="icon user"></i>Follow
+										</button>
+									</Feed.Summary>
+								</Feed.Content>
+							</Feed.Event>
+						</Feed>
+					</Card.Content>
+				</Card>
+			</div>
+		);
+	}
 }
