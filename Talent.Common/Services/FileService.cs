@@ -28,6 +28,8 @@ namespace Talent.Common.Services
         public async Task<string> GetFileURL(string id, FileType type)
         {
             //Your code here;
+            // TODO: File Upload
+
             throw new NotImplementedException();
         }
 
