@@ -111,6 +111,7 @@ export default class PhotoUpload extends Component {
 								size={"medium"}
 								type="file"
 							/>
+                            <p></p>
 							{this.state.file !== "" && (
 								<Button
 									name="upload"
@@ -140,7 +141,7 @@ export default class PhotoUpload extends Component {
 									this.handleClick(e, name);
 								}}
 							/>
-							<br></br>
+                            <p></p>
 							{this.state.file !== "" && (
 								<Button
 									name="upload"
@@ -148,8 +149,9 @@ export default class PhotoUpload extends Component {
 									fluid
 									onClick={(e) => {
 										this.confirmUploadImage(e);
-									}}
+                                    }}
 								>
+                                    <Icon name="upload" />
 									Upload
 								</Button>
 							)}
