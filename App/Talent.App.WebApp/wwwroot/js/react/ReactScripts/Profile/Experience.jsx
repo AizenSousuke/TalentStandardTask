@@ -158,7 +158,7 @@ export default class Experience extends React.Component {
 	getExperience() {
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/getExperience",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/getExperience",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -228,7 +228,7 @@ export default class Experience extends React.Component {
 		console.log("AddExperienceViewModel: ", AddExperienceViewModel);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/addExperience",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/addExperience",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -311,7 +311,7 @@ export default class Experience extends React.Component {
 		console.log("AddExperienceViewModel: ", AddExperienceViewModel);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/updateExperience",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateExperience",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -350,7 +350,7 @@ export default class Experience extends React.Component {
 		var DeleteExperienceViewModel = Object.assign({}, experience);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/deleteExperience",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/deleteExperience",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",

@@ -41,7 +41,7 @@ export default class TalentFeed extends React.Component {
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
 			url:
-				"http://localhost:60290/profile/profile/getTalent" +
+				"https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalent" +
 				"?position=" +
 				this.state.position +
 				"&number=" +
@@ -59,7 +59,8 @@ export default class TalentFeed extends React.Component {
 		});
 
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/getEmployerProfile",
+			url:
+				"https://talentservicesprofilenik.azurewebsites.net/profile/profile/getEmployerProfile",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -90,7 +91,7 @@ export default class TalentFeed extends React.Component {
 								/>
 							</Grid.Column>
 							<Grid.Column width={"10"} textAlign={"center"}>
-								{this.state.feedData.length < 1 ? (
+								{this.state.feedData === [] && this.state.feedData !== undefined ? (
 									<b>
 										There are no talents found for your
 										recruitment company.

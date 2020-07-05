@@ -1,3 +1,26 @@
+# Talent Standard Task 
+
+This project is done as part of an internship at MVP Studio to understand how ReactJs, C# Web Api, MongoDb is used in Talent Code Architecture.
+
+## Website 
+
+[Azure](http://talentappwebappnik.azurewebsites.net/Home)
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+
+- Clone the repository to a local folder in your system
+- Open the solution file in visual studio 2019
+- Start instance of all the services in the Core and App folder by right clicking the project > debug > start new instance
+- Go to http://localhost:61771 to view the project's starting page
+
+### Prerequisites
+
+- Visual Studio 2019
+- Node JS and NPM
+- React
+
 ## Talent Standard Task Code Repository
 
 This project will help interns at MVP Studio to understand how ReactJs, C# Web Api, MongoDb is used in Talent Code Architecture. 

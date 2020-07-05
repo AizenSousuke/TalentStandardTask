@@ -143,7 +143,7 @@ export default class Language extends React.Component {
 	getLanguage() {
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/getLanguage",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/getLanguage",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -204,7 +204,7 @@ export default class Language extends React.Component {
 		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/addLanguage",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/addLanguage",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -277,7 +277,7 @@ export default class Language extends React.Component {
 		console.log("AddLanguageViewModel: ", AddLanguageViewModel);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/updateLanguage",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateLanguage",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -316,7 +316,7 @@ export default class Language extends React.Component {
 		var DeleteLanguageViewModel = Object.assign({}, language);
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/deleteLanguage",
+			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/deleteLanguage",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
