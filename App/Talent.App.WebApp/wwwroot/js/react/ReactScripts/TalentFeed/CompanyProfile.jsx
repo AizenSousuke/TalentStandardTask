@@ -16,7 +16,13 @@ export default class CompanyProfile extends React.Component {
 								<Image
 									circular
 									size={"mini"}
-									src="http://loremflickr.com/100/100/image"
+									src={
+										this.props.companyDetails
+											.profilePhotoUrl !== null
+											? this.props.companyDetails
+													.profilePhotoUrl
+											: "http://loremflickr.com/100/100/image"
+									}
 								/>
 								<p>
 									{
@@ -38,7 +44,8 @@ export default class CompanyProfile extends React.Component {
 								}
 							</Card.Meta>
 							<Card.Description textAlign={"center"}>
-								We currently do not have specific skills that we desire.
+								We currently do not have specific skills that we
+								desire.
 							</Card.Description>
 						</Card.Content>
 						<Card.Content extra>
@@ -56,10 +63,8 @@ export default class CompanyProfile extends React.Component {
 			);
 		} else {
 			return (
-				<React.Fragment>
-					Failed to load company details.
-				</React.Fragment>
-			)
+				<React.Fragment>Failed to load company details.</React.Fragment>
+			);
 		}
 	}
 }
