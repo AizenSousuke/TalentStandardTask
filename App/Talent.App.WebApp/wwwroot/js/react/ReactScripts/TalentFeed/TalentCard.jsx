@@ -12,11 +12,20 @@ import {
 	Divider,
 	Label,
 } from "semantic-ui-react";
+import TalentCardDetail from "./TalentCardDetail.jsx";
 
 export default class TalentCard extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			state: "",
+		};
 	}
+
+	handleState(e) {
+        console.log(e);
+    }
 
 	render() {
 		return (
@@ -36,38 +45,15 @@ export default class TalentCard extends React.Component {
 							</Grid.Row>
 						</Grid>
 					</Card.Content>
-					<Grid columns={"equal"}>
-						<Grid.Column>
-							<Image
-								fluid
-								src="http://semantic-ui.com/images/avatar/large/jenny.jpg"
-							/>
-						</Grid.Column>
-						<Grid.Column textAlign={"left"}>
-							<Grid.Row>
-								<h3>Talent Snapshot</h3>
-								<br></br>
-							</Grid.Row>
-							<Grid.Row>
-								<b>CURRENT EMPLOYER</b>
-								<p>ABC</p>
-								<br></br>
-							</Grid.Row>
-							<Grid.Row>
-								<b>VISA STATUS</b>
-								<p>ABC</p>
-								<br></br>
-							</Grid.Row>
-							<Grid.Row>
-								<b>POSITION</b>
-								<p>ABC</p>
-								<br></br>
-							</Grid.Row>
-						</Grid.Column>
-					</Grid>
+					<TalentCardDetail state={this.state.state} />
 					<Card.Content extra>
 						<Button.Group basic size={"medium"} widths={"4"}>
-							<Button icon="video" />
+							<Button
+								icon="video"
+								onClick={(e) => {
+									this.handleState(e);
+								}}
+							/>
 							<Button icon="file pdf outline" />
 							<Button icon="linkedin" />
 							<Button icon="github" />

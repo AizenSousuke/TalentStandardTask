@@ -12,8 +12,19 @@ export default class FollowingSuggestion extends React.Component {
 							<Feed.Event>
 								<Feed.Label image="http://semantic-ui.com/images/avatar/small/jenny.jpg" />
 								<Feed.Content>
+									<p>Veronika Ossi</p>
 									<Feed.Summary>
-										<a className="">Veronika Ossi</a>
+										<button className="ui primary basic button">
+											<i className="icon user"></i>Follow
+										</button>
+									</Feed.Summary>
+								</Feed.Content>
+							</Feed.Event>
+							<Feed.Event>
+								<Feed.Label image="http://semantic-ui.com/images/avatar/small/jenny.jpg" />
+								<Feed.Content>
+									<p>Veronika Ossi</p>
+									<Feed.Summary>
 										<button className="ui primary basic button">
 											<i className="icon user"></i>Follow
 										</button>

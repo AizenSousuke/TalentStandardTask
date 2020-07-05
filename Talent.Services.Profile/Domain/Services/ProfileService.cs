@@ -619,6 +619,8 @@ namespace Talent.Services.Profile.Domain.Services
         public async Task<IEnumerable<TalentSnapshotViewModel>> GetTalentSnapshotList(string employerOrJobId, bool forJob, int position, int increment)
         {
             //Your code here;
+            // TODO: Get talent feed
+            
             throw new NotImplementedException();
         }
 

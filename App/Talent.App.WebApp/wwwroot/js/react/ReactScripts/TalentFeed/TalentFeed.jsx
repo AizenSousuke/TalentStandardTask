@@ -34,6 +34,22 @@ export default class TalentFeed extends React.Component {
 		this.setState({ loaderData }); //comment this
 	}
 
+	componentWillMount() {
+		// Fetch data
+		var cookies = Cookies.get("talentAuthToken");
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/getTalent",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "GET",
+			success: function (res) {
+				this.setState({feedData: res});
+			}.bind(this),
+		});
+	}
+
 	componentDidMount() {
 		//window.addEventListener('scroll', this.handleScroll);
 		this.init();
@@ -51,7 +67,7 @@ export default class TalentFeed extends React.Component {
 								/>
 							</Grid.Column>
 							<Grid.Column width={"10"} textAlign={"center"}>
-                                There are no talents
+                                There are no talents found for your recruitment company.
 								<TalentCard />
                             </Grid.Column>
 							<Grid.Column width={"3"}>
