@@ -26,6 +26,7 @@ namespace Talent.Services.Profile.Domain.Services
         IRepository<Employer> _employerRepository;
         IRepository<Job> _jobRepository;
         IRepository<Recruiter> _recruiterRepository;
+        IRepository<User> _talentRespository;
         IFileService _fileService;
 
 
@@ -37,6 +38,7 @@ namespace Talent.Services.Profile.Domain.Services
                               IRepository<Employer> employerRepository,
                               IRepository<Job> jobRepository,
                               IRepository<Recruiter> recruiterRepository,
+                              IRepository<User> talentRepository,
                               IFileService fileService)
         {
             _userAppContext = userAppContext;
@@ -47,6 +49,7 @@ namespace Talent.Services.Profile.Domain.Services
             _employerRepository = employerRepository;
             _jobRepository = jobRepository;
             _recruiterRepository = recruiterRepository;
+            _talentRespository = talentRepository;
             _fileService = fileService;
         }
 
@@ -616,12 +619,13 @@ namespace Talent.Services.Profile.Domain.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<TalentSnapshotViewModel>> GetTalentSnapshotList(string employerOrJobId, bool forJob, int position, int increment)
+        public async Task<IEnumerable<TalentSnapshotViewModel>> GetTalentSnapshotList(string employerOrJobId, bool forJob, int position, int increment = 5)
         {
             //Your code here;
             // TODO: Get talent feed
-            
-            throw new NotImplementedException();
+            var obj = await _talentRespository.Get(t => t.IsDeleted == false && t.Skills.Count > 1);
+            var list = obj.Skip(position).Take(increment).ToList();
+            return list.Select(t => TalentSnapshotFromViewModel(t));
         }
 
         public async Task<IEnumerable<TalentSnapshotViewModel>> GetTalentSnapshotList(IEnumerable<string> ids)
@@ -762,6 +766,26 @@ namespace Talent.Services.Profile.Domain.Services
                 Start = model.Start,
                 End = model.End,
                 IsDeleted = false,
+            };
+        }
+
+        protected TalentSnapshotViewModel TalentSnapshotFromViewModel(User model)
+        {
+            List<string> sk = new List<string>();
+            model.Skills.ForEach(skill => {
+                sk.Add(skill.Skill);
+            });
+
+            return new TalentSnapshotViewModel
+            {
+                Id = model.Id,
+                Name = model.FirstName + model.MiddleName + model.LastName,
+                CurrentEmployment = "Apple",
+                CVUrl = model.CvName,
+                VideoUrl = model.VideoName,
+                PhotoId = model.ProfilePhotoUrl,
+                Skills = sk.Count > 0 ? sk : (new List<string>() { "" }),
+                Visa = model.VisaStatus,
             };
         }
 

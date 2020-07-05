@@ -521,7 +521,9 @@ namespace Talent.Services.Profile.Controllers
         {
             try
             {
+                // Already done but the data isn't feasable
                 var result = (await _profileService.GetTalentSnapshotList(_userAppContext.CurrentUserId, false, feed.Position, feed.Number)).ToList();
+                // var result = new List<TalentSnapshotViewModel>() { };
 
                 // Dummy talent to fill out the list once we run out of data
                 if (result.Count == 0)

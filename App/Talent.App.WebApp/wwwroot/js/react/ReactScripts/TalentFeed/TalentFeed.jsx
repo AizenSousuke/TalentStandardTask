@@ -23,6 +23,8 @@ export default class TalentFeed extends React.Component {
 			loaderData: loader,
 			loadingFeedData: false,
 			companyDetails: null,
+			position: 1,
+			number: 5,
 		};
 
 		this.init = this.init.bind(this);
@@ -38,7 +40,7 @@ export default class TalentFeed extends React.Component {
 		// Fetch data
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/getTalent",
+			url: "http://localhost:60290/profile/profile/getTalent" + "?position=" + this.state.position + "&number=" + this.state.number,
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",

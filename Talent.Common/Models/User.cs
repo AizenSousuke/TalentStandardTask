@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Talent.Common.Models
 {
+    [BsonIgnoreExtraElements]
     public class User : IMongoCommon
     {
         public Guid UId { get; set; }
@@ -69,7 +70,8 @@ namespace Talent.Common.Models
         public string Number { get; set; }
         public string Street { get; set; }
         public string Suburb { get; set; }
-        public int PostCode { get; set; }
+        public dynamic PostCode { get; set; }
+        //public int PostCode { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
 
