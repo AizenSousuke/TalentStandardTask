@@ -779,7 +779,7 @@ namespace Talent.Services.Profile.Domain.Services
             return new TalentSnapshotViewModel
             {
                 Id = model.Id,
-                Name = model.FirstName + model.MiddleName + model.LastName,
+                Name = model.FirstName + " " + model.MiddleName + " " + model.LastName,
                 CurrentEmployment = "Apple",
                 Summary = model.Summary,
                 CVUrl = model.CvName,

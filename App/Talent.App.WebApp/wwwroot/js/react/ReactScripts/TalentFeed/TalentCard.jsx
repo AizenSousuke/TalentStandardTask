@@ -92,9 +92,17 @@ export default class TalentCard extends React.Component {
 						</Grid> */}
 					</Card.Content>
 					<Card.Content extra textAlign={"left"}>
-						<Label basic color={"blue"}>
-							C#
-						</Label>
+						{this.props.talent.skills !== null ? (
+							this.props.talent.skills.map((skills) => {
+								return (
+									<Label basic color={"blue"}>
+										{skills}
+									</Label>
+								);
+							})
+						) : (
+							<React.Fragment></React.Fragment>
+						)}
 					</Card.Content>
 				</Card>
 			</React.Fragment>
