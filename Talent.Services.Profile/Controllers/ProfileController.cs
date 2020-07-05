@@ -554,6 +554,7 @@ namespace Talent.Services.Profile.Controllers
                         Summary = "Dummy User is a set designer living in New York who enjoys kittens, music, and partying.",
                         Visa = "Citizen",
                         VideoUrl = "https://www.youtube.com/watch?v=iOHdxnEnOyo",
+                        CVUrl = "https://linkedin.com",
                     }
                 );
 

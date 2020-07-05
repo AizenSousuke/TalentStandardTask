@@ -53,7 +53,7 @@ export default class TalentFeed extends React.Component {
 			type: "GET",
 			success: function (res) {
 				this.setState({ feedData: res.data }, () => {
-					console.log(this.state.feedData.length);
+					// console.log(this.state.feedData.length);
 				});
 			}.bind(this),
 		});

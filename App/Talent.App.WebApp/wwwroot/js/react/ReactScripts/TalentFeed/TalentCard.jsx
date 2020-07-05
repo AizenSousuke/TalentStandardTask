@@ -80,7 +80,17 @@ export default class TalentCard extends React.Component {
 								/>
 							)}
 
-							<Button name="cv" icon="file pdf outline" />
+							<Button
+								name="cv"
+								icon="file pdf outline"
+								onClick={(e) => {
+									console.log(e);
+									window.location.href =
+										this.props.talent.cvUrl === null
+											? "https://google.com"
+											: this.props.talent.cvUrl;
+								}}
+							/>
 							<Button name="linkedin" icon="linkedin" />
 							<Button name="github" icon="github" />
 						</Button.Group>
@@ -93,9 +103,9 @@ export default class TalentCard extends React.Component {
 					</Card.Content>
 					<Card.Content extra textAlign={"left"}>
 						{this.props.talent.skills !== null ? (
-							this.props.talent.skills.map((skills) => {
+							this.props.talent.skills.map((skills, key) => {
 								return (
-									<Label basic color={"blue"}>
+									<Label key={key} basic color={"blue"}>
 										{skills}
 									</Label>
 								);
