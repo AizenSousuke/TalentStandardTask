@@ -38,7 +38,7 @@ export default class CompanyProfile extends React.Component {
 								}
 							</Card.Meta>
 							<Card.Description textAlign={"center"}>
-								Desired skills are C# and React JS
+								We currently do not have specific skills that we desire.
 							</Card.Description>
 						</Card.Content>
 						<Card.Content extra>
