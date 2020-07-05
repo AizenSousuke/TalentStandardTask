@@ -57,6 +57,20 @@ export default class TalentFeed extends React.Component {
 				});
 			}.bind(this),
 		});
+
+		$.ajax({
+			url: "http://localhost:60290/profile/profile/getEmployerProfile",
+			headers: {
+				Authorization: "Bearer " + cookies,
+				"Content-Type": "application/json",
+			},
+			type: "GET",
+			success: function (res) {
+				this.setState({ companyDetails: res.employer }, () => {
+					// console.log(this.state.feedData.length);
+				});
+			}.bind(this),
+		});
 	}
 
 	componentDidMount() {
@@ -77,17 +91,24 @@ export default class TalentFeed extends React.Component {
 							</Grid.Column>
 							<Grid.Column width={"10"} textAlign={"center"}>
 								{this.state.feedData.length < 1 ? (
-									<p>
+									<b>
 										There are no talents found for your
 										recruitment company.
-									</p>
+									</b>
 								) : (
 									<React.Fragment>
-										{this.state.feedData.length > 1 ? this.state.feedData.map(talent => {
-											return (
-												<TalentCard key={talent.id} talent={talent} />
-											)
-										}) : "Cannot map data"}
+										{this.state.feedData.length > 1
+											? this.state.feedData.map(
+													(talent) => {
+														return (
+															<TalentCard
+																key={talent.id}
+																talent={talent}
+															/>
+														);
+													}
+											  )
+											: "Cannot map data"}
 									</React.Fragment>
 								)}
 							</Grid.Column>

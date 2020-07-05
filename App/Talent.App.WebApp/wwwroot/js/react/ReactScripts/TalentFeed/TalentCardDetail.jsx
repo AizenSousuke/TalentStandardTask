@@ -29,7 +29,7 @@ export default class TalentCardDetail extends React.Component {
 							<Grid.Column>
 								<Image
 									fluid
-									src="http://semantic-ui.com/images/avatar/large/jenny.jpg"
+									src={this.props.talent.photoId !== null ? this.props.talent.photoId : "http://semantic-ui.com/images/avatar/large/jenny.jpg"}
 								/>
 							</Grid.Column>
 							<Grid.Column textAlign={"left"}>

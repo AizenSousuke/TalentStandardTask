@@ -7,36 +7,59 @@ export default class CompanyProfile extends React.Component {
 	}
 
 	render() {
-		return (
-			<React.Fragment>
-				<Card>
-					<Card.Content>
-						<Card.Header textAlign={"center"}>
-							<Image
-                                circular
-                                size={"mini"}
-								src="http://loremflickr.com/100/100/image"
-							/>
-							<p>MVP Studio</p>
-						</Card.Header>
-                        <Card.Meta textAlign={"center"}>
-                            <Icon name="map marker alternate" />
-                            Address
-                        </Card.Meta>
-                        <Card.Description textAlign={"center"}>
-                            Desired skills
-                        </Card.Description>
-					</Card.Content>
-					<Card.Content extra>
-						<div>
-							<Icon name="call" />: 1234 5678
-						</div>
-						<div>
-							<Icon name="mail" />: mvp@studio.com
-						</div>
-					</Card.Content>
-				</Card>
-			</React.Fragment>
-		);
+		if (this.props.companyDetails !== null) {
+			return (
+				<React.Fragment>
+					<Card>
+						<Card.Content>
+							<Card.Header textAlign={"center"}>
+								<Image
+									circular
+									size={"mini"}
+									src="http://loremflickr.com/100/100/image"
+								/>
+								<p>
+									{
+										this.props.companyDetails.companyContact
+											.name
+									}
+								</p>
+							</Card.Header>
+							<Card.Meta textAlign={"center"}>
+								<Icon name="map marker alternate" />
+								{
+									this.props.companyDetails.companyContact
+										.location.city
+								}
+								,{" "}
+								{
+									this.props.companyDetails.companyContact
+										.location.country
+								}
+							</Card.Meta>
+							<Card.Description textAlign={"center"}>
+								Desired skills are C# and React JS
+							</Card.Description>
+						</Card.Content>
+						<Card.Content extra>
+							<div>
+								<Icon name="call" />:{" "}
+								{this.props.companyDetails.companyContact.phone}
+							</div>
+							<div>
+								<Icon name="mail" />:{" "}
+								{this.props.companyDetails.companyContact.email}
+							</div>
+						</Card.Content>
+					</Card>
+				</React.Fragment>
+			);
+		} else {
+			return (
+				<React.Fragment>
+					Failed to load company details.
+				</React.Fragment>
+			)
+		}
 	}
 }

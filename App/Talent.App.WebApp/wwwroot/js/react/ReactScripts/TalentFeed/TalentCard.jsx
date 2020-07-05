@@ -84,15 +84,35 @@ export default class TalentCard extends React.Component {
 								name="cv"
 								icon="file pdf outline"
 								onClick={(e) => {
-									console.log(e);
+									// console.log(e);
 									window.location.href =
 										this.props.talent.cvUrl === null
 											? "https://google.com"
 											: this.props.talent.cvUrl;
 								}}
 							/>
-							<Button name="linkedin" icon="linkedin" />
-							<Button name="github" icon="github" />
+							<Button
+								name="linkedin"
+								icon="linkedin"
+								onClick={(e) => {
+									// console.log(e);
+									window.location.href =
+										this.props.talent.linkedin === null
+											? "https://google.com"
+											: this.props.talent.cvUrl;
+								}}
+							/>
+							<Button
+								name="github"
+								icon="github"
+								onClick={(e) => {
+									// console.log(e);
+									window.location.href =
+										this.props.talent.github === null
+											? "https://google.com"
+											: this.props.talent.cvUrl;
+								}}
+							/>
 						</Button.Group>
 						{/* <Grid columns={"equal"}>
 							<Grid.Column></Grid.Column>
