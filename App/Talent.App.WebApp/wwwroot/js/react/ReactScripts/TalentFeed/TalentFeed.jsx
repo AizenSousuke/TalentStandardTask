@@ -40,14 +40,21 @@ export default class TalentFeed extends React.Component {
 		// Fetch data
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "http://localhost:60290/profile/profile/getTalent" + "?position=" + this.state.position + "&number=" + this.state.number,
+			url:
+				"http://localhost:60290/profile/profile/getTalent" +
+				"?position=" +
+				this.state.position +
+				"&number=" +
+				this.state.number,
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
 			},
 			type: "GET",
 			success: function (res) {
-				this.setState({feedData: res});
+				this.setState({ feedData: res.data }, () => {
+					console.log(this.state.feedData.length);
+				});
 			}.bind(this),
 		});
 	}
@@ -69,12 +76,24 @@ export default class TalentFeed extends React.Component {
 								/>
 							</Grid.Column>
 							<Grid.Column width={"10"} textAlign={"center"}>
-                                There are no talents found for your recruitment company.
-								<TalentCard />
-                            </Grid.Column>
+								{this.state.feedData.length < 1 ? (
+									<p>
+										There are no talents found for your
+										recruitment company.
+									</p>
+								) : (
+									<React.Fragment>
+										{this.state.feedData.length > 1 ? this.state.feedData.map(talent => {
+											return (
+												<TalentCard key={talent.id} talent={talent} />
+											)
+										}) : "Cannot map data"}
+									</React.Fragment>
+								)}
+							</Grid.Column>
 							<Grid.Column width={"3"}>
-                                <FollowingSuggestion />
-                            </Grid.Column>
+								<FollowingSuggestion />
+							</Grid.Column>
 						</Grid.Row>
 					</Grid>
 				</div>

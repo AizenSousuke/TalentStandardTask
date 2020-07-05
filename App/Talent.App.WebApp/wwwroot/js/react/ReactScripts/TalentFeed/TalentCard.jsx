@@ -19,13 +19,21 @@ export default class TalentCard extends React.Component {
 		super(props);
 
 		this.state = {
-			state: "",
+			state: "video",
 		};
 	}
 
 	handleState(e) {
-        console.log(e);
-    }
+		console.log(e.target.name);
+		switch (e.target.name) {
+			case "profile":
+				this.setState({ state: "profile" });
+				break;
+			default:
+				this.setState({ state: "video" });
+				break;
+		}
+	}
 
 	render() {
 		return (
@@ -36,7 +44,7 @@ export default class TalentCard extends React.Component {
 							<Grid.Row>
 								<Grid.Column width={"14"}>
 									<Card.Header textAlign={"left"}>
-										<h2>Header</h2>
+										<h2>{this.props.talent.name}</h2>
 									</Card.Header>
 								</Grid.Column>
 								<Grid.Column width={"2"}>
@@ -45,18 +53,36 @@ export default class TalentCard extends React.Component {
 							</Grid.Row>
 						</Grid>
 					</Card.Content>
-					<TalentCardDetail state={this.state.state} />
+
+					{/* Details here */}
+					<TalentCardDetail
+						talent={this.props.talent}
+						state={this.state.state}
+					/>
+
 					<Card.Content extra>
 						<Button.Group basic size={"medium"} widths={"4"}>
-							<Button
-								icon="video"
-								onClick={(e) => {
-									this.handleState(e);
-								}}
-							/>
-							<Button icon="file pdf outline" />
-							<Button icon="linkedin" />
-							<Button icon="github" />
+							{this.state.state === "video" ? (
+								<Button
+									name="profile"
+									icon="male"
+									onClick={(e) => {
+										this.handleState(e);
+									}}
+								/>
+							) : (
+								<Button
+									name="video"
+									icon="video"
+									onClick={(e) => {
+										this.handleState(e);
+									}}
+								/>
+							)}
+
+							<Button name="cv" icon="file pdf outline" />
+							<Button name="linkedin" icon="linkedin" />
+							<Button name="github" icon="github" />
 						</Button.Group>
 						{/* <Grid columns={"equal"}>
 							<Grid.Column></Grid.Column>

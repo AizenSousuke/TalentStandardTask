@@ -21,6 +21,18 @@ namespace Talent.App.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Nik added this
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowWebAppAccess", builder =>
+            //    {
+            //        builder.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials();
+            //    });
+            //});
+
             services.AddMvc();
         }
 
@@ -38,6 +50,13 @@ namespace Talent.App.WebApp
             }
 
             app.UseStaticFiles();
+
+            // Nik custom code
+            //app.UseCors("AllowWebAppAccess");
+            //app.Use(async (context, next) =>
+            //{
+            //    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://youtube.com");
+            //});
 
             app.UseMvc(routes =>
             {

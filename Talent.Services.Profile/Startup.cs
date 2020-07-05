@@ -91,6 +91,12 @@ namespace Talent.Services.Profile
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors("AllowWebAppAccess");
+            // Nik custom code
+            //app.Use(async (context, next) =>
+            //{
+            //    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://youtube.com");
+            //});
+
             app.UseMvc();
         }
     }

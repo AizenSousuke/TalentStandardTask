@@ -12,10 +12,12 @@ import {
 	Divider,
 	Label,
 } from "semantic-ui-react";
+import YouTube from "react-youtube";
 
 export default class TalentCardDetail extends React.Component {
 	constructor(props) {
-		super(props);
+        super(props);
+        
 	}
 
 	render() {
@@ -37,32 +39,34 @@ export default class TalentCardDetail extends React.Component {
 								</Grid.Row>
 								<Grid.Row>
 									<b>CURRENT EMPLOYER</b>
-									<p>ABC</p>
+									<p>{this.props.talent.currentEmployment}</p>
 									<br></br>
 								</Grid.Row>
 								<Grid.Row>
 									<b>VISA STATUS</b>
-									<p>ABC</p>
+									<p>{this.props.talent.visa}</p>
 									<br></br>
 								</Grid.Row>
 								<Grid.Row>
 									<b>POSITION</b>
-									<p>ABC</p>
+									<p>{this.props.talent.summary}</p>
 									<br></br>
 								</Grid.Row>
 							</Grid.Column>
 						</Grid>
 					</React.Fragment>
 				);
-                default:
-                    return (<React.Fragment>
-                        <Grid>
-                            <Grid.Column>
-                                Video
-                            </Grid.Column>
-                        </Grid>
-                    </React.Fragment>);
-
+			default:
+				return (
+					<React.Fragment>
+						<Grid>
+							<Grid.Column>
+								{/* <iframe width="560" height="315" src={this.props.talent.videoUrl} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
+								<YouTube videoId={this.props.talent.videoUrl == null ? "iOHdxnEnOyo" : this.props.talent.videoUrl.split("v=")[1]} />
+							</Grid.Column>
+						</Grid>
+					</React.Fragment>
+				);
 		}
 	}
 }

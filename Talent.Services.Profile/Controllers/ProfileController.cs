@@ -541,6 +541,22 @@ namespace Talent.Services.Profile.Controllers
                             }
                         );
                 }
+
+                // For debugging \ showcase
+                result.Add(
+                    new Models.TalentSnapshotViewModel
+                    {
+                        CurrentEmployment = "Software Developer at XYZ",
+                        Level = "Junior",
+                        Name = "A Dummy User...",
+                        PhotoId = "http://talent-photo2.s3.amazonaws.com/profile_5d667a6823826242f438201e_icon.png",
+                        Skills = new List<string> { "C#", ".Net Core", "Javascript", "ReactJS", "PreactJS" },
+                        Summary = "Dummy User is a set designer living in New York who enjoys kittens, music, and partying.",
+                        Visa = "Citizen",
+                        VideoUrl = "https://www.youtube.com/watch?v=iOHdxnEnOyo",
+                    }
+                );
+
                 return Json(new { Success = true, Data = result });
             }
             catch (Exception e)

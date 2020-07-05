@@ -781,6 +781,7 @@ namespace Talent.Services.Profile.Domain.Services
                 Id = model.Id,
                 Name = model.FirstName + model.MiddleName + model.LastName,
                 CurrentEmployment = "Apple",
+                Summary = model.Summary,
                 CVUrl = model.CvName,
                 VideoUrl = model.VideoName,
                 PhotoId = model.ProfilePhotoUrl,
