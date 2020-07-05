@@ -52,6 +52,7 @@ export default class TalentFeed extends React.Component {
 							</Grid.Column>
 							<Grid.Column width={"10"} textAlign={"center"}>
                                 There are no talents
+								<TalentCard />
                             </Grid.Column>
 							<Grid.Column width={"3"}>
                                 <FollowingSuggestion />

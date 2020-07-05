@@ -4,7 +4,7 @@ import { Card, Feed } from "semantic-ui-react";
 export default class FollowingSuggestion extends React.Component {
 	render() {
 		return (
-			<div className="content">
+			<React.Fragment>
 				<Card>
 					<Card.Content>
 						<Card.Header>Follow Talent</Card.Header>
@@ -23,7 +23,7 @@ export default class FollowingSuggestion extends React.Component {
 						</Feed>
 					</Card.Content>
 				</Card>
-			</div>
+			</React.Fragment>
 		);
 	}
 }
