@@ -331,6 +331,7 @@ namespace Talent.Services.Profile.Domain.Services
                 existingUser.Nationality = model.Nationality;
                 existingUser.Summary = model.Summary;
                 existingUser.Description = model.Description;
+                existingUser.LinkedAccounts = model.LinkedAccounts;
 
                 List<UserLanguage> userLanguagesList = new List<UserLanguage>();
                 if (model.Languages != null)

@@ -164,7 +164,7 @@ export default class AccountProfile extends React.Component {
 							<div className="profile">
 								<form className="ui form">
 									<div className="ui grid">
-										{/* <FormItemWrapper
+										<FormItemWrapper
                                             title='Linked Accounts'
                                             tooltip='Linking to online social networks adds credibility to your profile'
                                         >
@@ -173,7 +173,7 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
                                             />
-                                        </FormItemWrapper> */}
+                                        </FormItemWrapper>
 										<FormItemWrapper
 											title="User Details"
 											tooltip="Enter your contact details"
