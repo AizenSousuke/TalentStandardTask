@@ -538,7 +538,7 @@ export default class Experience extends React.Component {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{this.state.experiencesArray.map((l) => {
+							{this.state.experiencesArray.length > 0 ? this.state.experiencesArray.map((l) => {
 								return (
 									<React.Fragment key={l.id}>
 										{this.state.openEdit &&
@@ -829,7 +829,7 @@ export default class Experience extends React.Component {
 										)}
 									</React.Fragment>
 								);
-							})}
+							}) : <React.Fragment></React.Fragment>}
 						</TableBody>
 					</Table>
 				</Grid.Row>

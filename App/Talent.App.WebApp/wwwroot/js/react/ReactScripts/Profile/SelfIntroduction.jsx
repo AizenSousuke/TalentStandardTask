@@ -95,8 +95,7 @@ export default class SelfIntroduction extends React.Component {
 					<p>
 						Description must be between 150-600 characters.{" "}
 						<br></br>
-						Characters remaining : {characterLimit -
-							characters} / {characterLimit}
+						Characters : {characters} / {characterLimit}
 					</p>
 					<Button
 						style={{ float: "right" }}
