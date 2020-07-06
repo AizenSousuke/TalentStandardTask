@@ -165,125 +165,132 @@ export class Address extends React.Component {
 	renderEdit() {
 		return (
 			<React.Fragment>
-				<Grid>
+				<Grid columns={"equal"}>
 					<Grid.Row>
-						<ChildSingleInput
-							inputType="number"
-							label="Number"
-							name="number"
-							value={
-								this.state.newAddress.number
-									? this.state.newAddress.number
-									: ""
-							}
-							controlFunc={this.handleChange}
-							maxLength={3}
-							isError={this.state.schema.number}
-							placeholder="Enter your address number"
-							errorMessage="Please enter a valid number"
-						/>
-						<ChildSingleInput
-							inputType="text"
-							label="Street"
-							name="street"
-							value={
-								this.state.newAddress.street
-									? this.state.newAddress.street
-									: ""
-							}
-							controlFunc={this.handleChange}
-							maxLength={80}
-							isError={this.state.schema.street}
-							placeholder="Enter your street"
-							errorMessage="Please enter a valid street"
-						/>
-						<ChildSingleInput
-							inputType="text"
-							label="Suburb"
-							name="suburb"
-							value={
-								this.state.newAddress.suburb
-									? this.state.newAddress.suburb
-									: ""
-							}
-							controlFunc={this.handleChange}
-							maxLength={80}
-							isError={this.state.schema.suburb}
-							placeholder="Enter your suburb"
-							errorMessage="Please enter a valid suburb"
-						/>
-						<Grid.Column></Grid.Column>
-						<Grid.Column></Grid.Column>
-						<Grid.Column></Grid.Column>
+						<Grid.Column width={"4"}>
+							<ChildSingleInput
+								inputType="number"
+								label="Number"
+								name="number"
+								value={
+									this.state.newAddress.number
+										? this.state.newAddress.number
+										: ""
+								}
+								controlFunc={this.handleChange}
+								maxLength={3}
+								isError={this.state.schema.number}
+								placeholder="Enter your address number"
+								errorMessage="Please enter a valid number"
+							/>
+						</Grid.Column>
+						<Grid.Column width={"8"}>
+							<ChildSingleInput
+								inputType="text"
+								label="Street"
+								name="street"
+								value={
+									this.state.newAddress.street
+										? this.state.newAddress.street
+										: ""
+								}
+								controlFunc={this.handleChange}
+								maxLength={80}
+								isError={this.state.schema.street}
+								placeholder="Enter your street"
+								errorMessage="Please enter a valid street"
+							/>
+						</Grid.Column>
+						<Grid.Column width={"4"}>
+							<ChildSingleInput
+								inputType="text"
+								label="Suburb"
+								name="suburb"
+								value={
+									this.state.newAddress.suburb
+										? this.state.newAddress.suburb
+										: ""
+								}
+								controlFunc={this.handleChange}
+								maxLength={80}
+								isError={this.state.schema.suburb}
+								placeholder="Enter your suburb"
+								errorMessage="Please enter a valid suburb"
+							/>
+						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row>
-						<Grid.Column></Grid.Column>
-						<Grid.Column></Grid.Column>
-						<Grid.Column></Grid.Column>
+						<Grid.Column width={"6"}>
+							<b>Country</b>
+							<Select
+								name="country"
+								controlFunc={(e) => {
+									this.setCitiesArray(e.target.value);
+									this.handleChange(e);
+								}}
+								placeholder="Select a country"
+								selectedOption={this.state.newAddress.country}
+								options={this.state.countries}
+							/>
+						</Grid.Column>
+						<Grid.Column width={"6"}>
+							<b>City</b>
+							{this.state.cities.length > 0 ||
+							this.state.newAddress.city.length > 0 ? (
+								<Select
+									name="city"
+									controlFunc={(e) => this.handleChange(e)}
+									placeholder="Select a city"
+									selectedOption={this.state.newAddress.city}
+									options={this.state.cities}
+								/>
+							) : (
+								<Select
+									name="city"
+									controlFunc={this.handleChange}
+									placeholder="Select a country first"
+									options={[]}
+									disabled={true}
+								/>
+							)}
+						</Grid.Column>
+						<Grid.Column width={"4"}>
+							<ChildSingleInput
+								inputType="number"
+								label="Post Code"
+								name="postCode"
+								value={
+									this.state.newAddress.postCode
+										? this.state.newAddress.postCode
+										: ""
+								}
+								controlFunc={this.handleChange}
+								maxLength={12}
+								isError={this.state.schema.postCode}
+								placeholder="Enter your postcode"
+								errorMessage="Please enter a valid postcode"
+							/>
+						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row>
-						<Grid.Column></Grid.Column>
+						<Grid.Column>
+							<button
+								type="button"
+								className="ui teal button"
+								onClick={this.saveAddress}
+							>
+								Save
+							</button>
+							<button
+								type="button"
+								className="ui button"
+								onClick={this.closeEdit}
+							>
+								Cancel
+							</button>
+						</Grid.Column>
 					</Grid.Row>
 				</Grid>
-				<ChildSingleInput
-					inputType="number"
-					label="Post Code"
-					name="postCode"
-					value={
-						this.state.newAddress.postCode
-							? this.state.newAddress.postCode
-							: ""
-					}
-					controlFunc={this.handleChange}
-					maxLength={12}
-					isError={this.state.schema.postCode}
-					placeholder="Enter your postcode"
-					errorMessage="Please enter a valid postcode"
-				/>
-				Country:
-				<Select
-					name="country"
-					controlFunc={(e) => {
-						this.setCitiesArray(e.target.value);
-						this.handleChange(e);
-					}}
-					placeholder="Select a country"
-					selectedOption={this.state.newAddress.country}
-					options={this.state.countries}
-				/>
-				City:
-				{this.state.cities.length > 0 ||
-				this.state.newAddress.city.length > 0 ? (
-					<Select
-						name="city"
-						controlFunc={(e) => this.handleChange(e)}
-						placeholder="Select a city"
-						selectedOption={this.state.newAddress.city}
-						options={this.state.cities}
-					/>
-				) : (
-					<Select
-						name="city"
-						controlFunc={this.handleChange}
-						placeholder="Select a country first"
-						options={[]}
-						disabled={true}
-					/>
-				)}
-				<button
-					type="button"
-					className="ui teal button"
-					onClick={this.saveAddress}
-				>
-					Save
-				</button>
-				<button
-					type="button"
-					className="ui button"
-					onClick={this.closeEdit}
-				>
-					Cancel
-				</button>
 			</React.Fragment>
 		);
 	}
