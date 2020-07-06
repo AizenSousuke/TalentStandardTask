@@ -5,7 +5,7 @@ import { ChildSingleInput } from "../Form/SingleInput.jsx";
 import { Select } from "../Form/Select.jsx";
 import { countries } from "../Employer/common";
 import Joi from "@hapi/joi";
-import { Dropdown, Divider, Button } from "semantic-ui-react";
+import { Dropdown, Divider, Button, Grid } from "semantic-ui-react";
 
 export class Address extends React.Component {
 	constructor(props) {
@@ -72,8 +72,7 @@ export class Address extends React.Component {
 			newAddress: address,
 		});
 		// Set cities array in case a country is already defined from props
-		if (this.props.addressData.country !== "")
-		{
+		if (this.props.addressData.country !== "") {
 			this.setCitiesArray(this.props.addressData.country);
 		}
 	}
@@ -165,52 +164,67 @@ export class Address extends React.Component {
 
 	renderEdit() {
 		return (
-			<div className="ui sixteen wide column">
-				<ChildSingleInput
-					inputType="number"
-					label="Number"
-					name="number"
-					value={
-						this.state.newAddress.number
-							? this.state.newAddress.number
-							: ""
-					}
-					controlFunc={this.handleChange}
-					maxLength={3}
-					isError={this.state.schema.number}
-					placeholder="Enter your address number"
-					errorMessage="Please enter a valid number"
-				/>
-				<ChildSingleInput
-					inputType="text"
-					label="Street"
-					name="street"
-					value={
-						this.state.newAddress.street
-							? this.state.newAddress.street
-							: ""
-					}
-					controlFunc={this.handleChange}
-					maxLength={80}
-					isError={this.state.schema.street}
-					placeholder="Enter your street"
-					errorMessage="Please enter a valid street"
-				/>
-				<ChildSingleInput
-					inputType="text"
-					label="Suburb"
-					name="suburb"
-					value={
-						this.state.newAddress.suburb
-							? this.state.newAddress.suburb
-							: ""
-					}
-					controlFunc={this.handleChange}
-					maxLength={80}
-					isError={this.state.schema.suburb}
-					placeholder="Enter your suburb"
-					errorMessage="Please enter a valid suburb"
-				/>
+			<React.Fragment>
+				<Grid>
+					<Grid.Row>
+						<ChildSingleInput
+							inputType="number"
+							label="Number"
+							name="number"
+							value={
+								this.state.newAddress.number
+									? this.state.newAddress.number
+									: ""
+							}
+							controlFunc={this.handleChange}
+							maxLength={3}
+							isError={this.state.schema.number}
+							placeholder="Enter your address number"
+							errorMessage="Please enter a valid number"
+						/>
+						<ChildSingleInput
+							inputType="text"
+							label="Street"
+							name="street"
+							value={
+								this.state.newAddress.street
+									? this.state.newAddress.street
+									: ""
+							}
+							controlFunc={this.handleChange}
+							maxLength={80}
+							isError={this.state.schema.street}
+							placeholder="Enter your street"
+							errorMessage="Please enter a valid street"
+						/>
+						<ChildSingleInput
+							inputType="text"
+							label="Suburb"
+							name="suburb"
+							value={
+								this.state.newAddress.suburb
+									? this.state.newAddress.suburb
+									: ""
+							}
+							controlFunc={this.handleChange}
+							maxLength={80}
+							isError={this.state.schema.suburb}
+							placeholder="Enter your suburb"
+							errorMessage="Please enter a valid suburb"
+						/>
+						<Grid.Column></Grid.Column>
+						<Grid.Column></Grid.Column>
+						<Grid.Column></Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column></Grid.Column>
+						<Grid.Column></Grid.Column>
+						<Grid.Column></Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column></Grid.Column>
+					</Grid.Row>
+				</Grid>
 				<ChildSingleInput
 					inputType="number"
 					label="Post Code"
@@ -270,7 +284,7 @@ export class Address extends React.Component {
 				>
 					Cancel
 				</button>
-			</div>
+			</React.Fragment>
 		);
 	}
 
@@ -330,13 +344,20 @@ export class Nationality extends React.Component {
 				<div className="ui sixteen wide column">
 					<Select
 						name="nationality"
-						selectedOption={this.props.nationalityData !== null ? this.props.nationalityData : ""}
+						selectedOption={
+							this.props.nationalityData !== null
+								? this.props.nationalityData
+								: ""
+						}
 						placeholder="Select your nationality"
 						options={this.state.nationality}
 						scrolling
 						controlFunc={(e) => {
 							// console.log(e.target.value);
-							const data = Object.assign({}, { nationality: e.target.value });
+							const data = Object.assign(
+								{},
+								{ nationality: e.target.value }
+							);
 							this.props.saveProfileData(data);
 							// console.log(data);
 						}}

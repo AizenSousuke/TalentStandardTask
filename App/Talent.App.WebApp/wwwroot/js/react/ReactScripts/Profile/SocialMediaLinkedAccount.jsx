@@ -46,7 +46,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 		this.setState(
 			{
 				openEdit: !this.state.openEdit,
-				LinkedIn: this.props.linkedAccounts.linkedin,
+				LinkedIn: this.props.linkedAccounts.linkedIn,
 				Github: this.props.linkedAccounts.github,
 			},
 			() => {
@@ -73,7 +73,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 				{},
 				{
 					linkedAccounts: {
-						linkedin: this.state.LinkedIn,
+						linkedIn: this.state.LinkedIn,
 						github: this.state.Github,
 					},
 				}
