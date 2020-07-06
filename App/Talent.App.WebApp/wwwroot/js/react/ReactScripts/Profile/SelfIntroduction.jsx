@@ -73,7 +73,7 @@ export default class SelfIntroduction extends React.Component {
 					<div className="field">
 						<Input
 							name="summary"
-							value={this.props.summary}
+							value={this.props.summary || ''}
 							onChange={this.update}
 							placeholder={
 								"Please provide a short summary about yourself"
@@ -87,7 +87,7 @@ export default class SelfIntroduction extends React.Component {
 							maxLength={characterLimit}
 							name="description"
 							placeholder="Please tell us about any hobbies, additional expertise, or anything else you’d like to add."
-							value={this.props.description}
+							value={this.props.description || ''}
 							onChange={this.update}
 							// error={this.state.schema.description}
 						/>

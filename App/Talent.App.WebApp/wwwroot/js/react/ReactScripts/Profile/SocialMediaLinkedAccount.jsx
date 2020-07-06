@@ -143,7 +143,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 									fluid
 									onChange={(e) => this.update(e)}
 									placeholder="Enter your LinkedIn URL"
-									value={this.props.linkedAccounts.linkedIn}
+									value={this.props.linkedAccounts.linkedIn || ''}
 									error={this.state.schema.LinkedIn}
 								/>
 								<br></br>
@@ -156,7 +156,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 									fluid
 									onChange={(e) => this.update(e)}
 									placeholder="Enter your Github URL"
-									value={this.props.linkedAccounts.github}
+									value={this.props.linkedAccounts.github || ''}
 									error={this.state.schema.Github}
 								/>
 								<br></br>
