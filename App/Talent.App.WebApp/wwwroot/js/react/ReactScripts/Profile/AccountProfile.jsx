@@ -71,7 +71,8 @@ export default class AccountProfile extends React.Component {
 		console.log("Loading data in account profile");
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalentProfile",
+			url:
+				"https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalentProfile",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -114,7 +115,8 @@ export default class AccountProfile extends React.Component {
 	saveProfile() {
 		var cookies = Cookies.get("talentAuthToken");
 		$.ajax({
-			url: "https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentProfile",
+			url:
+				"https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentProfile",
 			headers: {
 				Authorization: "Bearer " + cookies,
 				"Content-Type": "application/json",
@@ -224,31 +226,49 @@ export default class AccountProfile extends React.Component {
 													this.state.profileData
 														.languages
 												}
-												userId={this.state.profileData.id}
-												updateAndSaveData={this.updateAndSaveData}
+												userId={
+													this.state.profileData.id
+												}
+												updateAndSaveData={
+													this.updateAndSaveData
+												}
 											/>
 										</FormItemWrapper>
 										<FormItemWrapper
-                                            title='Skills'
-                                            tooltip='List your skills'
-                                        >
-                                            <Skill
-                                                skillData={this.state.profileData.skills}
-												userId={this.state.profileData.id}
-                                                updateAndSaveData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
-                                        <FormItemWrapper
-                                            title='Work experience'
-                                            tooltip='Add your work experience'
-                                        >
-                                            <Experience
-												userId={this.state.profileData.id}
-                                                experienceData={this.state.profileData.experience}
-                                                updateProfileData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
-                                        {/* <FormItemWrapper
+											title="Skills"
+											tooltip="List your skills"
+										>
+											<Skill
+												skillData={
+													this.state.profileData
+														.skills
+												}
+												userId={
+													this.state.profileData.id
+												}
+												updateAndSaveData={
+													this.updateAndSaveData
+												}
+											/>
+										</FormItemWrapper>
+										<FormItemWrapper
+											title="Work experience"
+											tooltip="Add your work experience"
+										>
+											<Experience
+												userId={
+													this.state.profileData.id
+												}
+												experienceData={
+													this.state.profileData
+														.experience
+												}
+												updateProfileData={
+													this.updateAndSaveData
+												}
+											/>
+										</FormItemWrapper>
+										{/* <FormItemWrapper
                                             title='Education'
                                             tooltip='Add your educational background'
                                         >
@@ -266,41 +286,73 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper> */}
-                                        <FormItemWrapper
-                                            title='Visa Status'
-                                            tooltip='What is your current Visa/Citizenship status?'
-                                        >
-                                            <VisaStatus
-                                                visaStatus={this.state.profileData.visaStatus}
-                                                visaExpiryDate={this.state.profileData.visaExpiryDate}
-                                                updateProfileData={this.updateWithoutSave}
-                                                saveProfileData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
-                                        <FormItemWrapper
-                                            title='Status'
-                                            tooltip='What is your current status in jobseeking?'
-                                        >
-                                            <TalentStatus
-                                                status={this.state.profileData.jobSeekingStatus !== null ? this.state.profileData.jobSeekingStatus : {status: "", availableDate: ""}}
-                                                updateProfileData={this.updateWithoutSave}
-                                                saveProfileData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
-                                        <FormItemWrapper
-                                            title='Profile Photo'
-                                            tooltip='Please upload your profile photo'
-                                            hideSegment={true}
-                                        >
-                                            <PhotoUpload
-												userId={this.state.profileData.id}
-                                                imageId={this.state.profileData.profilePhotoUrl}
-												updateProfileData={this.updateWithoutSave}
+										<FormItemWrapper
+											title="Visa Status"
+											tooltip="What is your current Visa/Citizenship status?"
+										>
+											<VisaStatus
+												visaStatus={
+													this.state.profileData
+														.visaStatus
+												}
+												visaExpiryDate={
+													this.state.profileData
+														.visaExpiryDate
+												}
+												updateProfileData={
+													this.updateWithoutSave
+												}
+												saveProfileData={
+													this.updateAndSaveData
+												}
+											/>
+										</FormItemWrapper>
+										<FormItemWrapper
+											title="Status"
+											tooltip="What is your current status in jobseeking?"
+										>
+											<TalentStatus
+												status={
+													this.state.profileData
+														.jobSeekingStatus !==
+													null
+														? this.state.profileData
+																.jobSeekingStatus
+														: {
+																status: "",
+																availableDate:
+																	"",
+														  }
+												}
+												updateProfileData={
+													this.updateWithoutSave
+												}
+												saveProfileData={
+													this.updateAndSaveData
+												}
+											/>
+										</FormItemWrapper>
+										<FormItemWrapper
+											title="Profile Photo"
+											tooltip="Please upload your profile photo"
+											hideSegment={true}
+										>
+											<PhotoUpload
+												userId={
+													this.state.profileData.id
+												}
+												imageId={
+													this.state.profileData
+														.profilePhotoUrl
+												}
+												updateProfileData={
+													this.updateWithoutSave
+												}
 												loadData={this.loadData}
-                                                savePhotoUrl='https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateProfilePhoto'
-                                            />
-                                        </FormItemWrapper>
-                                        {/* <FormItemWrapper
+												savePhotoUrl="https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateProfilePhoto"
+											/>
+										</FormItemWrapper>
+										{/* <FormItemWrapper
                                             title='Profile Video'
                                             tooltip='Upload a brief self-introduction video'
                                             hideSegment={true}
@@ -322,13 +374,22 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveCVUrl={'https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentCV'}
                                             />
-                                        </FormItemWrapper>
-                                        <SelfIntroduction
-                                            summary={this.state.profileData.summary}
-                                            description={this.state.profileData.description}
-                                            updateProfileData={this.updateAndSaveData}
-                                            updateWithoutSave={this.updateWithoutSave}
-                                        /> */}
+                                        </FormItemWrapper> */}
+										<SelfIntroduction
+											summary={
+												this.state.profileData.summary
+											}
+											description={
+												this.state.profileData
+													.description
+											}
+											updateProfileData={
+												this.updateAndSaveData
+											}
+											updateWithoutSave={
+												this.updateWithoutSave
+											}
+										/>
 									</div>
 								</form>
 							</div>
