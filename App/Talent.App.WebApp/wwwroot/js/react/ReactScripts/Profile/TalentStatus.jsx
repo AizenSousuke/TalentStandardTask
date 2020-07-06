@@ -29,6 +29,10 @@ export default class TalentStatus extends React.Component {
 		};
 	}
 
+	componentWillMount() {
+		this.setState({availableDate: this.props.status.availableDate !== undefined ? this.props.status.availableDate : null});
+	}
+
 	handleChange(status) {
 		this.setState({ status: status });
 		const jobSeekingStatus = Object.assign(
@@ -36,7 +40,7 @@ export default class TalentStatus extends React.Component {
 			{
 				jobSeekingStatus: {
 					status: status,
-					availableDate: this.state.availableDate !== undefined ? this.props.status.availableDate : null,
+					availableDate: this.state.availableDate !== undefined ? this.state.availableDate : null,
 				},
 			}
 		);
@@ -44,6 +48,7 @@ export default class TalentStatus extends React.Component {
 	}
 
 	handleAvailableDate(event) {
+		console.log("Setting date: ", event.target.value);
 		this.setState({ availableDate: event.target.value }, () => {
 			this.handleChange(this.props.status.status);
 		});
