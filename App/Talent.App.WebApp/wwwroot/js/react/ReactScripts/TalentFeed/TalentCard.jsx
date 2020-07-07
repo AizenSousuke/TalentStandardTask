@@ -97,8 +97,8 @@ export default class TalentCard extends React.Component {
 								onClick={(e) => {
 									// console.log(e);
 									window.location.href =
-										this.props.talent.linkedin === null
-											? "https://google.com"
+										this.props.talent.cvUrl === null || this.props.talent.cvUrl === ""
+											? "https://linkedin.com"
 											: this.props.talent.cvUrl;
 								}}
 							/>
@@ -108,18 +108,12 @@ export default class TalentCard extends React.Component {
 								onClick={(e) => {
 									// console.log(e);
 									window.location.href =
-										this.props.talent.github === null
-											? "https://google.com"
+										this.props.talent.cvUrl === null || this.props.talent.cvUrl === ""
+											? "https://github.com"
 											: this.props.talent.cvUrl;
 								}}
 							/>
 						</Button.Group>
-						{/* <Grid columns={"equal"}>
-							<Grid.Column></Grid.Column>
-							<Grid.Column></Grid.Column>
-							<Grid.Column></Grid.Column> 
-							<Grid.Column></Grid.Column>
-						</Grid> */}
 					</Card.Content>
 					<Card.Content extra textAlign={"left"}>
 						{this.props.talent.skills !== null ? (

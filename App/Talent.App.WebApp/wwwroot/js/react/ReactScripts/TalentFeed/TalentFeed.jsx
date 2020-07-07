@@ -23,6 +23,7 @@ export default class TalentFeed extends React.Component {
 			loaderData: loader,
 			loadingFeedData: false,
 			companyDetails: null,
+			// Limits
 			position: 1,
 			number: 5,
 		};

@@ -280,6 +280,7 @@ namespace Talent.Services.Profile.Domain.Services
                         Address = profile.Address,
                         Certifications = certifications,
                         CvName = profile.CvName,
+                        CvUrl = profile.CvName,
                         Description = profile.Description,
                         //Education = profile.Education,
                         Email = profile.Email,
@@ -332,6 +333,8 @@ namespace Talent.Services.Profile.Domain.Services
                 existingUser.Summary = model.Summary;
                 existingUser.Description = model.Description;
                 existingUser.LinkedAccounts = model.LinkedAccounts;
+                existingUser.CvName = model.CvName;
+                existingUser.CvName = model.CvUrl;
 
                 List<UserLanguage> userLanguagesList = new List<UserLanguage>();
                 if (model.Languages != null)
