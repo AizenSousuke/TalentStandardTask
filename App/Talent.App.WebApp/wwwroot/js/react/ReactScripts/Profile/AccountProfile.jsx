@@ -375,21 +375,26 @@ export default class AccountProfile extends React.Component {
                                                 saveCVUrl={'https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentCV'}
                                             />
                                         </FormItemWrapper> */}
-										<SelfIntroduction
-											summary={
-												this.state.profileData.summary
-											}
-											description={
-												this.state.profileData
-													.description
-											}
-											updateProfileData={
-												this.updateAndSaveData
-											}
-											updateWithoutSave={
-												this.updateWithoutSave
-											}
-										/>
+										<FormItemWrapper
+											title="Self Introduction"
+											tooltip="Write a description of your yourself."
+										>
+											<SelfIntroduction
+												summary={
+													this.state.profileData.summary
+												}
+												description={
+													this.state.profileData
+														.description
+												}
+												updateProfileData={
+													this.updateAndSaveData
+												}
+												updateWithoutSave={
+													this.updateWithoutSave
+												}
+											/>
+										</FormItemWrapper>
 									</div>
 								</form>
 							</div>
