@@ -524,6 +524,7 @@ export default class Language extends React.Component {
 																l.id
 															);
 														}}
+														disabled={this.props.disableButtons}
 													>
 														Update
 													</Button>
@@ -561,6 +562,7 @@ export default class Language extends React.Component {
 																l.level
 															);
 														}}
+														disabled={this.props.disableButtons}
 													></Button>
 													<Button
 														basic
@@ -572,6 +574,7 @@ export default class Language extends React.Component {
 																l
 															);
 														}}
+														disabled={this.props.disableButtons}
 													></Button>
 												</TableCell>
 											</TableRow>

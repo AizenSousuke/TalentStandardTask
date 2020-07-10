@@ -129,6 +129,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 										e.preventDefault();
 										this.openEdit();
 									}}
+									disabled={this.props.disableButtons}
 								>
 									Edit
 								</Button>

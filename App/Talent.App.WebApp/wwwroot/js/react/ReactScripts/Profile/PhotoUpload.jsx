@@ -9,6 +9,7 @@ export default class PhotoUpload extends Component {
 
 		this.state = {
 			file: "",
+			disableButtons: false,
 		};
 
 		this.input = React.createRef();
@@ -33,51 +34,56 @@ export default class PhotoUpload extends Component {
 
 	confirmUploadImage(e) {
 		e.preventDefault(e);
-		// console.log(this.input.current.inputRef.files);
-		if (this.input.current.inputRef.files.length !== 0) {
-			// console.log(this.input.current.inputRef.files[0], this.state.file);
-			var formData = new FormData();
-			formData.append("file", this.input.current.inputRef.files[0]);
-			console.log(formData.get("file"));
-			var cookies = Cookies.get("talentAuthToken");
-			$.ajax({
-				url:
-					"https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateProfilePhoto",
-				headers: {
-					Authorization: "Bearer " + cookies,
-				},
-				type: "POST",
-				processData: false,
-				contentType: false,
-				data: formData,
-				success: function (res) {
-					console.log(res);
-					if (res.success == true) {
-						// Maybe reload the data here?
-						this.setState({ file: "" });
-						this.props.loadData();
-						TalentUtil.notification.show(
-							"Photo updated successfully",
-							"success",
-							null,
-							null
-						);
-					} else {
-						TalentUtil.notification.show(
-							"Photo did not update successfully",
-							"error",
-							null,
-							null
-						);
-					}
-				}.bind(this),
-				error: function (res, a, b) {
-					console.log(res);
-					console.log(a);
-					console.log(b);
-				},
-			});
-		}
+		// Disable buttons
+		this.setState({ disableButtons: true }, () => {
+			// console.log(this.input.current.inputRef.files);
+			if (this.input.current.inputRef.files.length !== 0) {
+				// console.log(this.input.current.inputRef.files[0], this.state.file);
+				var formData = new FormData();
+				formData.append("file", this.input.current.inputRef.files[0]);
+				console.log(formData.get("file"));
+				var cookies = Cookies.get("talentAuthToken");
+				$.ajax({
+					url:
+						"https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateProfilePhoto",
+					headers: {
+						Authorization: "Bearer " + cookies,
+					},
+					type: "POST",
+					processData: false,
+					contentType: false,
+					data: formData,
+					success: function (res) {
+						console.log(res);
+						if (res.success == true) {
+							// Maybe reload the data here?
+							this.setState({ file: "" });
+							this.props.loadData();
+							TalentUtil.notification.show(
+								"Photo updated successfully",
+								"success",
+								null,
+								null
+							);
+						} else {
+							TalentUtil.notification.show(
+								"Photo did not update successfully",
+								"error",
+								null,
+								null
+							);
+						}
+						// Enable buttons
+						this.setState({ disableButtons: false });
+					}.bind(this),
+					error: function (res, a, b) {
+						console.log(res);
+						console.log(a);
+						console.log(b);
+					},
+				});
+			}
+		});
 	}
 
 	render() {
@@ -92,6 +98,7 @@ export default class PhotoUpload extends Component {
 						onChange={(e) => {
 							this.handleUploadImage(e);
 						}}
+						disabled={this.state.disableButtons}
 					/>
 					{this.props.imageId === null ? (
 						<React.Fragment>
@@ -111,7 +118,7 @@ export default class PhotoUpload extends Component {
 								size={"medium"}
 								type="file"
 							/>
-                            <p></p>
+							<p></p>
 							{this.state.file !== "" && (
 								<Button
 									name="upload"
@@ -120,6 +127,7 @@ export default class PhotoUpload extends Component {
 									onClick={(e) => {
 										this.confirmUploadImage(e);
 									}}
+									disabled={this.state.disableButtons}
 								>
 									Upload
 								</Button>
@@ -140,8 +148,9 @@ export default class PhotoUpload extends Component {
 								onClick={(e, { name }) => {
 									this.handleClick(e, name);
 								}}
+								disabled={this.state.disableButtons}
 							/>
-                            <p></p>
+							<p></p>
 							{this.state.file !== "" && (
 								<Button
 									name="upload"
@@ -149,9 +158,10 @@ export default class PhotoUpload extends Component {
 									fluid
 									onClick={(e) => {
 										this.confirmUploadImage(e);
-                                    }}
+									}}
+									disabled={this.state.disableButtons}
 								>
-                                    <Icon name="upload" />
+									<Icon name="upload" />
 									Upload
 								</Button>
 							)}

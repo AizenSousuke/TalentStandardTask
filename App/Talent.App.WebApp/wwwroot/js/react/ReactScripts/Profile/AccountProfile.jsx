@@ -193,6 +193,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="Enter your contact details"
 										>
 											<IndividualDetailSection
+												disableButtons={this.state.disableButtons}
 												controlFunc={
 													this.updateForComponentId
 												}
@@ -205,6 +206,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="Enter your current address"
 										>
 											<Address
+												disableButtons={this.state.disableButtons}
 												addressData={
 													this.state.profileData
 														.address
@@ -222,6 +224,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="Select your nationality"
 										>
 											<Nationality
+												disableButtons={this.state.disableButtons}
 												nationalityData={
 													this.state.profileData
 														.nationality
@@ -236,6 +239,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="Select languages that you speak"
 										>
 											<Language
+												disableButtons={this.state.disableButtons}
 												languageData={
 													this.state.profileData
 														.languages
@@ -253,6 +257,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="List your skills"
 										>
 											<Skill
+												disableButtons={this.state.disableButtons}
 												skillData={
 													this.state.profileData
 														.skills
@@ -270,6 +275,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="Add your work experience"
 										>
 											<Experience
+												disableButtons={this.state.disableButtons}
 												userId={
 													this.state.profileData.id
 												}
@@ -305,6 +311,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="What is your current Visa/Citizenship status?"
 										>
 											<VisaStatus
+												disableButtons={this.state.disableButtons}
 												visaStatus={
 													this.state.profileData
 														.visaStatus
@@ -326,6 +333,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="What is your current status in jobseeking?"
 										>
 											<TalentStatus
+												disableButtons={this.state.disableButtons}
 												status={
 													this.state.profileData
 														.jobSeekingStatus !==
@@ -352,6 +360,7 @@ export default class AccountProfile extends React.Component {
 											hideSegment={true}
 										>
 											<PhotoUpload
+												disableButtons={this.state.disableButtons}
 												userId={
 													this.state.profileData.id
 												}
@@ -394,6 +403,7 @@ export default class AccountProfile extends React.Component {
 											tooltip="Write a description of your yourself."
 										>
 											<SelfIntroduction
+												disableButtons={this.state.disableButtons}
 												summary={
 													this.state.profileData
 														.summary

@@ -85,7 +85,7 @@ export default class SelfIntroduction extends React.Component {
 							name="description"
 							placeholder="Please tell us about any hobbies, additional expertise, or anything else you’d like to add."
 							value={this.props.description || ""}
-							fluid
+							fluid="true"
 							onChange={this.update}
 							// error={this.state.schema.description}
 						/>
@@ -122,6 +122,7 @@ export default class SelfIntroduction extends React.Component {
 								}
 							}}
 							// disabled={this.checkStateForValidation({summary: this.props.summary, description: this.props.description})}
+							disabled={this.props.disableButtons}
 						>
 							Save
 						</Button>

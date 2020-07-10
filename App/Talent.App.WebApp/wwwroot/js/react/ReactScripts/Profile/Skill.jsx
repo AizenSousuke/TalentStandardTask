@@ -388,6 +388,7 @@ export default class Skill extends React.Component {
 										this.addSkill();
 									}}
 									fluid
+									disabled={this.props.disableButtons}
 								>
 									Add
 								</Button>
@@ -520,6 +521,7 @@ export default class Skill extends React.Component {
 																l.id
 															);
 														}}
+														disabled={this.props.disableButtons}
 													>
 														Update
 													</Button>
@@ -557,6 +559,7 @@ export default class Skill extends React.Component {
 																l.level
 															);
 														}}
+														disabled={this.props.disableButtons}
 													></Button>
 													<Button
 														basic
@@ -568,6 +571,7 @@ export default class Skill extends React.Component {
 																l
 															);
 														}}
+														disabled={this.props.disableButtons}
 													></Button>
 												</TableCell>
 											</TableRow>

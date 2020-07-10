@@ -230,6 +230,7 @@ export default class VisaStatus extends React.Component {
 									: ""
 							}
 							options={this.state.visaStatusOptions}
+							disabled={this.props.disableButtons}
 						/>
 					</Grid.Column>
 					{this.props.visaStatus !== "Citizen" &&
@@ -249,6 +250,7 @@ export default class VisaStatus extends React.Component {
 												: ""
 										}
 										error={this.state.schema.visaExpiryDate}
+										disabled={this.props.disableButtons}
 									/>
 								</Grid.Column>
 								<Grid.Column verticalAlign={"middle"}>
@@ -258,6 +260,7 @@ export default class VisaStatus extends React.Component {
 											onClick={(e) =>
 												this.setVisaStatus(e)
 											}
+											disabled={this.props.disableButtons}
 										>
 											Save
 										</Button>

@@ -278,6 +278,7 @@ export class Address extends React.Component {
 								type="button"
 								className="ui teal button"
 								onClick={this.saveAddress}
+								disabled={this.props.disableButtons}
 							>
 								Save
 							</button>
@@ -316,6 +317,7 @@ export class Address extends React.Component {
 						type="button"
 						className="ui right floated teal button"
 						onClick={this.openEdit}
+						disabled={this.props.disableButtons}
 					>
 						Edit
 					</button>
@@ -368,6 +370,7 @@ export class Nationality extends React.Component {
 							this.props.saveProfileData(data);
 							// console.log(data);
 						}}
+						disabled={this.props.disableButtons}
 					/>
 				</div>
 			</div>

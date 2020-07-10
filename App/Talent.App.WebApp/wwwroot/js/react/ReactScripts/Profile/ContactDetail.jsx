@@ -194,6 +194,7 @@ export class IndividualDetailSection extends Component {
 					type="button"
 					className="ui teal button"
 					onClick={this.saveContact}
+					disabled={this.props.disableButtons}
 				>
 					Save
 				</button>
@@ -227,6 +228,7 @@ export class IndividualDetailSection extends Component {
 						type="button"
 						className="ui right floated teal button"
 						onClick={this.openEdit}
+						disabled={this.props.disableButtons}
 					>
 						Edit
 					</button>
