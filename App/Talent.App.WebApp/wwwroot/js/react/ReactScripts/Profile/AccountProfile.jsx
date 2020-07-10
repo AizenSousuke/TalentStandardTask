@@ -24,6 +24,7 @@ export default class AccountProfile extends React.Component {
 		super(props);
 
 		this.state = {
+			disableButtons: false,
 			profileData: {
 				id: "",
 				address: {},
@@ -113,39 +114,44 @@ export default class AccountProfile extends React.Component {
 	}
 
 	saveProfile() {
-		var cookies = Cookies.get("talentAuthToken");
-		$.ajax({
-			url:
-				"https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentProfile",
-			headers: {
-				Authorization: "Bearer " + cookies,
-				"Content-Type": "application/json",
-			},
-			type: "POST",
-			data: JSON.stringify(this.state.profileData),
-			success: function (res) {
-				console.log(res);
-				if (res.success == true) {
-					TalentUtil.notification.show(
-						"Profile updated successfully",
-						"success",
-						null,
-						null
-					);
-				} else {
-					TalentUtil.notification.show(
-						"Profile did not update successfully",
-						"error",
-						null,
-						null
-					);
-				}
-			}.bind(this),
-			error: function (res, a, b) {
-				console.log(res);
-				console.log(a);
-				console.log(b);
-			},
+		// Disable buttons
+		this.setState({ disableButtons: true }, () => {
+			var cookies = Cookies.get("talentAuthToken");
+			$.ajax({
+				url:
+					"https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentProfile",
+				headers: {
+					Authorization: "Bearer " + cookies,
+					"Content-Type": "application/json",
+				},
+				type: "POST",
+				data: JSON.stringify(this.state.profileData),
+				success: function (res) {
+					console.log(res);
+					if (res.success == true) {
+						TalentUtil.notification.show(
+							"Profile updated successfully",
+							"success",
+							null,
+							null
+						);
+					} else {
+						TalentUtil.notification.show(
+							"Profile did not update successfully",
+							"error",
+							null,
+							null
+						);
+					}
+					// Enable buttons
+					this.setState({ disableButtons: false });
+				}.bind(this),
+				error: function (res, a, b) {
+					console.log(res);
+					console.log(a);
+					console.log(b);
+				},
+			});
 		});
 	}
 
@@ -165,15 +171,23 @@ export default class AccountProfile extends React.Component {
 								<form className="ui form">
 									<div className="ui grid">
 										<FormItemWrapper
-                                            title='Linked Accounts'
-                                            tooltip='Linking to online social networks adds credibility to your profile'
-                                        >
-                                            <SocialMediaLinkedAccount
-                                                linkedAccounts={this.state.profileData.linkedAccounts}
-                                                updateProfileData={this.updateWithoutSave}
-                                                saveProfileData={this.updateAndSaveData}
-                                            />
-                                        </FormItemWrapper>
+											title="Linked Accounts"
+											tooltip="Linking to online social networks adds credibility to your profile"
+										>
+											<SocialMediaLinkedAccount
+												disableButtons={this.state.disableButtons}
+												linkedAccounts={
+													this.state.profileData
+														.linkedAccounts
+												}
+												updateProfileData={
+													this.updateWithoutSave
+												}
+												saveProfileData={
+													this.updateAndSaveData
+												}
+											/>
+										</FormItemWrapper>
 										<FormItemWrapper
 											title="User Details"
 											tooltip="Enter your contact details"
@@ -381,7 +395,8 @@ export default class AccountProfile extends React.Component {
 										>
 											<SelfIntroduction
 												summary={
-													this.state.profileData.summary
+													this.state.profileData
+														.summary
 												}
 												description={
 													this.state.profileData

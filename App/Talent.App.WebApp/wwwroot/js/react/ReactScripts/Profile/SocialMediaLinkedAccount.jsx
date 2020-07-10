@@ -41,8 +41,9 @@ export default class SocialMediaLinkedAccount extends React.Component {
 		$(".ui.button.social-media").popup();
 	}
 
-	openEdit(event = null, LinkedIn = null, Github = null) {
+	openEdit() {
 		// Set the values in the edit if used from the edit button
+		// console.log(this.props.linkedAccounts.linkedIn, this.props.linkedAccounts.github);
 		this.setState(
 			{
 				openEdit: !this.state.openEdit,
@@ -164,6 +165,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 							<Grid.Row>
 								<Button
 									color={"black"}
+									disabled={this.props.disableButtons}
 									onClick={(e) => {
 										e.preventDefault();
 										let checkschema = Object.assign(
@@ -177,7 +179,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 											{},
 											{
 												linkedAccounts: {
-													linkedin: this.state
+													linkedIn: this.state
 														.LinkedIn,
 													github: this.state.Github,
 												},
