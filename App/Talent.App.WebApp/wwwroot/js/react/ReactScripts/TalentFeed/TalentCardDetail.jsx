@@ -11,13 +11,13 @@ import {
 	Button,
 	Divider,
 	Label,
+	Embed,
 } from "semantic-ui-react";
 import YouTube from "react-youtube";
 
 export default class TalentCardDetail extends React.Component {
 	constructor(props) {
-        super(props);
-        
+		super(props);
 	}
 
 	render() {
@@ -29,7 +29,11 @@ export default class TalentCardDetail extends React.Component {
 							<Grid.Column>
 								<Image
 									fluid
-									src={this.props.talent.photoId !== null ? this.props.talent.photoId : "http://semantic-ui.com/images/avatar/large/jenny.jpg"}
+									src={
+										this.props.talent.photoId !== null
+											? this.props.talent.photoId
+											: "https://react.semantic-ui.com/images/wireframe/image.png"
+									}
 								/>
 							</Grid.Column>
 							<Grid.Column textAlign={"left"}>
@@ -62,7 +66,36 @@ export default class TalentCardDetail extends React.Component {
 						<Grid>
 							<Grid.Column>
 								{/* <iframe width="560" height="315" src={this.props.talent.videoUrl} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
-								<YouTube videoId={this.props.talent.videoUrl == null ? "iOHdxnEnOyo" : this.props.talent.videoUrl.split("v=")[1]} />
+								{/* <YouTube videoId={this.props.talent.videoUrl === null ? "iOHdxnEnOyo" : this.props.talent.videoUrl.split("v=")[1]} /> */}
+								<YouTube
+									videoId={
+										this.props.talent.videoUrl === null
+											? "dQw4w9WgXcQ"
+											: this.props.talent.videoUrl.split(
+													"v="
+											  )[1]
+									}
+								/>
+								{/* <Embed
+									autoplay={false}
+									color="white"
+									hd={false}
+									id={
+										this.props.talent.videoUrl === null
+											? "dQw4w9WgXcQ"
+											: this.props.talent.videoUrl.split(
+													"v="
+											  )[1]
+									}
+									iframe={{
+										allowFullScreen: false,
+										style: {
+											padding: 10,
+										},
+									}}
+									placeholder="https://semantic-ui.com/images/wireframe/image.png"
+									source="youtube"
+								/> */}
 							</Grid.Column>
 						</Grid>
 					</React.Fragment>

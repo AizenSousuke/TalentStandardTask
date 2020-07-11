@@ -21,7 +21,7 @@ export default class CompanyProfile extends React.Component {
 											.profilePhotoUrl !== null
 											? this.props.companyDetails
 													.profilePhotoUrl
-											: "http://loremflickr.com/100/100/image"
+											: "https://react.semantic-ui.com/images/wireframe/image.png"
 									}
 								/>
 								<p>
