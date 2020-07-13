@@ -62,7 +62,7 @@ export default class SelfIntroduction extends React.Component {
 			: 0;
 
 		return (
-			<Grid container>
+			<Grid>
 				<Grid.Row>
 					<Grid.Column>
 						<Input
@@ -75,6 +75,7 @@ export default class SelfIntroduction extends React.Component {
 							}
 							error={this.state.schema.summary}
 						/>
+						<p></p>
 						<p>Summary must be no more than 150 characters.</p>
 					</Grid.Column>
 				</Grid.Row>
@@ -89,10 +90,11 @@ export default class SelfIntroduction extends React.Component {
 							onChange={this.update}
 							// error={this.state.schema.description}
 						/>
+						<p></p>
 						<p>
 							Description must be between 150-600 characters.{" "}
 							<br></br>
-							Characters : {characters} / {characterLimit}
+							{/* Characters : {characters} / {characterLimit} */}
 						</p>
 					</Grid.Column>
 				</Grid.Row>
@@ -100,7 +102,7 @@ export default class SelfIntroduction extends React.Component {
 					<Grid.Column>
 						<Button
 							style={{ float: "right" }}
-							color={"black"}
+							color={"teal"}
 							onClick={(e) => {
 								e.preventDefault();
 								var data = Object.assign(

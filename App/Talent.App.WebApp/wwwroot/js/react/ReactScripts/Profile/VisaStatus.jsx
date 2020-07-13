@@ -257,6 +257,7 @@ export default class VisaStatus extends React.Component {
 									<Grid.Row>
 										<Button
 											secondary
+											color={"teal"}
 											onClick={(e) =>
 												this.setVisaStatus(e)
 											}

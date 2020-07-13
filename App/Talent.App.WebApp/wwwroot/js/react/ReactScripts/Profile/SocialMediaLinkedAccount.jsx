@@ -111,7 +111,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 									LinkedIn
 								</Button>
 								<Button
-									color={"black"}
+									color={"teal"}
 									onClick={(e) => {
 										e.preventDefault();
 										window.location.href = this.props.linkedAccounts.github;
@@ -124,7 +124,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 							<Grid.Column>
 								<Button
 									floated={"right"}
-									color={"black"}
+									color={"teal"}
 									onClick={(e) => {
 										e.preventDefault();
 										this.openEdit();
@@ -165,7 +165,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 							</Grid.Row>
 							<Grid.Row>
 								<Button
-									color={"black"}
+									color={"teal"}
 									disabled={this.props.disableButtons}
 									onClick={(e) => {
 										e.preventDefault();

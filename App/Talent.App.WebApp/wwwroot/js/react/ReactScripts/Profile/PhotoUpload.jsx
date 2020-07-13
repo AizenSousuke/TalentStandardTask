@@ -88,86 +88,91 @@ export default class PhotoUpload extends Component {
 
 	render() {
 		return (
-			<Grid container columns="equal">
-				<Grid.Column width={4}>
-					<Input
-						name="pictureupload"
-						type="file"
-						ref={this.input}
-						style={{ display: "none" }}
-						onChange={(e) => {
-							this.handleUploadImage(e);
-						}}
-						disabled={this.state.disableButtons}
-					/>
-					{this.props.imageId === null ? (
-						<React.Fragment>
-							<Image
-								name="picture"
-								as={Button}
-								onClick={(e, { name }) => {
-									this.handleClick(e, name);
-								}}
-								src={
-									this.state.file === ""
-										? "https://image.flaticon.com/icons/png/512/3/3901.png"
-										: this.state.file
-								}
-								circular
-								bordered
-								size={"medium"}
-								type="file"
-							/>
-							<p></p>
-							{this.state.file !== "" && (
-								<Button
-									name="upload"
-									secondary
-									fluid
-									onClick={(e) => {
-										this.confirmUploadImage(e);
+			<Grid columns={"equal"} container>
+				<Grid.Row>
+					<Grid.Column></Grid.Column>
+					<Grid.Column>
+						<Input
+							name="pictureupload"
+							type="file"
+							ref={this.input}
+							style={{ display: "none" }}
+							onChange={(e) => {
+								this.handleUploadImage(e);
+							}}
+							disabled={this.state.disableButtons}
+						/>
+						{this.props.imageId === null ? (
+							<React.Fragment>
+								<Image
+									name="picture"
+									as={Button}
+									onClick={(e, { name }) => {
+										this.handleClick(e, name);
+									}}
+									src={
+										this.state.file === ""
+											? "https://image.flaticon.com/icons/svg/25/25326.svg"
+											: this.state.file
+									}
+									circular
+									bordered
+									size={"medium"}
+									type="file"
+								/>
+								<p></p>
+								{this.state.file !== "" && (
+									<Button
+										name="upload"
+										color={"teal"}
+										fluid
+										onClick={(e) => {
+											this.confirmUploadImage(e);
+										}}
+										disabled={this.state.disableButtons}
+									>
+										Upload
+									</Button>
+								)}
+							</React.Fragment>
+						) : (
+							<React.Fragment>
+								<Image
+									as={Button}
+									name="profilepicture"
+									circular
+									src={
+										this.state.file === ""
+											? this.props.imageId
+											: this.state.file
+									}
+									size={"medium"}
+									onClick={(e, { name }) => {
+										this.handleClick(e, name);
 									}}
 									disabled={this.state.disableButtons}
-								>
-									Upload
-								</Button>
-							)}
-						</React.Fragment>
-					) : (
-						<React.Fragment>
-							<Image
-								as={Button}
-								name="profilepicture"
-								circular
-								src={
-									this.state.file === ""
-										? this.props.imageId
-										: this.state.file
-								}
-								size={"medium"}
-								onClick={(e, { name }) => {
-									this.handleClick(e, name);
-								}}
-								disabled={this.state.disableButtons}
-							/>
-							<p></p>
-							{this.state.file !== "" && (
-								<Button
-									name="upload"
-									secondary
-									fluid
-									onClick={(e) => {
-										this.confirmUploadImage(e);
-									}}
-									disabled={this.state.disableButtons}
-								>
-									<Icon name="upload" />
-									Upload
-								</Button>
-							)}
-						</React.Fragment>
-					)}
-				</Grid.Column>
+								/>
+								<p></p>
+								{this.state.file !== "" && (
+									<Button
+										name="upload"
+										color={"teal"}
+										fluid
+										onClick={(e) => {
+											this.confirmUploadImage(e);
+										}}
+										disabled={this.state.disableButtons}
+									>
+										<Icon name="upload" />
+										Upload
+									</Button>
+								)}
+							</React.Fragment>
+						)}
+					</Grid.Column>
+					<Grid.Column></Grid.Column>
+					<Grid.Column></Grid.Column>
+				</Grid.Row>
 			</Grid>
 		);
 	}

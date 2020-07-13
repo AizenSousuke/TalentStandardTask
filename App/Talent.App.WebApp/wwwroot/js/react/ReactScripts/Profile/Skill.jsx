@@ -432,7 +432,7 @@ export default class Skill extends React.Component {
 								</TableHeaderCell>
 								<TableHeaderCell>
 									<Button
-										color={"black"}
+										color={"teal"}
 										fluid
 										onClick={(e) => {
 											e.preventDefault();

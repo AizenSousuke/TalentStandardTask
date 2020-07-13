@@ -525,7 +525,7 @@ export default class Experience extends React.Component {
 								<TableHeaderCell>End</TableHeaderCell>
 								<TableHeaderCell>
 									<Button
-										color={"black"}
+										color={"teal"}
 										fluid
 										onClick={(e) => {
 											e.preventDefault();

@@ -189,6 +189,29 @@ export default class AccountProfile extends React.Component {
 											/>
 										</FormItemWrapper>
 										<FormItemWrapper
+											title="Description"
+											tooltip="Write a description of your yourself."
+											hideSegment={true}
+										>
+											<SelfIntroduction
+												disableButtons={this.state.disableButtons}
+												summary={
+													this.state.profileData
+														.summary
+												}
+												description={
+													this.state.profileData
+														.description
+												}
+												updateProfileData={
+													this.updateAndSaveData
+												}
+												updateWithoutSave={
+													this.updateWithoutSave
+												}
+											/>
+										</FormItemWrapper>
+										<FormItemWrapper
 											title="User Details"
 											tooltip="Enter your contact details"
 										>
@@ -398,28 +421,6 @@ export default class AccountProfile extends React.Component {
                                                 saveCVUrl={'https://talentservicesprofilenik.azurewebsites.net/profile/profile/updateTalentCV'}
                                             />
                                         </FormItemWrapper> */}
-										<FormItemWrapper
-											title="Self Introduction"
-											tooltip="Write a description of your yourself."
-										>
-											<SelfIntroduction
-												disableButtons={this.state.disableButtons}
-												summary={
-													this.state.profileData
-														.summary
-												}
-												description={
-													this.state.profileData
-														.description
-												}
-												updateProfileData={
-													this.updateAndSaveData
-												}
-												updateWithoutSave={
-													this.updateWithoutSave
-												}
-											/>
-										</FormItemWrapper>
 									</div>
 								</form>
 							</div>
