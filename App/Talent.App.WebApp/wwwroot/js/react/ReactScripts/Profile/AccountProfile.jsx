@@ -191,7 +191,7 @@ export default class AccountProfile extends React.Component {
 										<FormItemWrapper
 											title="Description"
 											tooltip="Write a description of your yourself."
-											hideSegment={true}
+											// hideSegment={true}
 										>
 											<SelfIntroduction
 												disableButtons={this.state.disableButtons}

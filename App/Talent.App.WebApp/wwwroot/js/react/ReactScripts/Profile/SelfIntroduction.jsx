@@ -62,74 +62,76 @@ export default class SelfIntroduction extends React.Component {
 			: 0;
 
 		return (
-			<Grid>
-				<Grid.Row>
-					<Grid.Column>
-						<Input
-							name="summary"
-							value={this.props.summary || ""}
-							onChange={this.update}
-							fluid
-							placeholder={
-								"Please provide a short summary about yourself"
-							}
-							error={this.state.schema.summary}
-						/>
-						<p></p>
-						<p>Summary must be no more than 150 characters.</p>
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row>
-					<Grid.Column>
-						<TextArea
-							maxLength={characterLimit}
-							name="description"
-							placeholder="Please tell us about any hobbies, additional expertise, or anything else you’d like to add."
-							value={this.props.description || ""}
-							fluid="true"
-							onChange={this.update}
-							// error={this.state.schema.description}
-						/>
-						<p></p>
-						<p>
-							Description must be between 150-600 characters.{" "}
-							<br></br>
-							{/* Characters : {characters} / {characterLimit} */}
-						</p>
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row>
-					<Grid.Column>
-						<Button
-							style={{ float: "right" }}
-							color={"teal"}
-							onClick={(e) => {
-								e.preventDefault();
-								var data = Object.assign(
-									{},
-									{
-										summary: this.props.summary,
-										description: this.props.description,
-									}
-								);
-								if (this.checkStateForValidation(data)) {
-									this.props.updateProfileData(data);
-								} else {
-									TalentUtil.notification.show(
-										"Summary and description did not update successfully",
-										"error",
-										null,
-										null
-									);
+			<Grid container columns={"equal"}>
+				{/* <Grid.Column> */}
+					<Grid.Row>
+						<Grid.Column>
+							<Input
+								name="summary"
+								value={this.props.summary || ""}
+								onChange={this.update}
+								fluid
+								placeholder={
+									"Please provide a short summary about yourself"
 								}
-							}}
-							// disabled={this.checkStateForValidation({summary: this.props.summary, description: this.props.description})}
-							disabled={this.props.disableButtons}
-						>
-							Save
-						</Button>
-					</Grid.Column>
-				</Grid.Row>
+								error={this.state.schema.summary}
+							/>
+							<p></p>
+							<p>Summary must be no more than 150 characters.</p>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column>
+							<TextArea
+								maxLength={characterLimit}
+								name="description"
+								placeholder="Please tell us about any hobbies, additional expertise, or anything else you’d like to add."
+								value={this.props.description || ""}
+								fluid="true"
+								onChange={this.update}
+								// error={this.state.schema.description}
+							/>
+							<p></p>
+							<p>
+								Description must be between 150-600 characters.{" "}
+								<br></br>
+								{/* Characters : {characters} / {characterLimit} */}
+							</p>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column>
+							<Button
+								style={{ float: "right" }}
+								color={"teal"}
+								onClick={(e) => {
+									e.preventDefault();
+									var data = Object.assign(
+										{},
+										{
+											summary: this.props.summary,
+											description: this.props.description,
+										}
+									);
+									if (this.checkStateForValidation(data)) {
+										this.props.updateProfileData(data);
+									} else {
+										TalentUtil.notification.show(
+											"Summary and description did not update successfully",
+											"error",
+											null,
+											null
+										);
+									}
+								}}
+								// disabled={this.checkStateForValidation({summary: this.props.summary, description: this.props.description})}
+								disabled={this.props.disableButtons}
+							>
+								Save
+							</Button>
+						</Grid.Column>
+					</Grid.Row>
+				{/* </Grid.Column> */}
 			</Grid>
 		);
 	}
