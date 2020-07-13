@@ -350,7 +350,7 @@ export class Nationality extends React.Component {
 	render() {
 		return (
 			<div className="row">
-				<div className="ui sixteen wide column">
+				<div className="ui eight wide column">
 					<Select
 						name="nationality"
 						selectedOption={
@@ -373,6 +373,7 @@ export class Nationality extends React.Component {
 						disabled={this.props.disableButtons}
 					/>
 				</div>
+				<div className="ui eight wide column"></div>
 			</div>
 		);
 	}

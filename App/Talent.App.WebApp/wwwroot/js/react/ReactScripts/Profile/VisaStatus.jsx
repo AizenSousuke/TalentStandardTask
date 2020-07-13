@@ -212,9 +212,9 @@ export default class VisaStatus extends React.Component {
 				.slice(0, 10);
 		}
 		return (
-			<Grid container columns="equal">
-				<Grid.Row>
-					<Grid.Column width={4}>
+			<Grid container>
+				{/* <Grid.Row> */}
+					<Grid.Column width={4} verticalAlign={"middle"}>
 						Visa type
 						<Select
 							name="visaStatus"
@@ -236,7 +236,7 @@ export default class VisaStatus extends React.Component {
 					{this.props.visaStatus !== "Citizen" &&
 						this.props.visaStatus !== "Permanent Resident" && (
 							<React.Fragment>
-								<Grid.Column width={4}>
+								<Grid.Column width={4} verticalAlign={"middle"}>
 									Visa Expiry Date
 									<Input
 										name="visaExpiryDate"
@@ -253,8 +253,8 @@ export default class VisaStatus extends React.Component {
 										disabled={this.props.disableButtons}
 									/>
 								</Grid.Column>
-								<Grid.Column verticalAlign={"middle"}>
-									<Grid.Row>
+								<Grid.Column verticalAlign={"bottom"}>
+									{/* <Grid.Row> */}
 										<Button
 											secondary
 											color={"teal"}
@@ -265,13 +265,13 @@ export default class VisaStatus extends React.Component {
 										>
 											Save
 										</Button>
-									</Grid.Row>
+									{/* </Grid.Row> */}
 								</Grid.Column>
 							</React.Fragment>
 						)}
-				</Grid.Row>
-				<Grid.Row>
-					<Grid.Column>
+				{/* </Grid.Row> */}
+				{/* <Grid.Row> */}
+					<Grid.Column verticalAlign={"middle"}>
 						<Message
 							negative
 							hidden={!this.state.schema.visaExpiryDate}
@@ -279,7 +279,7 @@ export default class VisaStatus extends React.Component {
 							Please enter the visa expiry date.
 						</Message>
 					</Grid.Column>
-				</Grid.Row>
+				{/* </Grid.Row> */}
 			</Grid>
 		);
 	}

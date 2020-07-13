@@ -1,7 +1,7 @@
 ﻿/* Photo upload section */
 import React, { Component } from "react";
 import Cookies from "js-cookie";
-import { Image, Button, Grid, Icon, Input } from "semantic-ui-react";
+import { Image, Button, Grid, Icon, Input, Segment } from "semantic-ui-react";
 
 export default class PhotoUpload extends Component {
 	constructor(props) {
@@ -102,73 +102,75 @@ export default class PhotoUpload extends Component {
 							}}
 							disabled={this.state.disableButtons}
 						/>
-						{this.props.imageId === null ? (
-							<React.Fragment>
-								<Image
-									name="picture"
-									as={Button}
-									onClick={(e, { name }) => {
-										this.handleClick(e, name);
-									}}
-									src={
-										this.state.file === ""
-											? "https://image.flaticon.com/icons/svg/25/25326.svg"
-											: this.state.file
-									}
-									circular
-									bordered
-									size={"medium"}
-									type="file"
-								/>
-								<p></p>
-								{this.state.file !== "" && (
-									<Button
-										name="upload"
-										color={"teal"}
-										fluid
-										onClick={(e) => {
-											this.confirmUploadImage(e);
+						<Segment basic textAlign={"center"} >
+							{this.props.imageId === null ? (
+								<React.Fragment>
+									<Image
+										name="picture"
+										as={Button}
+										onClick={(e, { name }) => {
+											this.handleClick(e, name);
+										}}
+										src={
+											this.state.file === ""
+												? "https://image.flaticon.com/icons/svg/25/25326.svg"
+												: this.state.file
+										}
+										circular
+										bordered
+										size={"small"}
+										type="file"
+									/>
+									<p></p>
+									{this.state.file !== "" && (
+										<Button
+											name="upload"
+											color={"teal"}
+											fluid
+											onClick={(e) => {
+												this.confirmUploadImage(e);
+											}}
+											disabled={this.state.disableButtons}
+										>
+											Upload
+										</Button>
+									)}
+								</React.Fragment>
+							) : (
+								<React.Fragment>
+									<Image
+										as={Button}
+										name="profilepicture"
+										circular
+										src={
+											this.state.file === ""
+												? this.props.imageId
+												: this.state.file
+										}
+										size={"small"}
+										onClick={(e, { name }) => {
+											this.handleClick(e, name);
 										}}
 										disabled={this.state.disableButtons}
-									>
-										Upload
-									</Button>
-								)}
-							</React.Fragment>
-						) : (
-							<React.Fragment>
-								<Image
-									as={Button}
-									name="profilepicture"
-									circular
-									src={
-										this.state.file === ""
-											? this.props.imageId
-											: this.state.file
-									}
-									size={"medium"}
-									onClick={(e, { name }) => {
-										this.handleClick(e, name);
-									}}
-									disabled={this.state.disableButtons}
-								/>
-								<p></p>
-								{this.state.file !== "" && (
-									<Button
-										name="upload"
-										color={"teal"}
-										fluid
-										onClick={(e) => {
-											this.confirmUploadImage(e);
-										}}
-										disabled={this.state.disableButtons}
-									>
-										<Icon name="upload" />
-										Upload
-									</Button>
-								)}
-							</React.Fragment>
-						)}
+									/>
+									<p></p>
+									{this.state.file !== "" && (
+										<Button
+											name="upload"
+											color={"teal"}
+											fluid
+											onClick={(e) => {
+												this.confirmUploadImage(e);
+											}}
+											disabled={this.state.disableButtons}
+										>
+											<Icon name="upload" />
+											Upload
+										</Button>
+									)}
+								</React.Fragment>
+							)}
+						</Segment>
 					</Grid.Column>
 					<Grid.Column></Grid.Column>
 					<Grid.Column></Grid.Column>

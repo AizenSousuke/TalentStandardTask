@@ -382,7 +382,7 @@ export default class Skill extends React.Component {
 							</Grid.Column>
 							<Grid.Column>
 								<Button
-									color={"green"}
+									color={"teal"}
 									onClick={(e) => {
 										e.preventDefault();
 										this.addSkill();
@@ -395,7 +395,6 @@ export default class Skill extends React.Component {
 							</Grid.Column>
 							<Grid.Column>
 								<Button
-									color={"grey"}
 									fluid
 									onClick={(e) => {
 										e.preventDefault();
@@ -439,6 +438,7 @@ export default class Skill extends React.Component {
 											this.openAdd();
 										}}
 									>
+										<Icon name={"plus"} />
 										Add New
 									</Button>
 								</TableHeaderCell>
