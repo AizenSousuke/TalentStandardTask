@@ -57,7 +57,7 @@ export class Address extends React.Component {
 		// Countries Array
 		var countriesArray = [];
 		Object.keys(Countries).map((key, i) => {
-			countriesArray.push({ title: key, value: key });
+			countriesArray.push({ key: i, text: key, value: key });
 		});
 
 		this.setState({ countries: countriesArray }, () => {
@@ -83,11 +83,11 @@ export class Address extends React.Component {
 		});
 	}
 
-	handleChange(event) {
+	handleChange(event, name, value) {
 		this.handleValidation(event);
 		const data = Object.assign({}, this.state.newAddress);
 		// console.log("Data ", data);
-		data[event.target.name] = event.target.value;
+		data[name] = value;
 		this.setState({
 			newAddress: data,
 		});
@@ -148,8 +148,8 @@ export class Address extends React.Component {
 		// console.log(this.cities[this.countries.findIndex(e => e.value == "Singapore")])
 		Object.entries(Countries)
 			.find((c) => c[0] == country)[1]
-			.map((c) => {
-				newCitiesArray.push({ title: c, value: c });
+			.map((c, i) => {
+				newCitiesArray.push({ key: i, text: c, value: c });
 			});
 		this.setState({ cities: newCitiesArray }, () => {
 			// console.log("This cities: ", this.state.cities);
@@ -220,9 +220,9 @@ export class Address extends React.Component {
 						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row>
-						<Grid.Column width={"6"}>
+						<Grid.Column width={"6"} verticalAlign={"middle"}>
 							<b>Country</b>
-							<Select
+							{/* <Select
 								name="country"
 								controlFunc={(e) => {
 									this.setCitiesArray(e.target.value);
@@ -231,23 +231,54 @@ export class Address extends React.Component {
 								placeholder="Select a country"
 								selectedOption={this.state.newAddress.country}
 								options={this.state.countries}
+							/> */}
+							<br></br>
+							<Select
+								name="country"
+								fluid
+								onChange={(e, { name, value }) => {
+									this.setCitiesArray(value);
+									this.handleChange(e, name, value);
+								}}
+								placeholder="Select a country"
+								value={this.state.newAddress.country}
+								options={this.state.countries}
 							/>
 						</Grid.Column>
-						<Grid.Column width={"6"}>
+						<Grid.Column width={"6"} verticalAlign={"middle"}>
 							<b>City</b>
+							<br></br>
 							{this.state.cities.length > 0 ||
 							this.state.newAddress.city.length > 0 ? (
+								// <Select
+								// 	name="city"
+								// 	controlFunc={(e) => this.handleChange(e)}
+								// 	placeholder="Select a city"
+								// 	selectedOption={this.state.newAddress.city}
+								// 	options={this.state.cities}
+								// />
 								<Select
 									name="city"
-									controlFunc={(e) => this.handleChange(e)}
+									fluid
+									onChange={(e, { name, value }) =>
+										this.handleChange(e, name, value)
+									}
 									placeholder="Select a city"
-									selectedOption={this.state.newAddress.city}
+									value={this.state.newAddress.city}
 									options={this.state.cities}
 								/>
 							) : (
+								// <Select
+								// 	name="city"
+								// 	controlFunc={this.handleChange}
+								// 	placeholder="Select a country first"
+								// 	options={[]}
+								// 	disabled={true}
+								// />
 								<Select
 									name="city"
-									controlFunc={this.handleChange}
+									fluid
+									onChange={this.handleChange}
 									placeholder="Select a country first"
 									options={[]}
 									disabled={true}
