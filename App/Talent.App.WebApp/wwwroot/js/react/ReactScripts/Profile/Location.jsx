@@ -2,10 +2,10 @@
 import Cookies from "js-cookie";
 import { default as Countries } from "../../../../util/jsonFiles/countries.json";
 import { ChildSingleInput } from "../Form/SingleInput.jsx";
-import { Select } from "../Form/Select.jsx";
+// import { Select } from "../Form/Select.jsx";
 import { countries } from "../Employer/common";
 import Joi from "@hapi/joi";
-import { Dropdown, Divider, Button, Grid } from "semantic-ui-react";
+import { Dropdown, Divider, Button, Grid, Select } from "semantic-ui-react";
 
 export class Address extends React.Component {
 	constructor(props) {
@@ -339,7 +339,7 @@ export class Nationality extends React.Component {
 		// Nationality Array
 		var nationalityArray = [];
 		Object.keys(Countries).map((key, i) => {
-			nationalityArray.push({ title: key, value: key });
+			nationalityArray.push({ key: i, text: key, value: key });
 		});
 
 		this.setState({ nationality: nationalityArray }, () => {
@@ -351,7 +351,7 @@ export class Nationality extends React.Component {
 		return (
 			<div className="row">
 				<div className="ui eight wide column">
-					<Select
+					{/* <Select
 						name="nationality"
 						selectedOption={
 							this.props.nationalityData !== null
@@ -366,6 +366,28 @@ export class Nationality extends React.Component {
 							const data = Object.assign(
 								{},
 								{ nationality: e.target.value }
+							);
+							this.props.saveProfileData(data);
+							// console.log(data);
+						}}
+						disabled={this.props.disableButtons}
+					/> */}
+					<Select
+						name="nationality"
+						type="text"
+						fluid
+						value={
+							this.props.nationalityData !== null
+								? this.props.nationalityData
+								: ""
+						}
+						placeholder="Select your nationality"
+						options={this.state.nationality}
+						onChange={(e, { name, value }) => {
+							// console.log(e.target.value);
+							const data = Object.assign(
+								{},
+								{ nationality: value }
 							);
 							this.props.saveProfileData(data);
 							// console.log(data);

@@ -549,7 +549,30 @@ export default class Language extends React.Component {
 													{l.level}
 												</TableCell>
 												<TableCell textAlign={"right"}>
-													<Button
+													<Icon
+														name="pencil"
+														onClick={(e) => {
+															e.preventDefault();
+															this.openEdit(
+																e,
+																l.id,
+																l.name,
+																l.level
+															);
+														}}
+														disabled={this.props.disableButtons}
+													/>
+													<Icon
+														name="close"
+														onClick={(e) => {
+															e.preventDefault();
+															this.deleteLanguage(
+																l
+															);
+														}}
+														disabled={this.props.disableButtons}
+													/>
+													{/* <Button
 														basic
 														icon="edit"
 														size="mini"
@@ -575,7 +598,7 @@ export default class Language extends React.Component {
 															);
 														}}
 														disabled={this.props.disableButtons}
-													></Button>
+													></Button> */}
 												</TableCell>
 											</TableRow>
 										)}

@@ -837,7 +837,39 @@ export default class Experience extends React.Component {
 													<TableCell
 														textAlign={"right"}
 													>
-														<Button
+														<Icon
+															name="pencil"
+															onClick={(e) => {
+																e.preventDefault();
+																this.openEdit(
+																	e,
+																	l.id,
+																	l.company,
+																	l.position,
+																	l.responsibilities,
+																	l.start,
+																	l.end
+																);
+															}}
+															disabled={
+																this.props
+																	.disableButtons
+															}
+														/>
+														<Icon
+															name="close"
+															onClick={(e) => {
+																e.preventDefault();
+																this.deleteExperience(
+																	l
+																);
+															}}
+															disabled={
+																this.props
+																	.disableButtons
+															}
+														/>
+														{/* <Button
 															basic
 															icon="edit"
 															size="mini"
@@ -872,7 +904,7 @@ export default class Experience extends React.Component {
 																this.props
 																	.disableButtons
 															}
-														></Button>
+														></Button> */}
 													</TableCell>
 												</TableRow>
 											)}
