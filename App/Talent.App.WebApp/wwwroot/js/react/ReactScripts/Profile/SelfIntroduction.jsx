@@ -1,7 +1,14 @@
 ﻿/* Self introduction section */
 import React, { Component } from "react";
 import Cookies from "js-cookie";
-import { Input, Button, TextArea, Form, Grid } from "semantic-ui-react";
+import {
+	Input,
+	Button,
+	TextArea,
+	Form,
+	Grid,
+	Segment,
+} from "semantic-ui-react";
 import Joi from "@hapi/joi";
 
 export default class SelfIntroduction extends React.Component {
@@ -62,9 +69,9 @@ export default class SelfIntroduction extends React.Component {
 			: 0;
 
 		return (
-			<Grid container columns={"equal"}>
-				{/* <Grid.Column> */}
-					<Grid.Row>
+			<Grid container>
+				<Grid.Column width={"12"} mobile={"12"} style={{ paddingLeft: 0, paddingRight: 32 }}>
+					{/* <Grid.Row> */}
 						<Grid.Column>
 							<Input
 								name="summary"
@@ -79,8 +86,8 @@ export default class SelfIntroduction extends React.Component {
 							<p></p>
 							<p>Summary must be no more than 150 characters.</p>
 						</Grid.Column>
-					</Grid.Row>
-					<Grid.Row>
+					{/* </Grid.Row>
+					<Grid.Row> */}
 						<Grid.Column>
 							<TextArea
 								maxLength={characterLimit}
@@ -98,8 +105,8 @@ export default class SelfIntroduction extends React.Component {
 								{/* Characters : {characters} / {characterLimit} */}
 							</p>
 						</Grid.Column>
-					</Grid.Row>
-					<Grid.Row>
+					{/* </Grid.Row>
+					<Grid.Row> */}
 						<Grid.Column>
 							<Button
 								style={{ float: "right" }}
@@ -130,9 +137,82 @@ export default class SelfIntroduction extends React.Component {
 								Save
 							</Button>
 						</Grid.Column>
-					</Grid.Row>
-				{/* </Grid.Column> */}
+					{/* </Grid.Row> */}
+				</Grid.Column>
+				<Grid.Column width={"4"} mobile={"12"}></Grid.Column>
 			</Grid>
+
+			// <Grid container columns={"equal"}>
+			// 	{/* <Grid.Column> */}
+			// 		<Grid.Row>
+			// 			<Grid.Column>
+			// 				<Input
+			// 					name="summary"
+			// 					value={this.props.summary || ""}
+			// 					onChange={this.update}
+			// 					fluid
+			// 					placeholder={
+			// 						"Please provide a short summary about yourself"
+			// 					}
+			// 					error={this.state.schema.summary}
+			// 				/>
+			// 				<p></p>
+			// 				<p>Summary must be no more than 150 characters.</p>
+			// 			</Grid.Column>
+			// 		</Grid.Row>
+			// 		<Grid.Row>
+			// 			<Grid.Column>
+			// 				<TextArea
+			// 					maxLength={characterLimit}
+			// 					name="description"
+			// 					placeholder="Please tell us about any hobbies, additional expertise, or anything else you’d like to add."
+			// 					value={this.props.description || ""}
+			// 					fluid="true"
+			// 					onChange={this.update}
+			// 					// error={this.state.schema.description}
+			// 				/>
+			// 				<p></p>
+			// 				<p>
+			// 					Description must be between 150-600 characters.{" "}
+			// 					<br></br>
+			// 					{/* Characters : {characters} / {characterLimit} */}
+			// 				</p>
+			// 			</Grid.Column>
+			// 		</Grid.Row>
+			// 		<Grid.Row>
+			// 			<Grid.Column>
+			// 				<Button
+			// 					style={{ float: "right" }}
+			// 					color={"teal"}
+			// 					onClick={(e) => {
+			// 						e.preventDefault();
+			// 						var data = Object.assign(
+			// 							{},
+			// 							{
+			// 								summary: this.props.summary,
+			// 								description: this.props.description,
+			// 							}
+			// 						);
+			// 						if (this.checkStateForValidation(data)) {
+			// 							this.props.updateProfileData(data);
+			// 						} else {
+			// 							TalentUtil.notification.show(
+			// 								"Summary and description did not update successfully",
+			// 								"error",
+			// 								null,
+			// 								null
+			// 							);
+			// 						}
+			// 					}}
+			// 					// disabled={this.checkStateForValidation({summary: this.props.summary, description: this.props.description})}
+			// 					disabled={this.props.disableButtons}
+			// 				>
+			// 					Save
+			// 				</Button>
+			// 			</Grid.Column>
+			// 		</Grid.Row>
+			// 	{/* </Grid.Column> */}
+			// </Grid>
 		);
 	}
 }
