@@ -6,6 +6,7 @@ import { Loader, Grid } from "semantic-ui-react";
 import CompanyProfile from "../TalentFeed/CompanyProfile.jsx";
 import FollowingSuggestion from "../TalentFeed/FollowingSuggestion.jsx";
 import { BodyWrapper, loaderData } from "../Layout/BodyWrapper.jsx";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default class TalentFeed extends React.Component {
 	constructor(props) {
@@ -16,7 +17,9 @@ export default class TalentFeed extends React.Component {
 		loader.allowedUsers.push("Recruiter");
 
 		this.state = {
+			// Number of objects to load per page
 			loadNumber: 5,
+			// Initial load page
 			loadPosition: 0,
 			feedData: [],
 			watchlist: [],
@@ -24,8 +27,10 @@ export default class TalentFeed extends React.Component {
 			loadingFeedData: false,
 			companyDetails: null,
 			// Limits
-			position: 1,
+			position: 0,
 			number: 5,
+			// Has more
+			hasMore: true,
 		};
 
 		this.init = this.init.bind(this);
@@ -38,26 +43,29 @@ export default class TalentFeed extends React.Component {
 	}
 
 	componentWillMount() {
-		// Fetch data
+		// Fetch initial data
 		var cookies = Cookies.get("talentAuthToken");
-		$.ajax({
-			url:
-				"https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalent" +
-				"?position=" +
-				this.state.position +
-				"&number=" +
-				this.state.number,
-			headers: {
-				Authorization: "Bearer " + cookies,
-				"Content-Type": "application/json",
-			},
-			type: "GET",
-			success: function (res) {
-				this.setState({ feedData: res.data }, () => {
-					// console.log(this.state.feedData.length);
-				});
-			}.bind(this),
-		});
+		// $.ajax({
+		// 	url:
+		// 		"https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalent" +
+		// 		"?position=" +
+		// 		this.state.position +
+		// 		"&number=" +
+		// 		this.state.number,
+		// 	headers: {
+		// 		Authorization: "Bearer " + cookies,
+		// 		"Content-Type": "application/json",
+		// 	},
+		// 	type: "GET",
+		// 	success: function (res) {
+		// 		this.setState({ feedData: res.data }, () => {
+		// 			// console.log(this.state.feedData.length);
+
+		// 			// Set variables for the next load
+		// 			this.setState({ position: this.state.position + 1 });
+		// 		});
+		// 	}.bind(this),
+		// });
 
 		$.ajax({
 			url:
@@ -80,6 +88,52 @@ export default class TalentFeed extends React.Component {
 		this.init();
 	}
 
+	loadMore() {
+		if (!this.state.loadingFeedData) {
+			this.setState({ loadingFeedData: true }, () => {
+				// console.log("Loading more data");
+				// Copy previous data and add new data later on
+				var data = this.state.feedData;
+				// console.log("Current Feed Data: ", data);
+
+				// Fetch data
+				var cookies = Cookies.get("talentAuthToken");
+				$.ajax({
+					url:
+						// "https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalent" +
+						"http://localhost:60290/profile/profile/getTalent" +
+						"?position=" +
+						this.state.position +
+						"&number=" +
+						this.state.number,
+					headers: {
+						Authorization: "Bearer " + cookies,
+						"Content-Type": "application/json",
+					},
+					type: "GET",
+					success: function (res) {
+						// Add additional data to the feed if there is existing data
+						// console.log("Res Data: ", res.data);
+						res.data.map(t => {
+							data.push(t);
+						})
+						// console.log("New Feed Data: ", data);
+
+						this.setState({ feedData: data }, () => {
+							// console.log(this.state.feedData.length);
+
+							// Set variables for the next load
+							this.setState({
+								position: this.state.position + this.state.number,
+								loadingFeedData: false
+							});
+						});
+					}.bind(this),
+				});
+			});
+		}
+	}
+
 	render() {
 		return (
 			<BodyWrapper reload={this.init} loaderData={this.state.loaderData}>
@@ -92,7 +146,7 @@ export default class TalentFeed extends React.Component {
 								/>
 							</Grid.Column>
 							<Grid.Column width={"10"} textAlign={"center"}>
-								{this.state.feedData === [] && this.state.feedData !== undefined ? (
+								{/* {this.state.feedData === [] && this.state.feedData !== undefined ? (
 									<b>
 										There are no talents found for your
 										recruitment company.
@@ -112,7 +166,45 @@ export default class TalentFeed extends React.Component {
 											  )
 											: "Cannot map data"}
 									</React.Fragment>
-								)}
+								)} */}
+
+								<InfiniteScroll
+									pageStart={this.state.position}
+									loadMore={() => this.loadMore()}
+									hasMore={this.state.hasMore}
+									loader={
+										<div className="loader" key={0}>
+											Loading ...
+										</div>
+									}
+								>
+									{this.state.feedData === [] &&
+									this.state.feedData !== undefined ? (
+										<b>
+											There are no talents found for your
+											recruitment company.
+										</b>
+									) : (
+										<React.Fragment>
+											{this.state.feedData.length > 0
+												? this.state.feedData.map(
+														(talent) => {
+															return (
+																<TalentCard
+																	key={
+																		talent.id
+																	}
+																	talent={
+																		talent
+																	}
+																/>
+															);
+														}
+												  )
+												: "Error: Cannot map data"}
+										</React.Fragment>
+									)}
+								</InfiniteScroll>
 							</Grid.Column>
 							<Grid.Column width={"3"}>
 								<FollowingSuggestion />
