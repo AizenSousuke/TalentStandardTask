@@ -629,7 +629,7 @@ namespace Talent.Services.Profile.Domain.Services
         {
             //Your code here;
             // TODO: Get talent feed
-            var obj = await _talentRespository.Get(t => t.IsDeleted == false && t.Skills.Count > 1);
+            var obj = await _talentRespository.Get(t => t.IsDeleted == false && t.Skills.Count > 0 && t.Experience.Count > 0 && t.LinkedAccounts.Github.Length > 0 && t.LinkedAccounts.LinkedIn.Length > 0);
             var list = obj.Skip(position).Take(increment).ToList();
             return list.Select(t => TalentSnapshotFromViewModel(t));
         }
@@ -786,13 +786,14 @@ namespace Talent.Services.Profile.Domain.Services
             {
                 Id = model.Id,
                 Name = model.FirstName + " " + model.MiddleName + " " + model.LastName,
-                CurrentEmployment = "Apple",
+                CurrentEmployment = model.Experience.OrderByDescending(o => o.Start).FirstOrDefault(),
                 Summary = model.Summary,
                 CVUrl = model.CvName,
                 VideoUrl = model.VideoName,
                 PhotoId = model.ProfilePhotoUrl,
                 Skills = sk.Count > 0 ? sk : (new List<string>() { "" }),
                 Visa = model.VisaStatus,
+                LinkedAccounts = model.LinkedAccounts
             };
         }
 

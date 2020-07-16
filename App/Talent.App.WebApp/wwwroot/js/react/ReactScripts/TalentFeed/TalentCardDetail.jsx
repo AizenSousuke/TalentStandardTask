@@ -48,7 +48,7 @@ export default class TalentCardDetail extends React.Component {
 								</Grid.Row>
 								<Grid.Row>
 									<b>CURRENT EMPLOYER</b>
-									<p>{this.props.talent.currentEmployment}</p>
+									<p>{this.props.talent.currentEmployment.company}</p>
 									<br></br>
 								</Grid.Row>
 								<Grid.Row>
@@ -58,7 +58,7 @@ export default class TalentCardDetail extends React.Component {
 								</Grid.Row>
 								<Grid.Row>
 									<b>POSITION</b>
-									<p>{this.props.talent.summary}</p>
+									<p>{this.props.talent.currentEmployment.position}</p>
 									<br></br>
 								</Grid.Row>
 							</Grid.Column>

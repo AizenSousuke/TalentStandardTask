@@ -531,13 +531,14 @@ namespace Talent.Services.Profile.Controllers
                     result.Add(
                             new Models.TalentSnapshotViewModel
                             {
-                                CurrentEmployment = "Software Developer at XYZ",
+                                CurrentEmployment = new UserExperience() { Company = "Apple", Position = "Programmer", Start = new DateTime().ToUniversalTime() },
                                 Level = "Junior",
                                 Name = "Dummy User...",
                                 PhotoId = "",
                                 Skills = new List<string> { "C#", ".Net Core", "Javascript", "ReactJS", "PreactJS" },
                                 Summary = "Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.",
-                                Visa = "Citizen"
+                                Visa = "Citizen",
+                                LinkedAccounts = new LinkedAccounts() { Github = "https://github.com/AizenSousuke", LinkedIn = "https://linkedin.com" }
                             }
                         );
                 }

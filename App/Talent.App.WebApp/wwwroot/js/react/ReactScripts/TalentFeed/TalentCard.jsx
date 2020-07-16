@@ -22,10 +22,12 @@ export default class TalentCard extends React.Component {
 		this.state = {
 			state: "video",
 		};
+
+		this.handleState.bind(this);
 	}
 
 	handleState(e) {
-		console.log(e.target.name);
+		console.log(e.target.name, this.state.state);
 		switch (e.target.name) {
 			case "profile":
 				this.setState({ state: "profile" });
@@ -98,9 +100,9 @@ export default class TalentCard extends React.Component {
 								onClick={(e) => {
 									// console.log(e);
 									window.location.href =
-										this.props.talent.cvUrl === null || this.props.talent.cvUrl === ""
+										this.props.talent.linkedAccounts.linkedIn === null || this.props.talent.linkedAccounts.linkedIn === ""
 											? "https://linkedin.com"
-											: this.props.talent.cvUrl;
+											: this.props.talent.linkedAccounts.linkedIn;
 								}}
 							/>
 							<Button
@@ -109,9 +111,9 @@ export default class TalentCard extends React.Component {
 								onClick={(e) => {
 									// console.log(e);
 									window.location.href =
-										this.props.talent.cvUrl === null || this.props.talent.cvUrl === ""
+										this.props.talent.linkedAccounts.github === null || this.props.talent.linkedAccounts.github === ""
 											? "https://github.com"
-											: this.props.talent.cvUrl;
+											: this.props.talent.linkedAccounts.github;
 								}}
 							/>
 						</Button.Group>
