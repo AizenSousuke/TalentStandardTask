@@ -100,8 +100,8 @@ export default class TalentFeed extends React.Component {
 				var cookies = Cookies.get("talentAuthToken");
 				$.ajax({
 					url:
-						// "https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalent" +
-						"http://localhost:60290/profile/profile/getTalent" +
+						"https://talentservicesprofilenik.azurewebsites.net/profile/profile/getTalent" +
+						// "http://localhost:60290/profile/profile/getTalent" +
 						"?position=" +
 						this.state.position +
 						"&number=" +
