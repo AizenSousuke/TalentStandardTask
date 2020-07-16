@@ -21,7 +21,12 @@ export default class CompanyProfile extends React.Component {
 											.profilePhotoUrl !== null
 											? this.props.companyDetails
 													.profilePhotoUrl
+											// : "http://semantic-ui.com/images/avatar/large/jenny.jpg"
 											: "https://react.semantic-ui.com/images/wireframe/image.png"
+									}
+									onError={(i) =>
+										(i.target.src =
+											"https://react.semantic-ui.com/images/wireframe/image.png")
 									}
 								/>
 								<p>
@@ -48,7 +53,7 @@ export default class CompanyProfile extends React.Component {
 								desire.
 							</Card.Description>
 						</Card.Content>
-						<Card.Content extra>
+						<Card.Content extra className="breakword">
 							<div>
 								<Icon name="call" />:{" "}
 								{this.props.companyDetails.companyContact.phone}

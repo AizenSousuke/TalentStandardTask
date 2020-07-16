@@ -1461,3 +1461,14 @@ div.ReactTags__selected a.ReactTags__remove {
     margin-bottom: 10px;
 }
 /*Manage jobs - End*/
+
+/*
+    Talent Feed
+*/
+.breakword {
+    word-wrap: break-word;
+}
+
+.noborder {
+    border: 0;
+}

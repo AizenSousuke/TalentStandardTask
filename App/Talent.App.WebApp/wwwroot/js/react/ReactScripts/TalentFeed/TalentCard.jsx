@@ -11,6 +11,7 @@ import {
 	Button,
 	Divider,
 	Label,
+	Segment,
 } from "semantic-ui-react";
 import TalentCardDetail from "./TalentCardDetail.jsx";
 
@@ -61,7 +62,7 @@ export default class TalentCard extends React.Component {
 					/>
 
 					<Card.Content extra>
-						<Button.Group basic size={"medium"} widths={"4"}>
+						<Button.Group basic size={"medium"} widths={"4"} style={{border: 0}}>
 							{this.state.state === "video" ? (
 								<Button
 									name="profile"
