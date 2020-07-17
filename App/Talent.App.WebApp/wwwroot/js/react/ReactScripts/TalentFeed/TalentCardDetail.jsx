@@ -75,7 +75,8 @@ export default class TalentCardDetail extends React.Component {
 								<YouTube
 									videoId={
 										this.props.talent.videoUrl === null
-											? "dQw4w9WgXcQ"
+											// ? "dQw4w9WgXcQ"
+											? ""
 											: this.props.talent.videoUrl.split(
 													"v="
 											  )[1]
