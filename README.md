@@ -6,6 +6,13 @@ This project is done as part of an internship at MVP Studio to understand how Re
 
 [Azure](http://talentappwebappnik.azurewebsites.net/Home)
 
+## Images
+
+![Imgur](https://i.imgur.com/6jnbiPr.png)
+![Imgur](https://i.imgur.com/k57G78e.png)
+![Imgur](https://i.imgur.com/FzwH2zz.png)
+![Imgur](https://i.imgur.com/MDWo7KL.png)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
