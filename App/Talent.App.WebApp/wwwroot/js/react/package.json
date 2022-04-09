@@ -6,7 +6,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "draft-js": "^0.10.5",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "react": "^16.3.2",
     "react-ckeditor-component": "^1.1.0",
     "react-datepicker": "^1.6.0",
